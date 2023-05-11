@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+
+    android:padding="20dp"
+    tools:context=".NewEvent">
+    <TableLayout
+        android:layout_gravity="center"
+        android:gravity="center_horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <TableRow>
+            <TextView
+                android:layout_margin="15dp"
+                android:layout_height="match_parent"
+                android:layout_width="match_parent"
+                android:text="Name"
+                android:TextSize="25dp"/>
+
+            <EditText
+                android:id="@+id/name"
+                android:layout_width="202dp"
+                android:layout_height="match_parent"
+                android:text="Name"
+                android:TextSize="25dp" />
+        </TableRow>
+        <TableRow>
+            <TextView android:layout_margin="15dp"
+                android:layout_height="match_parent"
+                android:layout_width="match_parent"
+                android:text="typeId"
+                android:TextSize="25dp"/>
+            <Button
+                android:id="@+id/typeId"
+                android:layout_height="match_parent"
+                android:layout_width="match_parent"
+                android:text="typeId"
+                android:TextSize="25dp"/>
+        </TableRow>
+        <TableRow>
+            <TextView android:layout_margin="15dp"
+                android:layout_height="match_parent"
+                android:layout_width="match_parent"
+                android:text="color"
+                android:TextSize="25dp"/>
+            <EditText
+                andtoid:id="@+id/color"
+                android:layout_height="match_parent"
+                android:layout_width="match_parent"
+                android:text="color Hex Code"
+                android:TextSize="25dp"/>
+        </TableRow>
+        <TableRow>
+            <TextView android:layout_margin="15dp"
+                android:layout_height="match_parent"
+                android:layout_width="match_parent"
+                android:text="date"
+                android:TextSize="25dp"/>
+            <Button
+                android:id="@+id/date"
+                android:layout_height="match_parent"
+                android:layout_width="match_parent"
+                android:text="date"
+                android:TextSize="25dp"/>
+        </TableRow>
+        <TableRow>
+            <TextView android:layout_margin="15dp"
+                android:layout_height="match_parent"
+                android:layout_width="match_parent"
+                android:text="Time"
+                android:TextSize="25dp"/>
+            <Button
+                android:id="@+id/time"
+                android:layout_height="match_parent"
+                android:layout_width="match_parent"
+                android:text="Time"
+                android:TextSize="25dp"/>
+        </TableRow>
+        <TableRow>
+            <TextView android:layout_margin="15dp"
+                android:layout_height="match_parent"
+                android:layout_width="match_parent"
+                android:text="note"
+                android:TextSize="25dp"/>
+            <EditText
+                android:id="@+id/note"
+                android:layout_height="match_parent"
+                android:layout_width="match_parent"
+                android:text="note"
+                android:TextSize="25dp"/>
+        </TableRow>
+        <TableRow>
+            <TextView android:layout_margin="15dp"
+                android:layout_height="match_parent"
+                android:layout_width="match_parent"
+                android:text="priority"
+                android:TextSize="25dp"/>
+            <EditText
+                android:id="@+id/priority"
+                android:layout_height="match_parent"
+                android:layout_width="match_parent"
+                android:text="priority"
+                android:TextSize="25dp"
+                android:inputType="number"/>
+
+        </TableRow>
+        <TableRow>
+            <Button
+                android:layout_span="2"
+                android:id="@+id/add"
+                android:layout_height="match_parent"
+                android:layout_width="match_parent"
+                android:text="ADD"
+                android:TextSize="25dp"/>
+        </TableRow>
+        <TableRow>
+
+            <TextView
+                android:id="@+id/result"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_span="2"
+                android:TextSize="55sp"
+                android:gravity="center"
+                android:text="Result"
+                android:textSize="20sp" />
+        </TableRow>
+    </TableLayout>
+
+</LinearLayout>
