@@ -22,4 +22,8 @@ public class Type {
     public String getIcon() {
         return icon;
     }
+    @Override
+    public String toString() {
+        return name;
+    }
 }

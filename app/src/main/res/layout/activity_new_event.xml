@@ -17,94 +17,98 @@
                 android:layout_margin="15dp"
                 android:layout_height="match_parent"
                 android:layout_width="match_parent"
-                android:text="Name"
-                android:TextSize="25dp"/>
+                android:text="Name"/>
 
             <EditText
                 android:id="@+id/name"
                 android:layout_width="202dp"
                 android:layout_height="match_parent"
                 android:text="Name"
-                android:TextSize="25dp" />
+                android:textSize="15sp" />
         </TableRow>
         <TableRow>
             <TextView android:layout_margin="15dp"
                 android:layout_height="match_parent"
                 android:layout_width="match_parent"
                 android:text="typeId"
-                android:TextSize="25dp"/>
-            <Button
-                android:id="@+id/typeId"
+                android:textSize="15sp"/>
+            <Spinner
+                android:id="@+id/typeList"
                 android:layout_height="match_parent"
                 android:layout_width="match_parent"
                 android:text="typeId"
-                android:TextSize="25dp"/>
+                android:textSize="15sp"
+                android:background="@android:drawable/btn_dropdown"
+                android:spinnerMode="dropdown"
+                android:contentDescription="This is a spinner." />
         </TableRow>
         <TableRow>
             <TextView android:layout_margin="15dp"
                 android:layout_height="match_parent"
                 android:layout_width="match_parent"
                 android:text="color"
-                android:TextSize="25dp"/>
+                android:textSize="15sp"/>
             <EditText
-                andtoid:id="@+id/color"
+                android:id="@+id/color"
                 android:layout_height="match_parent"
                 android:layout_width="match_parent"
                 android:text="color Hex Code"
-                android:TextSize="25dp"/>
+                android:textSize="15sp"/>
         </TableRow>
         <TableRow>
             <TextView android:layout_margin="15dp"
                 android:layout_height="match_parent"
                 android:layout_width="match_parent"
                 android:text="date"
-                android:TextSize="25dp"/>
+                android:textSize="15sp"/>
             <Button
                 android:id="@+id/date"
                 android:layout_height="match_parent"
                 android:layout_width="match_parent"
                 android:text="date"
-                android:TextSize="25dp"/>
+                android:textSize="15sp"/>
         </TableRow>
         <TableRow>
             <TextView android:layout_margin="15dp"
                 android:layout_height="match_parent"
                 android:layout_width="match_parent"
                 android:text="Time"
-                android:TextSize="25dp"/>
+                android:textSize="15sp"/>
             <Button
                 android:id="@+id/time"
                 android:layout_height="match_parent"
                 android:layout_width="match_parent"
                 android:text="Time"
-                android:TextSize="25dp"/>
+                android:textSize="15sp"/>
         </TableRow>
         <TableRow>
             <TextView android:layout_margin="15dp"
                 android:layout_height="match_parent"
                 android:layout_width="match_parent"
                 android:text="note"
-                android:TextSize="25dp"/>
+                android:textSize="15sp"/>
             <EditText
                 android:id="@+id/note"
                 android:layout_height="match_parent"
                 android:layout_width="match_parent"
                 android:text="note"
-                android:TextSize="25dp"/>
+                android:textSize="15sp"/>
         </TableRow>
         <TableRow>
             <TextView android:layout_margin="15dp"
                 android:layout_height="match_parent"
                 android:layout_width="match_parent"
                 android:text="priority"
-                android:TextSize="25dp"/>
-            <EditText
-                android:id="@+id/priority"
+                android:textSize="15sp"/>
+            <Spinner
+                android:id="@+id/priorityList"
                 android:layout_height="match_parent"
                 android:layout_width="match_parent"
                 android:text="priority"
-                android:TextSize="25dp"
-                android:inputType="number"/>
+                android:textSize="15sp"
+                android:background="@android:drawable/btn_dropdown"
+                android:spinnerMode="dropdown"
+                android:contentDescription="This is a spinner." />
 
         </TableRow>
         <TableRow>
@@ -114,7 +118,7 @@
                 android:layout_height="match_parent"
                 android:layout_width="match_parent"
                 android:text="ADD"
-                android:TextSize="25dp"/>
+                android:textSize="15sp"/>
         </TableRow>
         <TableRow>
 
@@ -123,10 +127,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_span="2"
-                android:TextSize="55sp"
                 android:gravity="center"
-                android:text="Result"
-                android:textSize="20sp" />
+                android:text="Result" />
         </TableRow>
     </TableLayout>
 
