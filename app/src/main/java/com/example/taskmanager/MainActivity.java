@@ -27,3 +27,9 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 }
+//timeline (kadi)
+//View (lina)
+//edit (manal)
+//add -> (sama)
+// to calendar - set notification (hind)
+

@@ -46,19 +46,6 @@
             <TextView android:layout_margin="15dp"
                 android:layout_height="match_parent"
                 android:layout_width="match_parent"
-                android:text="color"
-                android:textSize="15sp"/>
-            <EditText
-                android:id="@+id/color"
-                android:layout_height="match_parent"
-                android:layout_width="match_parent"
-                android:text="color Hex Code"
-                android:textSize="15sp"/>
-        </TableRow>
-        <TableRow>
-            <TextView android:layout_margin="15dp"
-                android:layout_height="match_parent"
-                android:layout_width="match_parent"
                 android:text="date"
                 android:textSize="15sp"/>
             <Button

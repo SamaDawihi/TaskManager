@@ -36,6 +36,7 @@ public class MyTasksDB extends SQLiteOpenHelper {
                         "typeId INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL" +
                         ", name TEXT NOT NULL" +
                         //", icon TEXT" +
+                        //", color TEXT NOT NULL" +
                         ")";
         db.execSQL(query);
 
@@ -50,7 +51,6 @@ public class MyTasksDB extends SQLiteOpenHelper {
                         "eventId INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL," +
                         "typeId INTEGER REFERENCES Type(typeId) NOT NULL," +
                         "name TEXT NOT NULL" +
-                        //", color TEXT NOT NULL" +
                         ", dateTime DATETIME NOT NULL" +
                         ", note TEXT NOT NULL" +
                         //", reminderPeriodInMin INTEGER NOT NULL" +
@@ -64,8 +64,8 @@ public class MyTasksDB extends SQLiteOpenHelper {
                         "taskId INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL," +
                         "eventId INTEGER REFERENCES Event(eventId) NOT NULL," +
                         "name TEXT NOT NULL," +
+                        "desription TEXT NOT NULL," +
                         "done BOOLEAN NOT NULL," +
-                        "priority INTEGER NOT NULL," +
                         "FOREIGN KEY (eventId) REFERENCES Event(eventId) ON DELETE CASCADE" +
                         ")";
         db.execSQL(query);
@@ -85,6 +85,7 @@ public class MyTasksDB extends SQLiteOpenHelper {
         ContentValues values = new ContentValues();
         values.put("name", name);
         //values.put("icon", icon);
+        //values.put("color", color);
 
         db.insert("Type", null, values);
 
@@ -97,7 +98,6 @@ public class MyTasksDB extends SQLiteOpenHelper {
         ContentValues values = new ContentValues();
         values.put("name", name);
         values.put("typeId", typeId);
-        //values.put("color", color);
         values.put("dateTime", dateTime);
         values.put("note", note);
         //values.put("reminderPeriodInMin", reminder);
