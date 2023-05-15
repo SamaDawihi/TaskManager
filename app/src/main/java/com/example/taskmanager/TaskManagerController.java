@@ -31,5 +31,8 @@ public class TaskManagerController {
     public int addTask(int eventId, String description){
         return dbHelper.addTask(eventId, description);
     }
+    boolean doesTypeExist(int typeId){
+        return dbHelper.doesTypeExist(typeId);
+    }
 
 }

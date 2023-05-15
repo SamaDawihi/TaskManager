@@ -3,6 +3,7 @@ package com.example.taskmanager;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
 
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -34,49 +35,54 @@ import java.util.List;
 
 public class NewEvent extends AppCompatActivity implements NewTypeDialog.NewTypeDialogListener{
 
-    EditText name, note, reminderDuration;
-    Button addType, date, time, add;
-    Spinner type, priority, reminderUnit;
 
-    TextView dateTV, timeTV;
-
-    TextView result;
-
+    //---------------------------Views-----------------------------
     TableLayout table;
+    EditText name, note, reminderDuration, sub1, sub2, sub3, sub4;
+    Button addNewType, date, time, add, addTask1, removeTask2, removeTask3, removeTask4;
+    Spinner type, priority, reminderUnit;
+    TextView dateTV, timeTV, result;
     TableRow row1,row2, row3,row4;
-    EditText sub1, sub2, sub3, sub4;
+    //---------------------------Views-----------------------------
 
     List<String> visibleRows;
+    List<String> errors;
 
-    Button addTask1, removeTask2, removeTask3, removeTask4;
     TaskManagerController controller;
 
     Calendar calendar;
 
-    String fName, fColor, fDateTime, fDate, fTime, fNote,fReminderUnit, fNewTypeName, fTypeColor, fTypeIcon;
-    String fSub1, fSub2, fSub3, fSub4;
 
-    int fType, fPriority, fReminderDuration;
+
+    //---------------------------Outputs Variables-----------------------------
+    String fName, fColor, fDateTime, fDate, fTime, fNote,fReminderUnit, fNewTypeName, fNewTypeColor, fNewTypeIcon;
+    String fSubTask1, fSubTask2, fSubTask3, fSubTask4;
+    int fTypeId, fPriority, fReminderDuration;
+    //---------------------------Outputs Variables-----------------------------
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_event);
-        calendar = Calendar.getInstance();
 
+
+        calendar = Calendar.getInstance();
         controller = new TaskManagerController(this);
+
 
         setDefault();
         findViews();
-        
+        hideSubTasksRows();
+        setUnitsSpinner();
+        setTypesSpinner();
+        setPrioritiesSpinner();
+        setOnClickListeners();
+
     }
-
-
     private void setDefault() {
-        fName = fColor = fDateTime = fDate = fTime = fNote = fReminderUnit = fNewTypeName = fTypeColor = fTypeIcon = fSub1 = fSub2 = fSub3 = fSub4 = null;
-        fType = fPriority = fReminderDuration = -1;
+        fName = fColor = fDateTime = fDate = fTime = fNote = fReminderUnit = fNewTypeName = fNewTypeColor = fNewTypeIcon = fSubTask1 = fSubTask2 = fSubTask3 = fSubTask4 = null;
+        fTypeId = fPriority = fReminderDuration = -1;
     }
-
     private void findViews() {
         name = findViewById(R.id.name);
         note  = findViewById(R.id.note);
@@ -84,14 +90,15 @@ public class NewEvent extends AppCompatActivity implements NewTypeDialog.NewType
         reminderUnit = findViewById(R.id.reminderUnit);
         priority  = findViewById(R.id.priorityList);
         type  = findViewById(R.id.typeList);
-        addType = findViewById(R.id.addType);
         date  = findViewById(R.id.date);
         dateTV = findViewById(R.id.dateTV);
         timeTV = findViewById(R.id.timeTV);
         time  = findViewById(R.id.time);
 
+        addNewType = findViewById(R.id.addType);
+
         table  = findViewById(R.id.table);
-        
+
         row1  = findViewById(R.id.r1);
         row2  = findViewById(R.id.r2);
         row3  = findViewById(R.id.r3);
@@ -109,23 +116,89 @@ public class NewEvent extends AppCompatActivity implements NewTypeDialog.NewType
 
         add  = findViewById(R.id.add);
         result = findViewById(R.id.result);
-
-        hideRows();
-        setUnits();
-        setTypes();
-        setPriorities();
-
-        addType.setOnClickListener( l -> showAddTypeDialog());
-        date.setOnClickListener( l -> showDateSelector());
-        time.setOnClickListener( l -> showTimeSelector());
-        add.setOnClickListener(l -> add());
     }
 
-    private void hideRows() {
+    private void hideSubTasksRows() {
         row2.setVisibility(View.GONE);
         row3.setVisibility(View.GONE);
         row4.setVisibility(View.GONE);
         visibleRows = new ArrayList<>();
+    }
+    private void setUnitsSpinner() {
+        String[] items = new String[]{"Minutes", "Hours", "Day", "Weak", "month" };
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, items);
+
+        reminderUnit.setAdapter(adapter);
+
+        reminderUnit.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                fReminderUnit = (String) parent.getItemAtPosition(position);
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                // Handle case when nothing is selected
+                // Your code here
+            }
+        });
+    }
+    void setTypesSpinner(){
+        List<Type> types = controller.getAllTypes();
+        Type[] items = new Type[types.size()];
+        int i = 0;
+        for (Type t : types){
+            items[i++] = t;
+            Log.i("TYPE_NAME", t.getName());
+        }
+
+        ArrayAdapter<Type> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, items);
+
+        type.setAdapter(adapter);
+
+        type.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                Type selectedType = (Type) parent.getItemAtPosition(position);
+                fTypeId = selectedType.getTypeId();
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                // Handle case when nothing is selected
+                // Your code here
+            }
+        });
+    }
+    void setPrioritiesSpinner(){
+        Priority p1 = new Priority(NotificationManager.IMPORTANCE_HIGH, "Urgent");
+        Priority p2 = new Priority(NotificationManager.IMPORTANCE_DEFAULT, "High");
+        Priority p3 = new Priority(NotificationManager.IMPORTANCE_LOW, "Medium");
+        Priority p4 = new Priority(NotificationManager.IMPORTANCE_MIN, "Low");
+
+        Priority[] items = new Priority[]{p1,p2,p3, p4};
+
+        ArrayAdapter<Priority> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, items);
+
+        priority.setAdapter(adapter);
+
+        priority.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                Priority selectedP = (Priority) parent.getItemAtPosition(position);
+                fPriority = selectedP.getPriority();
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                // Handle case when nothing is selected
+                // Your code here
+            }
+        });
+    }
+    private void setOnClickListeners() {
+        addNewType.setOnClickListener( l -> showAddTypeDialog());
+        date.setOnClickListener( l -> showDateSelector());
+        time.setOnClickListener( l -> showTimeSelector());
+        add.setOnClickListener(l -> add());
 
         addTask1.setOnClickListener( l -> {
             if(!visibleRows.contains("Row2")) {
@@ -155,7 +228,6 @@ public class NewEvent extends AppCompatActivity implements NewTypeDialog.NewType
             row4.setVisibility(View.GONE);
             visibleRows.remove("Row4");
         });
-
     }
 
     private void showAddTypeDialog() {
@@ -168,86 +240,15 @@ public class NewEvent extends AppCompatActivity implements NewTypeDialog.NewType
         if(name == null)
             return;
         fNewTypeName = name;
-        fTypeIcon = d.getIcon();
-        fTypeColor = d.getColor();
-        controller.addType(fNewTypeName, fTypeIcon, fTypeColor);
-        setTypes();
+        fNewTypeIcon = d.getIcon();
+        fNewTypeColor = d.getColor();
+        controller.addType(fNewTypeName, fNewTypeIcon, fNewTypeColor);
+        setTypesSpinner();
     }
 
     public void onDialogNegativeClick(DialogFragment dialog) {
         // Handle negative button click in the activity
         Toast.makeText(this, "Add new type cancels", Toast.LENGTH_SHORT).show();
-    }
-
-    private void setUnits() {
-        String[] items = new String[]{"Minutes", "Hours", "Day", "Weak", "month" };
-
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, items);
-
-        reminderUnit.setAdapter(adapter);
-
-        reminderUnit.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                fReminderUnit = (String) parent.getItemAtPosition(position);
-            }
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-                // Handle case when nothing is selected
-                // Your code here
-            }
-        });
-    }
-    void setTypes(){
-        List<Type> types = controller.getAllTypes();
-        Type[] items = new Type[types.size()];
-        int i = 0;
-        for (Type t : types){
-            items[i++] = t;
-            Log.i("TYPE_NAME", t.getName());
-        }
-
-        ArrayAdapter<Type> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, items);
-
-        type.setAdapter(adapter);
-
-        type.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                Type selectedType = (Type) parent.getItemAtPosition(position);
-                fType = selectedType.getTypeId();
-            }
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-                // Handle case when nothing is selected
-                // Your code here
-            }
-        });
-    }
-    void setPriorities(){
-        Priority p1 = new Priority(NotificationManager.IMPORTANCE_HIGH, "Urgent");
-        Priority p2 = new Priority(NotificationManager.IMPORTANCE_DEFAULT, "High");
-        Priority p3 = new Priority(NotificationManager.IMPORTANCE_LOW, "Medium");
-        Priority p4 = new Priority(NotificationManager.IMPORTANCE_MIN, "Low");
-
-        Priority[] items = new Priority[]{p1,p2,p3, p4};
-
-        ArrayAdapter<Priority> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, items);
-
-        priority.setAdapter(adapter);
-
-        priority.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                Priority selectedP = (Priority) parent.getItemAtPosition(position);
-                fPriority = selectedP.getPriority();
-            }
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-                // Handle case when nothing is selected
-                // Your code here
-            }
-        });
     }
 
     void showTimeSelector(){
@@ -292,15 +293,22 @@ public class NewEvent extends AppCompatActivity implements NewTypeDialog.NewType
     }
 
 
-    void add(){
+    boolean add(){
+
+        errors = new ArrayList<>();
+
         submitData();
 
-        if(! checkData()) {
-            Toast.makeText(this,"Must FIll All", Toast.LENGTH_SHORT).show();
-            return;
+        checkData();
+
+        if (!errors.isEmpty()) {
+            displayErrors();
+            return false;
         }
+
+
         String r = "Name: " + fName + "\n"
-                + "Type: " + fType + "\n"
+                + "Type: " + fTypeId + "\n"
                 + "Color: " + fColor + "\n"
                 + "DateTime: " + fDateTime + "\n"
                 + "Note: " + fNote + "\n"
@@ -309,62 +317,94 @@ public class NewEvent extends AppCompatActivity implements NewTypeDialog.NewType
         result.setText(r);
         Log.i("ADDED_EVENT", r);
 
-        int eventId = controller.addEvent(fName, fType, fColor, fDateTime, fNote, fReminderDuration, fReminderUnit, fPriority);
+        int eventId = controller.addEvent(fName, fTypeId, fColor, fDateTime, fNote, fReminderDuration, fReminderUnit, fPriority);
         if(eventId == -1) {
-            Toast.makeText(this, "Adding event " + eventId + " FAILED", Toast.LENGTH_SHORT).show();
-            return;
+            errors.add("Failed to add new event");
+            displayErrors();
+            return false;
         }
 
-        if(fSub1 != null && fSub1 != "")
-            controller.addTask(eventId, fSub1);
+        if(fSubTask1 != null && fSubTask1 != "")
+            controller.addTask(eventId, fSubTask1);
 
-        if(fSub2 != null && fSub2 != "")
-            controller.addTask(eventId, fSub2);
+        if(fSubTask2 != null && fSubTask2 != "")
+            controller.addTask(eventId, fSubTask2);
 
-        if(fSub3 != null && fSub3 != "")
-            controller.addTask(eventId, fSub3);
+        if(fSubTask3 != null && fSubTask3 != "")
+            controller.addTask(eventId, fSubTask3);
 
-        if(fSub4 != null && fSub4 != "")
-            controller.addTask(eventId, fSub4);
-
-    }
-    private boolean checkData() {
-        if(fName == null)
-            return false;
-        if(fType < 0)
-            return false;
-        if(fDateTime == null)
-            return false;
-        if(fNote == null)
-            return false;
-        if(fReminderUnit == null)
-            return false;
-        if(fReminderDuration < 0)
-            return false;
-        if(fPriority < 0)
-            return false;
+        if(fSubTask4 != null && fSubTask4 != "")
+            controller.addTask(eventId, fSubTask4);
 
         return true;
     }
-    private void submitData() {
-        fName = name.getText().toString();
-        if(fDate != null || fTime != null)
-            fDateTime = fDate + " " + fTime;
-        fNote = note.getText().toString();
-        fReminderDuration = Integer.parseInt(reminderDuration.getText().toString());
 
-        fSub1 = fSub2 = fSub3 = fSub4 = null;
+    private void displayErrors() {
+        // Concatenate the error messages
+        StringBuilder errorMessage = new StringBuilder();
+        for (String error : errors) {
+            errorMessage.append("- ").append(error).append("\n");
+        }
 
-        fSub1 = sub1.getText().toString();
+        // Create and configure the AlertDialog
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Errors")
+                .setMessage(errorMessage.toString())
+                .setPositiveButton("OK", null);
 
-        if(visibleRows.contains("Row2"))
-            fSub2 = sub2.getText().toString();
-        if(visibleRows.contains("Row3"))
-            fSub3 = sub3.getText().toString();
-        if(visibleRows.contains("Row4"))
-            fSub4 = sub4.getText().toString();
-
+        // Show the dialog
+        AlertDialog dialog = builder.create();
+        dialog.show();
+        errors.clear();
     }
 
+    private void submitData() {
+        fName = name.getText().toString();
+        if(fDate != null && fTime != null)
+            fDateTime = fDate + " " + fTime;
+        else
+            fDateTime = null;
+
+        fNote = note.getText().toString();
+
+        String reminderD = reminderDuration.getText().toString();
+        if (!(reminderD == null || reminderD.isEmpty()))
+            fReminderDuration = Integer.parseInt(reminderD);
+
+        fSubTask1 = fSubTask2 = fSubTask3 = fSubTask4 = null;
+
+        fSubTask1 = sub1.getText().toString();
+
+        if(visibleRows.contains("Row2"))
+            fSubTask2 = sub2.getText().toString();
+        if(visibleRows.contains("Row3"))
+            fSubTask3 = sub3.getText().toString();
+        if(visibleRows.contains("Row4"))
+            fSubTask4 = sub4.getText().toString();
+    }
+    private boolean checkData() {
+        if(fName == null || fName == "") {
+            errors.add("SET NAME");
+        }
+        if(fTypeId < 0 || controller.doesTypeExist(fTypeId)) {
+            errors.add("SELECT TYPE");
+        }
+        if(fDateTime == null) {
+            errors.add("SET DATE AND TIME");
+        }
+        if(fNote == null || fNote == "") {
+            fNote = "";
+        }
+        if(fReminderUnit == null) {
+            errors.add("SELECT REMINDER UNIT");
+        }
+        if(fReminderDuration < 0) {
+            errors.add("SET Reminder Duration");
+        }
+        if(fPriority < 0) {
+            errors.add("SELECT PRIORITY");
+        }
+        return true;
+    }
 
 }

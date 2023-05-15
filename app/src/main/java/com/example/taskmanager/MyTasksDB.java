@@ -220,5 +220,15 @@ public class MyTasksDB extends SQLiteOpenHelper {
         return taskList;
     }
 
+    boolean doesTypeExist(int typeId){
+        SQLiteDatabase db = this.getReadableDatabase();
+        String query = "SELECT * FROM Type WHERE typeId = " + typeId;
+        Cursor cursor = db.rawQuery(query, null);
+        boolean exists = cursor.moveToFirst();
 
+        cursor.close();
+        db.close();
+
+        return exists;
+    }
 }
