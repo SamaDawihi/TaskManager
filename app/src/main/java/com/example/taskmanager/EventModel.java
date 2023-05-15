@@ -1,25 +1,28 @@
 package com.example.taskmanager;
 
-public class Event {
+public class EventModel {
     private int eventId;
     private int typeId;
     private String name;
     private String color;
     private String dateTime;
     private String note;
-    private int reminderPeriodInMin;
+    private int reminderDuration;
+    private String reminderUnit;
     private int priority;
 
-    public Event(int eventId, int typeId, String name, String color, String dateTime, String note, int reminderPeriodInMin, int priority) {
+    public EventModel(int eventId, int typeId, String name, String color, String dateTime, String note, int reminderDuration, String reminderUnit, int priority) {
         this.eventId = eventId;
         this.typeId = typeId;
         this.name = name;
         this.color = color;
         this.dateTime = dateTime;
         this.note = note;
-        this.reminderPeriodInMin = reminderPeriodInMin;
+        this.reminderDuration = reminderDuration;
+        this.reminderUnit = reminderUnit;
         this.priority = priority;
     }
+
     public int getEventId() {
         return eventId;
     }
@@ -44,12 +47,15 @@ public class Event {
         return note;
     }
 
-    public int getReminderPeriodInMin() {
-        return reminderPeriodInMin;
+    public int getReminderDuration() {
+        return reminderDuration;
+    }
+
+    public String getReminderUnit() {
+        return reminderUnit;
     }
 
     public int getPriority() {
         return priority;
     }
 }
-

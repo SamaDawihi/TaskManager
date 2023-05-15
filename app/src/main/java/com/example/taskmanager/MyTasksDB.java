@@ -5,6 +5,8 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.graphics.Color;
+import android.media.metrics.Event;
 import android.util.Log;
 
 import androidx.annotation.Nullable;
@@ -24,6 +26,7 @@ public class MyTasksDB extends SQLiteOpenHelper {
     private static String TASK = "TASK";
 
 
+
     public MyTasksDB(@Nullable Context context) {
         super(context, DBNAME, null, DBVersion);
     }
@@ -35,25 +38,29 @@ public class MyTasksDB extends SQLiteOpenHelper {
                 "CREATE TABLE " + TYPE + " (" +
                         "typeId INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL" +
                         ", name TEXT NOT NULL" +
-                        //", icon TEXT" +
-                        //", color TEXT NOT NULL" +
+                        //", icon TEXT NOT NULL" +
+                        ", color INTEGER NOT NULL" +
                         ")";
         db.execSQL(query);
 
-        query = "INSERT INTO " + TYPE + " (name) VALUES ('Work')";
+        query = "INSERT INTO " + TYPE + " (name, color) VALUES ('Not Sorted'," + Color.RED +")";
         db.execSQL(query);
 
-        query = "INSERT INTO " + TYPE + " (name) VALUES ('Personal')";
+        query = "INSERT INTO " + TYPE + " (name, color) VALUES ('Work'," + Color.BLUE +")";
+        db.execSQL(query);
+
+        query = "INSERT INTO " + TYPE + " (name, color) VALUES ('Personal'," + Color.GREEN +")";
         db.execSQL(query);
 
         query =
                 "CREATE TABLE " + EVENT + " (" +
                         "eventId INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL," +
-                        "typeId INTEGER REFERENCES Type(typeId) NOT NULL," +
+                        "typeId INTEGER REFERENCES Type(typeId) NOT NULL DEFAULT 1," +
                         "name TEXT NOT NULL" +
                         ", dateTime DATETIME NOT NULL" +
                         ", note TEXT NOT NULL" +
-                        //", reminderPeriodInMin INTEGER NOT NULL" +
+                        ", reminderDuration INTEGER NOT NULL" +
+                        ", reminderUnit TEXT NOT NULL" +
                         ", priority INTEGER NOT NULL" +
                         ", FOREIGN KEY (typeId) REFERENCES Type(typeId) ON DELETE CASCADE" +
                         ")";
@@ -63,12 +70,13 @@ public class MyTasksDB extends SQLiteOpenHelper {
                 "CREATE TABLE "+ TASK + " (" +
                         "taskId INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL," +
                         "eventId INTEGER REFERENCES Event(eventId) NOT NULL," +
-                        "name TEXT NOT NULL," +
-                        "desription TEXT NOT NULL," +
+                        //"name TEXT NOT NULL," +
+                        "description TEXT NOT NULL," +
                         "done BOOLEAN NOT NULL," +
                         "FOREIGN KEY (eventId) REFERENCES Event(eventId) ON DELETE CASCADE" +
                         ")";
         db.execSQL(query);
+
     }
 
     @Override
@@ -79,20 +87,20 @@ public class MyTasksDB extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    void addType(String name, @Nullable String icon) {
+    void addType(String name, @Nullable String icon, @Nullable String color) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
         values.put("name", name);
         //values.put("icon", icon);
-        //values.put("color", color);
+        values.put("color", color);
 
         db.insert("Type", null, values);
 
         db.close();
 
     }
-    int addEvent(String name, int typeId, String color, String dateTime, String note , int reminder, int priority) {
+    int addEvent(String name, int typeId, String color, String dateTime, String note , int reminderDuration, String reminderUnit, int priority) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
@@ -100,9 +108,9 @@ public class MyTasksDB extends SQLiteOpenHelper {
         values.put("typeId", typeId);
         values.put("dateTime", dateTime);
         values.put("note", note);
-        //values.put("reminderPeriodInMin", reminder);
+        values.put("reminderDuration", reminderDuration);
+        values.put("reminderUnit", reminderUnit);
         values.put("priority", priority);
-
         int eventId = (int) db.insert("Event", null, values);
         Log.i("ADD_EVENT", "ADDED EVENT ID IS " + String.valueOf(eventId));
 
@@ -110,20 +118,21 @@ public class MyTasksDB extends SQLiteOpenHelper {
 
         return eventId;
     }
-    void addTask(int eventId, String name, boolean done, int priority) {
+    int addTask(int eventId, String description) {
+        Log.i("ADDING_TASK", "ADDED TASK Desc IS " + description);
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
-        values.put("name", name);
+        values.put("description", description);
         values.put("eventId", eventId);
-        values.put("done", done);
-        values.put("priority", priority);
+        values.put("done", false);
 
         int taskId = (int) db.insert("Task", null, values);
         Log.i("ADD_TASK", "ADDED TASK ID IS " + String.valueOf(taskId));
 
 
         db.close();
+        return taskId;
 
     }
 
@@ -139,8 +148,9 @@ public class MyTasksDB extends SQLiteOpenHelper {
                 int typeId = cursor.getInt(Math.max(cursor.getColumnIndex("typeId"),0));
                 String name = cursor.getString(Math.max(cursor.getColumnIndex("name"),0));
                 String icon = null; //cursor.getString(Math.max(cursor.getColumnIndex("icon"),0));
+                int color = cursor.getInt(Math.max(cursor.getColumnIndex("color"),0));
 
-                Type type = new Type(typeId, name, icon);
+                Type type = new Type(typeId, name, icon, color);
                 typeList.add(type);
             } while (cursor.moveToNext());
         }
@@ -149,6 +159,37 @@ public class MyTasksDB extends SQLiteOpenHelper {
         db.close();
 
         return typeList;
+    }
+
+    public List<EventModel> getAllEvents() {
+        List<EventModel> eventList = new ArrayList<>();
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        String query = "SELECT * FROM " + EVENT;
+        Cursor cursor = db.rawQuery(query, null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                int eventId = cursor.getInt(Math.max(cursor.getColumnIndex("eventId"), 0));
+                int typeId = cursor.getInt(Math.max(cursor.getColumnIndex("typeId"), 0));
+                String name = cursor.getString(Math.max(cursor.getColumnIndex("name"), 0));
+                String color = cursor.getString(Math.max(cursor.getColumnIndex("color"), 0));
+                String dateTime = cursor.getString(Math.max(cursor.getColumnIndex("dateTime"), 0));
+                String note = cursor.getString(Math.max(cursor.getColumnIndex("note"), 0));
+                int reminderDuration = cursor.getInt(Math.max(cursor.getColumnIndex("reminderDuration"), 0));
+                String reminderUnit = cursor.getString(Math.max(cursor.getColumnIndex("reminderUnit"), 0));
+                int priority = cursor.getInt(Math.max(cursor.getColumnIndex("priority"), 0));
+
+
+                EventModel event = new EventModel(eventId, typeId, name, color, dateTime, note, reminderDuration, reminderUnit, priority);
+                eventList.add(event);
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+        db.close();
+
+        return eventList;
     }
 
 

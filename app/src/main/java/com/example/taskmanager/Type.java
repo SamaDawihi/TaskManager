@@ -5,10 +5,13 @@ public class Type {
     private String name;
     private String icon;
 
-    public Type(int typeId, String name, String icon) {
+    private int color;
+
+    public Type(int typeId, String name, String icon, int color) {
         this.typeId = typeId;
         this.name = name;
         this.icon = icon;
+        this.color = color;
     }
 
     public int getTypeId() {
@@ -22,6 +25,11 @@ public class Type {
     public String getIcon() {
         return icon;
     }
+
+    public int getColor() {
+        return color;
+    }
+
     @Override
     public String toString() {
         return name;

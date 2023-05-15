@@ -9,7 +9,7 @@ import android.widget.Button;
 
 public class MainActivity extends AppCompatActivity {
 
-    Button addEvent;
+    Button addEvent, dbState;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -18,8 +18,15 @@ public class MainActivity extends AppCompatActivity {
 
         addEvent = findViewById(R.id.addEvent);
         addEvent.setOnClickListener(l -> startNewEvent());
+
+        dbState = findViewById(R.id.dbState);
+        dbState.setOnClickListener(l -> viewDBState());
     }
 
+    private void viewDBState() {
+        Intent intent = new Intent(this, DBStateActivity.class);
+        startActivity(intent);
+    }
 
 
     public void startNewEvent() {

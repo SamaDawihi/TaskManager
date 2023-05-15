@@ -31,5 +31,14 @@
         android:gravity="center"
         android:text="ADD EVENT PAGE"
         android:textSize="30dp"/>
+    <Button
+        android:id="@+id/dbState"
+        android:layout_marginTop="10dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:text="DB State PAGE"
+        android:textSize="30dp"/>
 
 </LinearLayout>
