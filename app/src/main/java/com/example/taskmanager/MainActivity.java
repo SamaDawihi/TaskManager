@@ -4,12 +4,17 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ListView;
+
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-    Button addEvent, dbState;
+    Button addEvent;
+    ListView listView;
+    MyTasksDB myTasksDB;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -19,14 +24,15 @@ public class MainActivity extends AppCompatActivity {
         addEvent = findViewById(R.id.addEvent);
         addEvent.setOnClickListener(l -> startNewEvent());
 
-        dbState = findViewById(R.id.dbState);
-        dbState.setOnClickListener(l -> viewDBState());
+        listView = findViewById(R.id.listView);
+        myTasksDB = new MyTasksDB(this);
+
+        List<EventModel> list = myTasksDB.getAllEvents();
+        //ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.list_item, list);
+        //listView.setAdapter(adapter);
+
     }
 
-    private void viewDBState() {
-        Intent intent = new Intent(this, DBStateActivity.class);
-        startActivity(intent);
-    }
 
 
     public void startNewEvent() {
@@ -34,9 +40,3 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 }
-//timeline (kadi)
-//View (lina)
-//edit (manal)
-//add -> (sama)
-// to calendar - set notification (hind)
-

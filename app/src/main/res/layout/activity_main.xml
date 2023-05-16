@@ -15,22 +15,15 @@
     tools:context=".MainActivity">
 
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:gravity="center"
-        android:text="HOME PAGE"
-        android:textSize="30dp"/>
     <Button
         android:id="@+id/addEvent"
-        android:layout_marginTop="10dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
+        android:layout_marginTop="10dp"
         android:gravity="center"
-        android:text="ADD EVENT PAGE"
-        android:textSize="30dp"/>
+        android:text="+"
+        android:textSize="30dp" />
     <Button
         android:id="@+id/dbState"
         android:layout_marginTop="10dp"
@@ -40,5 +33,10 @@
         android:gravity="center"
         android:text="DB State PAGE"
         android:textSize="30dp"/>
+
+    <ListView
+        android:id="@+id/listView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 
 </LinearLayout>
