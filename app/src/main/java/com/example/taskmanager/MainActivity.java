@@ -27,9 +27,9 @@ public class MainActivity extends AppCompatActivity {
         listView = findViewById(R.id.listView);
         myTasksDB = new MyTasksDB(this);
 
-        List<EventModel> list = myTasksDB.getAllEvents();
-        //ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.list_item, list);
-        //listView.setAdapter(adapter);
+        List<String> list = myTasksDB.getAllEvents();
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.list_item, list);
+        listView.setAdapter(adapter);
 
     }
 
