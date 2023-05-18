@@ -222,8 +222,15 @@ public class MyTasksDB extends SQLiteOpenHelper {
 
     boolean doesTypeExist(int typeId){
         SQLiteDatabase db = this.getReadableDatabase();
-        String query = "SELECT * FROM Type WHERE typeId = " + typeId;
+
+        String query = "SELECT * FROM " + TYPE ;//+ " WHERE typeId = 1";
         Cursor cursor = db.rawQuery(query, null);
+
+
+        //String query = "SELECT * FROM Type";
+        //String[] args = new String[]{String.valueOf(typeId)};
+        //Cursor cursor = db.rawQuery(query + " WHERE typeId = ?", args);
+
         boolean exists = cursor.moveToFirst();
 
         cursor.close();

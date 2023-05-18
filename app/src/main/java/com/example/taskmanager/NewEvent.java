@@ -166,6 +166,7 @@ public class NewEvent extends AppCompatActivity implements NewTypeDialog.NewType
             public void onNothingSelected(AdapterView<?> parent) {
                 // Handle case when nothing is selected
                 // Your code here
+                fTypeId = -1;
             }
         });
     }
@@ -295,6 +296,7 @@ public class NewEvent extends AppCompatActivity implements NewTypeDialog.NewType
 
     boolean add(){
 
+        //Toast.makeText(this, "typeId = " + fTypeId * 100, Toast.LENGTH_SHORT).show();
         errors = new ArrayList<>();
 
         submitData();
@@ -386,7 +388,7 @@ public class NewEvent extends AppCompatActivity implements NewTypeDialog.NewType
         if(fName == null || fName == "") {
             errors.add("SET NAME");
         }
-        if(fTypeId < 0 || controller.doesTypeExist(fTypeId)) {
+        if(fTypeId < 0 ){//|| controller.doesTypeExist(fTypeId)) {
             errors.add("SELECT TYPE");
         }
         if(fDateTime == null) {
