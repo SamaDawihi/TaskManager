@@ -203,7 +203,7 @@ public class MyTasksDB extends SQLiteOpenHelper {
 
         Collections.sort(eventList, new Comparator<EventModel>() {
             public int compare(EventModel a, EventModel b) {
-                return b.getDateTime().compareTo(a.getDateTime());
+                return a.getDateTime().compareTo(b.getDateTime());
             }
         });
 
