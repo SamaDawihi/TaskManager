@@ -1,6 +1,6 @@
 package com.example.taskmanager;
 
-public class EventModel {
+public class EventModel  {
     private int eventId;
     private int typeId;
     private String name;

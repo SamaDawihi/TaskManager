@@ -3,11 +3,14 @@ package com.example.taskmanager;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -27,9 +30,20 @@ public class MainActivity extends AppCompatActivity {
         listView = findViewById(R.id.listView);
         myTasksDB = new MyTasksDB(this);
 
-        List<EventModel> list = myTasksDB.getAllEvents();
-        //ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.list_item, list);
-        //listView.setAdapter(adapter);
+        List<EventModel> eventList = myTasksDB.getAllEvents();
+        List<String> list = new ArrayList<>();
+
+        Log.i("here", String.valueOf(myTasksDB.getEvents()));
+
+
+        for(int i = 0; i < eventList.size(); i++){
+            list.add( eventList.get(i).getDateTime()+ "\n"+ eventList.get(i).getEventId() +" "+ eventList.get(i).getName());
+            listView.setBackgroundColor(Integer.parseInt(eventList.get(i).getColor()));
+
+        }
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.list_item, list);
+        listView.setAdapter(adapter);
+
 
     }
 

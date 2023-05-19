@@ -11,7 +11,12 @@ import android.util.Log;
 
 import androidx.annotation.Nullable;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 
 public class MyTasksDB extends SQLiteOpenHelper {
@@ -54,9 +59,9 @@ public class MyTasksDB extends SQLiteOpenHelper {
 
         query =
                 "CREATE TABLE " + EVENT + " (" +
-                        "eventId INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL" +
-                        ", typeId INTEGER REFERENCES Type(typeId) NOT NULL DEFAULT 1" +
-                        ", name TEXT NOT NULL" +
+                        "eventId INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL," +
+                        "typeId INTEGER REFERENCES Type(typeId) NOT NULL DEFAULT 1," +
+                        "name TEXT NOT NULL" +
                         ", color INTEGER NOT NULL" +
                         ", dateTime DATETIME NOT NULL" +
                         ", note TEXT NOT NULL" +
@@ -163,8 +168,13 @@ public class MyTasksDB extends SQLiteOpenHelper {
         return typeList;
     }
 
-    public List<EventModel> getAllEvents() {
+    public List<EventModel> getAllEvents()  {
         List<EventModel> eventList = new ArrayList<>();
+        //List<String> List = new ArrayList<>();
+
+        int eventId = 0;
+        String name = "";
+        String dateTime = "";
 
         SQLiteDatabase db = this.getReadableDatabase();
         String query = "SELECT * FROM " + EVENT;
@@ -172,11 +182,12 @@ public class MyTasksDB extends SQLiteOpenHelper {
 
         if (cursor.moveToFirst()) {
             do {
-                int eventId = cursor.getInt(Math.max(cursor.getColumnIndex("eventId"), 0));
+                eventId = cursor.getInt(Math.max(cursor.getColumnIndex("eventId"), 0));
                 int typeId = cursor.getInt(Math.max(cursor.getColumnIndex("typeId"), 0));
-                String name = cursor.getString(Math.max(cursor.getColumnIndex("name"), 0));
+                name = cursor.getString(Math.max(cursor.getColumnIndex("name"), 0));
                 int color = cursor.getInt(Math.max(cursor.getColumnIndex("color"), 0));
-                String dateTime = cursor.getString(Math.max(cursor.getColumnIndex("dateTime"), 0));
+                dateTime = cursor.getString(Math.max(cursor.getColumnIndex("dateTime"), 0));
+
                 String note = cursor.getString(Math.max(cursor.getColumnIndex("note"), 0));
                 int reminderDuration = cursor.getInt(Math.max(cursor.getColumnIndex("reminderDuration"), 0));
                 String reminderUnit = cursor.getString(Math.max(cursor.getColumnIndex("reminderUnit"), 0));
@@ -191,8 +202,30 @@ public class MyTasksDB extends SQLiteOpenHelper {
         cursor.close();
         db.close();
 
+
+        Collections.sort(eventList, new Comparator<EventModel>() {
+            public int compare(EventModel a, EventModel b) {
+                return b.getDateTime().compareTo(a.getDateTime());
+            }
+        });
+
         return eventList;
     }
+
+    public List<String> getEvents(){
+        List<EventModel> eventList = new ArrayList<>();
+        eventList = getAllEvents();
+
+        List<String> list = new ArrayList<>();
+
+        for(int i = 0; i < eventList.size(); i++){
+            list.add(eventList.get(i).getColor());
+        }
+
+        return list;
+    }
+
+
 
 
     public List<Task> getAllTasks() {

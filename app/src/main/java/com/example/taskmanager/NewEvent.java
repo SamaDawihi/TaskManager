@@ -245,6 +245,7 @@ public class NewEvent extends AppCompatActivity implements NewTypeDialog.NewType
         fNewTypeName = name;
         fNewTypeIcon = d.getIcon();
         fNewTypeColor = d.getColor();
+        Log.i("dcolor", d.getColor());
         controller.addType(fNewTypeName, fNewTypeIcon, fNewTypeColor);
         setTypesSpinner();
     }
