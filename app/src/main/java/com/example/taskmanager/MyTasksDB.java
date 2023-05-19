@@ -166,9 +166,9 @@ public class MyTasksDB extends SQLiteOpenHelper {
         return typeList;
     }
 
-    public List<String> getAllEvents()  {
+    public List<EventModel> getAllEvents()  {
         List<EventModel> eventList = new ArrayList<>();
-        List<String> List = new ArrayList<>();
+        //List<String> List = new ArrayList<>();
 
         int eventId = 0;
         String name = "";
@@ -200,15 +200,6 @@ public class MyTasksDB extends SQLiteOpenHelper {
         cursor.close();
         db.close();
 
-//        for(int i = 0; i < eventList.size(); i++){
-//            SimpleDateFormat sdformat = new SimpleDateFormat("yyyy-MM-dd");
-//            try {
-//                Date d = sdformat.parse(eventList.get(i).getDateTime());
-//            } catch (ParseException e) {
-//                throw new RuntimeException(e);
-//            }
-//        }
-        //Collections.sort(eventList, new sortCompare());
 
         Collections.sort(eventList, new Comparator<EventModel>() {
             public int compare(EventModel a, EventModel b) {
@@ -216,20 +207,23 @@ public class MyTasksDB extends SQLiteOpenHelper {
             }
         });
 
-        for(int i = 0; i < eventList.size(); i++){
-
-            List.add( eventList.get(i).getDateTime()+ "\n"+ eventList.get(i).getEventId() +" "+ eventList.get(i).getName());
-        }
-
-
-        return List;
+        return eventList;
     }
 
-//    public int compare(DateI a, DateI b)
-//    {
-//        /* Returns sorted data in ascending order */
-//        return a.date.compareTo(b.date);
-//    }
+    public List<String> getEvents(){
+        List<EventModel> eventList = new ArrayList<>();
+        eventList = getAllEvents();
+
+        List<String> list = new ArrayList<>();
+
+        for(int i = 0; i < eventList.size(); i++){
+            list.add(eventList.get(i).getColor());
+        }
+
+        return list;
+    }
+
+
 
 
     public List<Task> getAllTasks() {
