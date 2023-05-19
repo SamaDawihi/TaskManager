@@ -24,7 +24,7 @@ public class TaskManagerController {
         return dbHelper.getAllTypes();
     }
 
-    public int addEvent(String fName, int fType, String fColor, String fDateTime, String fNote, int fRemainderDuration, String fReminderUnit, int fPriority) {
+    public int addEvent(String fName, int fType, int fColor, String fDateTime, String fNote, int fRemainderDuration, String fReminderUnit, int fPriority) {
         return dbHelper.addEvent(fName, fType, fColor, fDateTime, fNote, fRemainderDuration, fReminderUnit, fPriority);
     }
 

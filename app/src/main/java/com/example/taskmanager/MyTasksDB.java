@@ -54,9 +54,10 @@ public class MyTasksDB extends SQLiteOpenHelper {
 
         query =
                 "CREATE TABLE " + EVENT + " (" +
-                        "eventId INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL," +
-                        "typeId INTEGER REFERENCES Type(typeId) NOT NULL DEFAULT 1," +
-                        "name TEXT NOT NULL" +
+                        "eventId INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL" +
+                        ", typeId INTEGER REFERENCES Type(typeId) NOT NULL DEFAULT 1" +
+                        ", name TEXT NOT NULL" +
+                        ", color INTEGER NOT NULL" +
                         ", dateTime DATETIME NOT NULL" +
                         ", note TEXT NOT NULL" +
                         ", reminderDuration INTEGER NOT NULL" +
@@ -100,11 +101,12 @@ public class MyTasksDB extends SQLiteOpenHelper {
         db.close();
 
     }
-    int addEvent(String name, int typeId, String color, String dateTime, String note , int reminderDuration, String reminderUnit, int priority) {
+    int addEvent(String name, int typeId, int color, String dateTime, String note , int reminderDuration, String reminderUnit, int priority) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
         values.put("name", name);
+        values.put("color", color);
         values.put("typeId", typeId);
         values.put("dateTime", dateTime);
         values.put("note", note);
@@ -173,7 +175,7 @@ public class MyTasksDB extends SQLiteOpenHelper {
                 int eventId = cursor.getInt(Math.max(cursor.getColumnIndex("eventId"), 0));
                 int typeId = cursor.getInt(Math.max(cursor.getColumnIndex("typeId"), 0));
                 String name = cursor.getString(Math.max(cursor.getColumnIndex("name"), 0));
-                String color = cursor.getString(Math.max(cursor.getColumnIndex("color"), 0));
+                int color = cursor.getInt(Math.max(cursor.getColumnIndex("color"), 0));
                 String dateTime = cursor.getString(Math.max(cursor.getColumnIndex("dateTime"), 0));
                 String note = cursor.getString(Math.max(cursor.getColumnIndex("note"), 0));
                 int reminderDuration = cursor.getInt(Math.max(cursor.getColumnIndex("reminderDuration"), 0));

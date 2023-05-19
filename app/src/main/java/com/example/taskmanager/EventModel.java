@@ -4,14 +4,14 @@ public class EventModel {
     private int eventId;
     private int typeId;
     private String name;
-    private String color;
+    private int color;
     private String dateTime;
     private String note;
     private int reminderDuration;
     private String reminderUnit;
     private int priority;
 
-    public EventModel(int eventId, int typeId, String name, String color, String dateTime, String note, int reminderDuration, String reminderUnit, int priority) {
+    public EventModel(int eventId, int typeId, String name, int color, String dateTime, String note, int reminderDuration, String reminderUnit, int priority) {
         this.eventId = eventId;
         this.typeId = typeId;
         this.name = name;
@@ -35,7 +35,7 @@ public class EventModel {
         return name;
     }
 
-    public String getColor() {
+    public int getColor() {
         return color;
     }
 

@@ -55,9 +55,9 @@ public class NewEvent extends AppCompatActivity implements NewTypeDialog.NewType
 
 
     //---------------------------Outputs Variables-----------------------------
-    String fName, fColor, fDateTime, fDate, fTime, fNote,fReminderUnit, fNewTypeName, fNewTypeColor, fNewTypeIcon;
+    String fName, fDateTime, fDate, fTime, fNote,fReminderUnit, fNewTypeName, fNewTypeColor, fNewTypeIcon;
     String fSubTask1, fSubTask2, fSubTask3, fSubTask4;
-    int fTypeId, fPriority, fReminderDuration;
+    int fTypeId, fPriority, fReminderDuration, fColor;
     //---------------------------Outputs Variables-----------------------------
 
     @Override
@@ -80,8 +80,9 @@ public class NewEvent extends AppCompatActivity implements NewTypeDialog.NewType
 
     }
     private void setDefault() {
-        fName = fColor = fDateTime = fDate = fTime = fNote = fReminderUnit = fNewTypeName = fNewTypeColor = fNewTypeIcon = fSubTask1 = fSubTask2 = fSubTask3 = fSubTask4 = null;
+        fName = fDateTime = fDate = fTime = fNote = fReminderUnit = fNewTypeName = fNewTypeColor = fNewTypeIcon = fSubTask1 = fSubTask2 = fSubTask3 = fSubTask4 = null;
         fTypeId = fPriority = fReminderDuration = -1;
+        fColor = Color.BLUE;
     }
     private void findViews() {
         name = findViewById(R.id.name);
@@ -161,6 +162,7 @@ public class NewEvent extends AppCompatActivity implements NewTypeDialog.NewType
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 Type selectedType = (Type) parent.getItemAtPosition(position);
                 fTypeId = selectedType.getTypeId();
+                fColor = selectedType.getColor();
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
@@ -317,6 +319,7 @@ public class NewEvent extends AppCompatActivity implements NewTypeDialog.NewType
                 + "Reminder: " + fReminderDuration + " " + fReminderUnit + (fReminderDuration > 1? "s" : "") + "\n"
                 + "Priority: " + fPriority + "\n";
         result.setText(r);
+        result.setTextColor(fColor);
         Log.i("ADDED_EVENT", r);
 
         int eventId = controller.addEvent(fName, fTypeId, fColor, fDateTime, fNote, fReminderDuration, fReminderUnit, fPriority);
