@@ -56,6 +56,7 @@ public class NewEvent extends AppCompatActivity {
     TaskManagerController controller;
 
     Calendar calendar;
+    NotificationCreater nc;
 
 
 
@@ -82,6 +83,8 @@ public class NewEvent extends AppCompatActivity {
         setUnitsSpinner();
         setPrioritiesSpinner();
         setOnClickListeners();
+
+        //nc=new NotificationCreater(this);
 
     }
     private void setDefault() {
