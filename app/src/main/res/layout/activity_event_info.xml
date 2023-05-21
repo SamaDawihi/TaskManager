@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".event_Info"
-    android:paddingLeft="10pt">
+    android:padding="10pt">
 
     <Button
         android:id="@+id/backToMain"
@@ -23,13 +23,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Details"
+        android:layout_gravity="center"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
         tools:layout_editor_absoluteX="171dp"
         tools:layout_editor_absoluteY="50dp"
         tools:ignore="MissingConstraints" />
 
     <ScrollView
-        android:layout_width="365dp"
+        android:layout_width="match_parent"
         android:layout_height="254dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -42,7 +43,7 @@
             android:id="@+id/notesHeading"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingLeft="75pt"
+            android:layout_gravity="center_horizontal"
             android:text="notes"
             android:textAppearance="@style/TextAppearance.AppCompat.Large"
             tools:layout_editor_absoluteX="171dp"
@@ -51,7 +52,7 @@
 
     <androidx.cardview.widget.CardView
         android:id="@+id/nameCard"
-        android:layout_width="409dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -62,8 +63,9 @@
 
         <TextView
             android:id="@+id/EVname"
-            android:layout_width="228dp"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
+            android:layout_gravity="center"
             android:text="name"
             android:textAppearance="@style/TextAppearance.AppCompat.Large"
             tools:layout_editor_absoluteX="171dp"
@@ -72,19 +74,21 @@
 
     <androidx.cardview.widget.CardView
         android:id="@+id/typeCard"
-        android:layout_width="409dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.348">
+        app:layout_constraintVertical_bias="0.348"
+        >
 
         <TextView
             android:id="@+id/EVtype"
-            android:layout_width="228dp"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
+            android:layout_gravity="center"
             android:text="type"
             android:textAppearance="@style/TextAppearance.AppCompat.Large"
             tools:layout_editor_absoluteX="171dp"
@@ -104,8 +108,9 @@
 
         <TextView
             android:id="@+id/EVdate"
-            android:layout_width="228dp"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
+            android:layout_gravity="center"
             android:text="date/time"
             android:textAppearance="@style/TextAppearance.AppCompat.Large"
             tools:layout_editor_absoluteX="171dp"
@@ -125,11 +130,12 @@
 
         <TextView
             android:id="@+id/EVpriority"
-            android:layout_width="228dp"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:text="priority"
             android:textAppearance="@style/TextAppearance.AppCompat.Large"
             tools:layout_editor_absoluteX="171dp"
-            tools:layout_editor_absoluteY="50dp" />
+            tools:layout_editor_absoluteY="50dp"
+            android:layout_gravity="center"/>
     </androidx.cardview.widget.CardView>
 </androidx.constraintlayout.widget.ConstraintLayout>
