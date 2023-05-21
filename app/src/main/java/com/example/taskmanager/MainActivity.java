@@ -36,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
 
         for(int i = 0; i < eventList.size(); i++){
             list.add( eventList.get(i).getDateTime()+ "\n"+ eventList.get(i).getEventId() +" "+ eventList.get(i).getName());
-            listView.setBackgroundColor(Integer.parseInt(eventList.get(i).getColor()));
+            listView.setBackgroundColor(eventList.get(i).getColor());
 
         }
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.list_item, list);
