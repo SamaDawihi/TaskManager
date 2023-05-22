@@ -3,9 +3,9 @@
     android:layout_height="wrap_content"
 
     android:orientation="vertical"
-    android:layout_gravity="center"
+    android:layout_gravity="center_horizontal"
     android:gravity="center"
-    android:padding="16dp">
+    android:paddingTop="50dp">
 
     <TextView
         android:layout_height="wrap_content"
@@ -15,43 +15,18 @@
         android:text="ADD TYPE"
         android:textSize="50dp"
         />
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:orientation="horizontal">
-        <TextView
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            android:layout_margin="10dp"
-            android:gravity="center"
-            android:text="name"
-            android:textSize="25dp"
-            />
+
         <EditText
             android:id="@+id/typeName"
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
             android:layout_margin="10dp"
             android:gravity="center"
-            android:text="name"
+            android:hint="name"
             android:textSize="25dp"
             />
-    </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:orientation="horizontal">
-        <TextView
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            android:layout_margin="10dp"
-            android:gravity="center"
-            android:text="COLOR"
-            android:textSize="25dp"
-            />
+
         <Button
             android:id="@+id/typeColor"
             android:layout_height="wrap_content"
@@ -61,30 +36,5 @@
             android:text="COLOR"
             android:textSize="25dp"
             />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:orientation="horizontal">
-        <TextView
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            android:layout_margin="10dp"
-            android:gravity="center"
-            android:text="ICON"
-            android:textSize="25dp"
-            />
-        <EditText
-            android:id="@+id/typeIcon"
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            android:layout_margin="10dp"
-            android:gravity="center"
-            android:text="ICON"
-            android:textSize="25dp"
-            />
-    </LinearLayout>
 
 </LinearLayout>

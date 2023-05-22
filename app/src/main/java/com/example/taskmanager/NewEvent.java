@@ -8,6 +8,7 @@ import android.app.DatePickerDialog;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.TimePickerDialog;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -201,7 +202,11 @@ public class NewEvent extends AppCompatActivity implements NewTypeDialog.NewType
         addNewType.setOnClickListener( l -> showAddTypeDialog());
         date.setOnClickListener( l -> showDateSelector());
         time.setOnClickListener( l -> showTimeSelector());
-        add.setOnClickListener(l -> add());
+        add.setOnClickListener(l -> {
+            if(add())
+                startActivity(new Intent(this, MainActivity.class));
+
+        });
 
         addTask1.setOnClickListener( l -> {
             if(!visibleRows.contains("Row2")) {
@@ -341,6 +346,7 @@ public class NewEvent extends AppCompatActivity implements NewTypeDialog.NewType
 
         if(fSubTask4 != null && fSubTask4 != "")
             controller.addTask(eventId, fSubTask4);
+
 
         return true;
     }
