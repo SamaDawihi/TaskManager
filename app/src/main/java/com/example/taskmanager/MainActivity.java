@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
@@ -49,6 +50,12 @@ public class MainActivity extends AppCompatActivity {
 
     public void startNewEvent() {
         Intent intent = new Intent(this, NewEvent.class);
+        startActivity(intent);
+    }
+
+    public void viewDetails(View v, int eventID){
+        Intent intent = new Intent(this,event_Info.class);
+        intent.putExtra("eventId",eventID);
         startActivity(intent);
     }
 }
