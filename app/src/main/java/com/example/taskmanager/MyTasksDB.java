@@ -212,18 +212,18 @@ public class MyTasksDB extends SQLiteOpenHelper {
         return eventList;
     }
 
-    public List<String> getEvents(){
-        List<EventModel> eventList = new ArrayList<>();
-        eventList = getAllEvents();
-
-        List<String> list = new ArrayList<>();
-
-        for(int i = 0; i < eventList.size(); i++){
-            list.add(eventList.get(i).getColor());
-        }
-
-        return list;
-    }
+//    public List<String> getEvents(){
+//        List<EventModel> eventList = new ArrayList<>();
+//        eventList = getAllEvents();
+//
+//        List<String> list = new ArrayList<>();
+//
+//        for(int i = 0; i < eventList.size(); i++){
+//            list.add(eventList.get(i).getColor());
+//        }
+//
+//        return list;
+//    }
 
 
 

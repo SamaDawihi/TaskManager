@@ -3,6 +3,7 @@ package com.example.taskmanager;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
 
+import android.widget.ArrayAdapter;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Notification;
@@ -323,6 +324,7 @@ public class NewEvent extends AppCompatActivity implements NewTypeDialog.NewType
         result.setTextColor(fColor);
         Log.i("ADDED_EVENT", r);
 
+
         int eventId = controller.addEvent(fName, fTypeId, fColor, fDateTime, fNote, fReminderDuration, fReminderUnit, fPriority);
         if(eventId == -1) {
             errors.add("Failed to add new event");
@@ -341,6 +343,8 @@ public class NewEvent extends AppCompatActivity implements NewTypeDialog.NewType
 
         if(fSubTask4 != null && fSubTask4 != "")
             controller.addTask(eventId, fSubTask4);
+
+      //  MainActivity.adapter.notifyDataSetChanged();
 
         return true;
     }
@@ -387,6 +391,8 @@ public class NewEvent extends AppCompatActivity implements NewTypeDialog.NewType
             fSubTask3 = sub3.getText().toString();
         if(visibleRows.contains("Row4"))
             fSubTask4 = sub4.getText().toString();
+
+
     }
     private boolean checkData() {
         if(fName == null || fName == "") {
