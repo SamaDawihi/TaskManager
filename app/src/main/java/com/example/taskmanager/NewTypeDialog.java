@@ -52,7 +52,6 @@ public class NewTypeDialog extends DialogFragment {
 
             //--------Type PopUP---------
             typeName = dialogView.findViewById(R.id.typeName);
-            typeIcon = dialogView.findViewById(R.id.typeIcon);
             typeColor = dialogView.findViewById(R.id.typeColor);
             //--------Type PopUP---------
 
