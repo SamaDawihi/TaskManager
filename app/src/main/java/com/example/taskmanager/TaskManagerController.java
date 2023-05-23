@@ -54,4 +54,15 @@ public class TaskManagerController {
     public void changeTaskStatus(int taskId, boolean done) {
         dbHelper.changeTaskStatus(taskId, done);
     }
+    public void removeType(int typeId) {
+        dbHelper.removeType(typeId);
+    }
+
+    public void removeEvent(int eventId) {
+        dbHelper.removeEvent(eventId);
+    }
+
+    public void removeTask(int taskId) {
+        dbHelper.removeTask(taskId);
+    }
 }

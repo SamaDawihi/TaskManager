@@ -347,6 +347,26 @@ public class MyTasksDB extends SQLiteOpenHelper {
 
         db.close();
     }
+    void removeType(int typeId) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        String[] whereArgs = {String.valueOf(typeId)};
+        db.delete(TYPE, "typeId = ?", whereArgs);
+        db.close();
+    }
+
+    void removeEvent(int eventId) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        String[] whereArgs = {String.valueOf(eventId)};
+        db.delete(EVENT, "eventId = ?", whereArgs);
+        db.close();
+    }
+
+    void removeTask(int taskId) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        String[] whereArgs = {String.valueOf(taskId)};
+        db.delete(TASK, "taskId = ?", whereArgs);
+        db.close();
+    }
 
 
 }
