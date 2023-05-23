@@ -253,22 +253,100 @@ public class MyTasksDB extends SQLiteOpenHelper {
         return taskList;
     }
 
-    boolean doesTypeExist(int typeId){
+    public EventModel getEventById(int eventId) {
         SQLiteDatabase db = this.getReadableDatabase();
 
-        String query = "SELECT * FROM " + TYPE ;//+ " WHERE typeId = 1";
-        Cursor cursor = db.rawQuery(query, null);
+        String query = "SELECT * FROM " + EVENT + " WHERE eventId = ?";
+        String[] args = new String[]{String.valueOf(eventId)};
+        Cursor cursor = db.rawQuery(query, args);
 
+        EventModel event = null;
 
-        //String query = "SELECT * FROM Type";
-        //String[] args = new String[]{String.valueOf(typeId)};
-        //Cursor cursor = db.rawQuery(query + " WHERE typeId = ?", args);
+        if (cursor.moveToFirst()) {
+            int typeId = cursor.getInt(Math.max(cursor.getColumnIndex("typeId"), 0));
+            String name = cursor.getString(Math.max(cursor.getColumnIndex("name"), 0));
+            int color = cursor.getInt(Math.max(cursor.getColumnIndex("color"), 0));
+            String dateTime = cursor.getString(Math.max(cursor.getColumnIndex("dateTime"), 0));
+            String note = cursor.getString(Math.max(cursor.getColumnIndex("note"), 0));
+            int reminderDuration = cursor.getInt(Math.max(cursor.getColumnIndex("reminderDuration"), 0));
+            String reminderUnit = cursor.getString(Math.max(cursor.getColumnIndex("reminderUnit"), 0));
+            int priority = cursor.getInt(Math.max(cursor.getColumnIndex("priority"), 0));
 
-        boolean exists = cursor.moveToFirst();
+            event = new EventModel(eventId, typeId, name, color, dateTime, note, reminderDuration, reminderUnit, priority);
+        }
 
         cursor.close();
         db.close();
 
-        return exists;
+        return event;
     }
+    public List<Task> getTasksByEventId(int eventId) {
+        List<Task> taskList = new ArrayList<>();
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        String query = "SELECT * FROM " + TASK + " WHERE eventId = ?";
+        String[] args = new String[]{String.valueOf(eventId)};
+        Cursor cursor = db.rawQuery(query, args);
+
+        if (cursor.moveToFirst()) {
+            do {
+                int taskId = cursor.getInt(Math.max(cursor.getColumnIndex("taskId"), 0));
+                eventId = cursor.getInt(Math.max(cursor.getColumnIndex("eventId"), 0));
+                String description = cursor.getString(Math.max(cursor.getColumnIndex("description"), 0));
+                int doneInt = cursor.getInt(Math.max(cursor.getColumnIndex("done"), 0));
+                boolean done = (doneInt == 1); // Convert 0/1 to boolean
+                int priority = cursor.getInt(Math.max(cursor.getColumnIndex("priority"), 0));
+
+                Task task = new Task(taskId, eventId, description, done, priority);
+                taskList.add(task);
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+        db.close();
+
+        return taskList;
+    }
+    public void updateEventById(int eventId, String name, int typeId, int color, String dateTime, String note, int reminderDuration, String reminderUnit, int priority) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put("name", name);
+        values.put("typeId", typeId);
+        values.put("color", color);
+        values.put("dateTime", dateTime);
+        values.put("note", note);
+        values.put("reminderDuration", reminderDuration);
+        values.put("reminderUnit", reminderUnit);
+        values.put("priority", priority);
+
+        String[] args = new String[]{String.valueOf(eventId)};
+        db.update(EVENT, values, "eventId = ?", args);
+
+        db.close();
+    }
+    public void updateTaskById(int taskId, String description) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put("description", description);
+
+        String[] args = new String[]{String.valueOf(taskId)};
+        db.update(TASK, values, "taskId = ?", args);
+
+        db.close();
+    }
+    public void changeTaskStatus(int taskId, boolean done) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put("done", done ? 1 : 0);
+
+        String[] args = new String[]{String.valueOf(taskId)};
+        db.update(TASK, values, "taskId = ?", args);
+
+        db.close();
+    }
+
+
 }
