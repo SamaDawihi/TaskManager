@@ -15,8 +15,8 @@ public class TaskManagerController {
         dbHelper = new MyTasksDB(c);
     }
 
-    void addType(String name, @Nullable String icon, @Nullable String color) {
-        dbHelper.addType(name, icon, color);
+    void addType(String name, int color) {
+        dbHelper.addType(name, color);
 
     }
 

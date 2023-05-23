@@ -34,16 +34,18 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-public class NewEvent extends AppCompatActivity implements NewTypeDialog.NewTypeDialogListener{
+import yuku.ambilwarna.AmbilWarnaDialog;
+
+public class NewEvent extends AppCompatActivity {
 
 
     //---------------------------Views-----------------------------
     TableLayout table;
-    EditText name, note, reminderDuration, sub1, sub2, sub3, sub4;
-    Button addNewType, date, time, add, addTask1, removeTask2, removeTask3, removeTask4;
+    EditText name, note, reminderDuration, sub1, sub2, sub3, sub4, newTypeName;
+    Button addNewType, date, time, add, addTask1, removeTask2, removeTask3, removeTask4, newTypeColor, submitNewType;
     Spinner type, priority, reminderUnit;
     TextView dateTV, timeTV, result;
-    TableRow row1,row2, row3,row4;
+    TableRow row1,row2, row3,row4, newTypeRow;
     //---------------------------Views-----------------------------
 
     List<String> visibleRows;
@@ -56,9 +58,9 @@ public class NewEvent extends AppCompatActivity implements NewTypeDialog.NewType
 
 
     //---------------------------Outputs Variables-----------------------------
-    String fName, fDateTime, fDate, fTime, fNote,fReminderUnit, fNewTypeName, fNewTypeColor, fNewTypeIcon;
+    String fName, fDateTime, fDate, fTime, fNote,fReminderUnit, fNewTypeName, fNewTypeIcon;
     String fSubTask1, fSubTask2, fSubTask3, fSubTask4;
-    int fTypeId, fPriority, fReminderDuration, fColor;
+    int fTypeId, fPriority, fReminderDuration, fColor, fNewTypeColor;
     //---------------------------Outputs Variables-----------------------------
 
     @Override
@@ -73,17 +75,17 @@ public class NewEvent extends AppCompatActivity implements NewTypeDialog.NewType
 
         setDefault();
         findViews();
-        hideSubTasksRows();
-        setUnitsSpinner();
+        hideSubTasksAndNewTypeRows();
         setTypesSpinner();
+        setUnitsSpinner();
         setPrioritiesSpinner();
         setOnClickListeners();
 
     }
     private void setDefault() {
-        fName = fDateTime = fDate = fTime = fNote = fReminderUnit = fNewTypeName = fNewTypeColor = fNewTypeIcon = fSubTask1 = fSubTask2 = fSubTask3 = fSubTask4 = null;
+        fName = fDateTime = fDate = fTime = fNote = fReminderUnit = fNewTypeName  = fNewTypeIcon = fSubTask1 = fSubTask2 = fSubTask3 = fSubTask4 = null;
         fTypeId = fPriority = fReminderDuration = -1;
-        fColor = Color.BLUE;
+        fNewTypeColor = fColor = Color.BLUE;
     }
     private void findViews() {
         name = findViewById(R.id.name);
@@ -92,12 +94,15 @@ public class NewEvent extends AppCompatActivity implements NewTypeDialog.NewType
         reminderUnit = findViewById(R.id.reminderUnit);
         priority  = findViewById(R.id.priorityList);
         type  = findViewById(R.id.typeList);
+        newTypeName = findViewById(R.id.newTypeName);
         date  = findViewById(R.id.date);
         dateTV = findViewById(R.id.dateTV);
         timeTV = findViewById(R.id.timeTV);
         time  = findViewById(R.id.time);
 
         addNewType = findViewById(R.id.addType);
+        newTypeColor = findViewById(R.id.newTypeColor);
+        submitNewType = findViewById(R.id.submitNewType);
 
         table  = findViewById(R.id.table);
 
@@ -105,6 +110,7 @@ public class NewEvent extends AppCompatActivity implements NewTypeDialog.NewType
         row2  = findViewById(R.id.r2);
         row3  = findViewById(R.id.r3);
         row4  = findViewById(R.id.r4);
+        newTypeRow = findViewById(R.id.newTypeRow);
 
         sub1 = findViewById(R.id.subTask1);
         sub2 = findViewById(R.id.subTask2);
@@ -120,31 +126,14 @@ public class NewEvent extends AppCompatActivity implements NewTypeDialog.NewType
         result = findViewById(R.id.result);
     }
 
-    private void hideSubTasksRows() {
+    private void hideSubTasksAndNewTypeRows() {
         row2.setVisibility(View.GONE);
         row3.setVisibility(View.GONE);
         row4.setVisibility(View.GONE);
+        newTypeRow.setVisibility(View.GONE);
         visibleRows = new ArrayList<>();
     }
-    private void setUnitsSpinner() {
-        String[] items = new String[]{"Minutes", "Hours", "Day", "Weak", "month" };
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, items);
-
-        reminderUnit.setAdapter(adapter);
-
-        reminderUnit.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                fReminderUnit = (String) parent.getItemAtPosition(position);
-            }
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-                // Handle case when nothing is selected
-                // Your code here
-            }
-        });
-    }
     void setTypesSpinner(){
         List<Type> types = controller.getAllTypes();
         Type[] items = new Type[types.size()];
@@ -173,6 +162,26 @@ public class NewEvent extends AppCompatActivity implements NewTypeDialog.NewType
             }
         });
     }
+    private void setUnitsSpinner() {
+        String[] items = new String[]{"Minutes", "Hours", "Day", "Weak", "month" };
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, items);
+
+        reminderUnit.setAdapter(adapter);
+
+        reminderUnit.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                fReminderUnit = (String) parent.getItemAtPosition(position);
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                // Handle case when nothing is selected
+                // Your code here
+            }
+        });
+    }
+
     void setPrioritiesSpinner(){
         Priority p1 = new Priority(NotificationManager.IMPORTANCE_HIGH, "Urgent");
         Priority p2 = new Priority(NotificationManager.IMPORTANCE_DEFAULT, "High");
@@ -198,8 +207,23 @@ public class NewEvent extends AppCompatActivity implements NewTypeDialog.NewType
             }
         });
     }
+
     private void setOnClickListeners() {
-        addNewType.setOnClickListener( l -> showAddTypeDialog());
+        addNewType.setOnClickListener( l -> {
+            if(newTypeRow.getVisibility() == View.GONE) {
+                newTypeRow.setVisibility(View.VISIBLE);
+                addNewType.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, R.drawable.baseline_remove_24);
+
+            } else{
+                newTypeRow.setVisibility(View.GONE);
+                newTypeName.setText("");
+                fNewTypeColor = Color.BLUE;
+                addNewType.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, R.drawable.baseline_add_24);
+
+            }
+        });
+        newTypeColor.setOnClickListener(l -> showColorPicker());
+        submitNewType.setOnClickListener(l -> submitNewType());
         date.setOnClickListener( l -> showDateSelector());
         time.setOnClickListener( l -> showTimeSelector());
         add.setOnClickListener(l -> {
@@ -238,26 +262,34 @@ public class NewEvent extends AppCompatActivity implements NewTypeDialog.NewType
         });
     }
 
-    private void showAddTypeDialog() {
-        NewTypeDialog dialogFragment = new NewTypeDialog();
-        dialogFragment.setListener(this);
-        dialogFragment.show(getSupportFragmentManager(), "MyDialogFragment");
-    }
-    public void onDialogPositiveClick(DialogFragment dialog, String name) {
-        NewTypeDialog d = (NewTypeDialog) dialog;
-        if(name == null)
-            return;
-        fNewTypeName = name;
-        fNewTypeIcon = d.getIcon();
-        fNewTypeColor = d.getColor();
-        Log.i("dcolor", d.getColor());
-        controller.addType(fNewTypeName, fNewTypeIcon, fNewTypeColor);
-        setTypesSpinner();
+    private void showColorPicker() {
+        AmbilWarnaDialog aWDialog = new AmbilWarnaDialog(this, fNewTypeColor, new AmbilWarnaDialog.OnAmbilWarnaListener() {
+            @Override
+            public void onOk(AmbilWarnaDialog dialog, int color) {
+                // color is the color selected by the user.
+                fNewTypeColor = color;
+                newTypeColor.setBackgroundColor(color);
+            }
+
+            @Override
+            public void onCancel(AmbilWarnaDialog dialog) {
+                // cancel was selected by the user
+            }
+        });
+        aWDialog.show();
     }
 
-    public void onDialogNegativeClick(DialogFragment dialog) {
-        // Handle negative button click in the activity
-        Toast.makeText(this, "Add new type cancels", Toast.LENGTH_SHORT).show();
+    private void submitNewType() {
+        fNewTypeName = newTypeName.getText().toString();
+        if(fNewTypeName == "" || fNewTypeName == null){
+            Toast.makeText(this, "Faild To add new Type, Make Sure To Write a name", Toast.LENGTH_SHORT).show();
+            fNewTypeName = null;
+        }else {
+            Toast.makeText(this, "New Type " + fNewTypeName + " Added Successfully", Toast.LENGTH_SHORT).show();
+            newTypeRow.setVisibility(View.GONE);
+            controller.addType(fNewTypeName, fNewTypeColor);
+            setTypesSpinner();
+        }
     }
 
     void showTimeSelector(){

@@ -43,7 +43,6 @@ public class MyTasksDB extends SQLiteOpenHelper {
                 "CREATE TABLE " + TYPE + " (" +
                         "typeId INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL" +
                         ", name TEXT NOT NULL" +
-                        //", icon TEXT NOT NULL" +
                         ", color INTEGER NOT NULL" +
                         ")";
         db.execSQL(query);
@@ -93,12 +92,11 @@ public class MyTasksDB extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    void addType(String name, @Nullable String icon, @Nullable String color) {
+    void addType(String name, int color) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
         values.put("name", name);
-        //values.put("icon", icon);
         values.put("color", color);
 
         db.insert("Type", null, values);
