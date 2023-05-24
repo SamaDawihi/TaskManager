@@ -14,12 +14,16 @@ public class event_Info extends AppCompatActivity {
     MyTasksDB myTasksDB;
     protected EventModel desiredEvent ;
 
-    private TextView name, type, dateAndTime, priority;
-    private CheckBox[] tasks;
+    public TextView name, type, dateAndTime, priority;
+    public CheckBox[] tasks;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event_info);
+        name = findViewById(R.id.tvname);
+        type = findViewById(R.id.tvtype);
+        dateAndTime = findViewById(R.id.tvdatetime);
+        priority = findViewById(R.id.tvpriority);
         Intent intent = getIntent();
         if (intent != null)
             eventID = intent.getIntExtra("eventId",-1);
@@ -31,6 +35,9 @@ public class event_Info extends AppCompatActivity {
             }
         if(eventID != -1){
             name.setText(name.getText()+desiredEvent.getName());
+            //type.setText(type.getText()+desiredEvent.getTypeId());
+            dateAndTime.setText(dateAndTime.getText()+desiredEvent.getDateTime());
+            //priority.setText(priority.getText()+desiredEvent.getPriority());
         }
     }
 
