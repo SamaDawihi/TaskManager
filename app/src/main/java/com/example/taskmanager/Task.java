@@ -3,16 +3,14 @@ package com.example.taskmanager;
 public class Task {
     private int taskId;
     private int eventId;
-    private String name;
+    private String description;
     private boolean done;
-    private int priority;
 
-    public Task(int taskId, int eventId, String name, boolean done, int priority) {
+    public Task(int taskId, int eventId, String description, boolean done) {
         this.taskId = taskId;
         this.eventId = eventId;
-        this.name = name;
+        this.description = description;
         this.done = done;
-        this.priority = priority;
     }
 
 
@@ -24,15 +22,12 @@ public class Task {
         return eventId;
     }
 
-    public String getName() {
-        return name;
+    public String getDescription() {
+        return description;
     }
 
     public boolean isDone() {
         return done;
     }
 
-    public int getPriority() {
-        return priority;
-    }
 }

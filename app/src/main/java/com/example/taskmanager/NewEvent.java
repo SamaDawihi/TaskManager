@@ -123,7 +123,7 @@ public class NewEvent extends AppCompatActivity {
         removeTask4 = findViewById(R.id.removeSub4);
 
         add  = findViewById(R.id.add);
-        result = findViewById(R.id.result);
+        //result = findViewById(R.id.result);
     }
 
     private void hideSubTasksAndNewTypeRows() {
@@ -356,8 +356,8 @@ public class NewEvent extends AppCompatActivity {
                 + "Note: " + fNote + "\n"
                 + "Reminder: " + fReminderDuration + " " + fReminderUnit + (fReminderDuration > 1? "s" : "") + "\n"
                 + "Priority: " + fPriority + "\n";
-        result.setText(r);
-        result.setTextColor(fColor);
+        //result.setText(r);
+        //result.setTextColor(fColor);
         Log.i("ADDED_EVENT", r);
 
         int eventId = controller.addEvent(fName, fTypeId, fColor, fDateTime, fNote, fReminderDuration, fReminderUnit, fPriority, this);

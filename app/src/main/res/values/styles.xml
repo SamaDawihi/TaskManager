@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Style for the EditText -->
+    <style name="EditTextStyleSpan3">
+        <item name="android:layout_width">180dp</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_span">3</item>
+        <item name="android:fontFamily">@font/acme</item>
+        <item name="android:textSize">15sp</item>
+    </style>
+    <style name="EditTextStyleSpan2">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_span">2</item>
+        <item name="android:fontFamily">@font/acme</item>
+        <item name="android:textSize">15sp</item>
+    </style>
+    <style name="EditTextStyle">
+        <item name="android:layout_width">180dp</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:fontFamily">@font/acme</item>
+        <item name="android:textSize">15sp</item>
+    </style>
+    <style name="NormalEditTextStyle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:fontFamily">@font/acme</item>
+        <item name="android:textSize">15sp</item>
+    </style>
+
+
+    <!-- Style for the Spinner -->
+    <style name="NormalSpinnerStyle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:background">@android:drawable/btn_dropdown</item>
+        <item name="android:contentDescription">Select The Event Type</item>
+        <item name="android:hint">typeId</item>
+        <item name="android:backgroundTint">@color/white</item>
+        <item name="android:spinnerMode">dropdown</item>
+        <item name="android:textSize">15sp</item>
+    </style>
+    <style name="SpinnerStyleSpan2">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_span">2</item>
+        <item name="android:background">@android:drawable/btn_dropdown</item>
+        <item name="android:contentDescription">Select The Event Type</item>
+        <item name="android:hint">typeId</item>
+        <item name="android:backgroundTint">@color/white</item>
+        <item name="android:spinnerMode">dropdown</item>
+        <item name="android:textSize">15sp</item>
+    </style>
+    <style name="SpinnerStyleSpan3">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_span">3</item>
+        <item name="android:background">@android:drawable/btn_dropdown</item>
+        <item name="android:contentDescription">Select The Event Type</item>
+        <item name="android:hint">typeId</item>
+        <item name="android:backgroundTint">@color/white</item>
+        <item name="android:spinnerMode">dropdown</item>
+        <item name="android:textSize">15sp</item>
+    </style>
+
+    <!-- Style for the Button -->
+    <style name="IconButtonStyle">
+        <item name="android:layout_width">40dp</item>
+        <item name="android:layout_height">40dp</item>
+        <item name="android:layout_margin">5dp</item>
+
+        <item name="android:background">@drawable/circular_button_background</item>
+        <item name="android:textSize">15sp</item>
+    </style>
+
+    <style name="ButtonStyleSpan3">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_margin">5dp</item>
+        <item name="android:layout_span">3</item>
+        <item name="android:background">@drawable/circular_button_background</item>
+        <item name="android:textSize">15sp</item>
+    </style>
+    <style name="ButtonStyle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_margin">5dp</item>
+        <item name="android:background">@drawable/circular_button_background</item>
+        <item name="android:textSize">15sp</item>
+    </style>
+
+    <!-- Style for the TextView -->
+    <style name="TextViewStyle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_margin">15dp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textSize">15sp</item>
+    </style>
+    <style name="TextViewStyleSpan2">
+        <item name="android:layout_width">180sp</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_margin">15dp</item>
+        <item name="android:layout_span">2</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textSize">15sp</item>
+    </style>
+
+    <!-- Style for the TableLayout -->
+    <style name="NewEventTableLayoutStyle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:fontFamily">@font/acme</item>
+        <item name="android:gravity">center_horizontal</item>
+    </style>
+
+    <!-- Style for the LinearLayout -->
+    <style name="NewEventLinearLayoutStyle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:orientation">vertical</item>
+        <item name="android:gravity">center</item>
+        <item name="android:padding">20dp</item>
+        <item name="android:layout_margin">0dp</item>
+        <item name="android:background">#E5E8E8</item>
+        <item name="android:fontFamily">@font/aclonica</item>
+    </style>
+</resources>
