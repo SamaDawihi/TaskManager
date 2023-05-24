@@ -1,161 +1,117 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".event_Info"
-    android:padding="10pt">
+<TableLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_height="fill_parent"
+    android:layout_width="fill_parent">
 
-    <androidx.cardview.widget.CardView
-        android:id="@+id/noteCard"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.347"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.513">
+    <TableRow android:gravity="center"
+        android:paddingBottom="8pt">
+        <TextView
+            android:text="Details"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            />
+    </TableRow>
+
+    <TableRow android:paddingBottom="8pt">
 
         <TextView
-            android:id="@+id/EVnote"
+            android:id="@+id/tvname"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:text="note: "
-            android:textAppearance="@style/TextAppearance.AppCompat.Large"
-            tools:layout_editor_absoluteX="171dp"
-            tools:layout_editor_absoluteY="50dp" />
-    </androidx.cardview.widget.CardView>
+            android:layout_height="wrap_content"
+            android:paddingLeft="20pt"
+            android:text="name: "
+            android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+    </TableRow>
 
+    <TableRow android:paddingBottom="8pt">
     <TextView
-        android:id="@+id/heading"
+        android:id="@+id/tvtype"
+        android:text="type: "
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Details"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.051"
-        tools:ignore="MissingConstraints" />
+        android:paddingLeft="20pt"
+        />
+    </TableRow>
 
-    <ScrollView
-        android:id="@+id/scrollView2"
-        android:layout_width="match_parent"
-        android:layout_height="254dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.942">
+    <TableRow android:paddingBottom="8pt">
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/tasksheading"
-            android:textAppearance="@style/TextAppearance.AppCompat.Large"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.498"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.051"
-            tools:ignore="MissingConstraints"/>
-
-        <CheckBox
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="task1"/>
-
-
-    </ScrollView>
-
-    <androidx.cardview.widget.CardView
-        android:id="@+id/nameCard"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.205">
-
-        <TextView
-            android:id="@+id/EVname"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:text="name: "
-            android:textAppearance="@style/TextAppearance.AppCompat.Large"
-            tools:layout_editor_absoluteX="171dp"
-            tools:layout_editor_absoluteY="50dp" />
-    </androidx.cardview.widget.CardView>
-
-    <androidx.cardview.widget.CardView
-        android:id="@+id/typeCard"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.279">
-
-        <TextView
-            android:id="@+id/EVtype"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:text="type: "
-            android:textAppearance="@style/TextAppearance.AppCompat.Large"
-            tools:layout_editor_absoluteX="171dp"
-            tools:layout_editor_absoluteY="50dp" />
-    </androidx.cardview.widget.CardView>
-
-    <androidx.cardview.widget.CardView
-        android:id="@+id/dateAndtimeCard"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.356">
-
-        <TextView
-            android:id="@+id/EVdate"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
+            android:id="@+id/tvdatetime"
             android:text="date/time: "
-            android:textAppearance="@style/TextAppearance.AppCompat.Large"
-            tools:layout_editor_absoluteX="171dp"
-            tools:layout_editor_absoluteY="50dp" />
-    </androidx.cardview.widget.CardView>
-
-    <androidx.cardview.widget.CardView
-        android:id="@+id/priorityCard"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.652"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.435">
-
-        <TextView
-            android:id="@+id/EVpriority"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:text="priority: "
+            android:layout_height="wrap_content"
             android:textAppearance="@style/TextAppearance.AppCompat.Large"
-            tools:layout_editor_absoluteX="171dp"
-            tools:layout_editor_absoluteY="50dp" />
-    </androidx.cardview.widget.CardView>
-</androidx.constraintlayout.widget.ConstraintLayout>
+            android:paddingLeft="20pt"
+            />
+    </TableRow>
+
+    <TableRow android:paddingBottom="8pt">
+        <TextView
+            android:id="@+id/tvpriority"
+            android:text="priority: "
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            android:paddingLeft="20pt"
+            />
+    </TableRow>
+
+    <TableRow android:paddingBottom="8pt">
+        <TextView
+            android:id="@+id/tvnote"
+            android:text="note: "
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            android:paddingLeft="20pt"
+            />
+    </TableRow>
+
+    <TableRow android:paddingBottom="8pt">
+        <TextView
+            android:text="tasks: "
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            android:paddingLeft="20pt"
+            />
+    </TableRow>
+
+    <TableRow android:paddingBottom="4pt"
+        android:layout_height="50pt">
+
+    </TableRow>
+
+    <TableRow android:paddingBottom="4pt"
+        android:layout_height="50pt">
+
+    </TableRow>
+    <TableRow android:paddingBottom="4pt"
+        android:layout_height="50pt">
+
+    </TableRow>
+    <TableRow android:paddingBottom="4pt"
+        android:layout_height="50pt">
+
+    </TableRow>
+
+    <TableRow android:paddingBottom="8pt">
+        <Button
+            android:layout_height="wrap_content"
+            android:layout_width="10pt"
+            android:text="edit"
+            android:layout_marginLeft="10pt"
+            android:layout_marginRight="5pt"
+            android:layout_weight="1"
+            />
+        <Button
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:text="delete"
+            android:layout_marginLeft="5pt"
+            android:layout_marginRight="10pt"
+            android:layout_weight="1"/>
+    </TableRow>
+</TableLayout>

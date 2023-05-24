@@ -13,6 +13,7 @@ import android.widget.ListView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -54,6 +55,17 @@ public class MainActivity extends AppCompatActivity {
             row.addView(textView);
             row.setBackgroundColor(eventList.get(i).getColor());
             table.addView(row);
+            int finalI = i;
+            int finalI1 = i;
+            row.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                   // Toast.makeText(MainActivity.this, "rowClicked", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(getApplicationContext(), event_Info.class);
+                    intent.putExtra("eventId",eventList.get(finalI1).getEventId());
+                    startActivity(intent);
+                }
+            });
         }
         //ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.list_item, list);
         //listView.setAdapter(adapter);
