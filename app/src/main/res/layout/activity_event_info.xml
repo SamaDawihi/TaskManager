@@ -2,7 +2,8 @@
 <TableLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_height="fill_parent"
-    android:layout_width="fill_parent">
+    android:layout_width="fill_parent"
+    android:id="@+id/tablelayout">
 
     <TableRow android:gravity="center"
         android:paddingBottom="8pt">
@@ -79,25 +80,14 @@
             />
     </TableRow>
 
-    <TableRow android:paddingBottom="4pt"
-        android:layout_height="50pt">
-
+    <TableRow
+        android:id="@+id/toberemoved"
+        android:paddingBottom="90pt">
     </TableRow>
 
-    <TableRow android:paddingBottom="4pt"
-        android:layout_height="50pt">
-
-    </TableRow>
-    <TableRow android:paddingBottom="4pt"
-        android:layout_height="50pt">
-
-    </TableRow>
-    <TableRow android:paddingBottom="4pt"
-        android:layout_height="50pt">
-
-    </TableRow>
-
-    <TableRow android:paddingBottom="8pt">
+    <TableRow
+        android:id="@+id/targetrow"
+        android:paddingBottom="8pt">
         <Button
             android:layout_height="wrap_content"
             android:layout_width="10pt"

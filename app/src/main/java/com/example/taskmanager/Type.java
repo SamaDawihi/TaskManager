@@ -2,7 +2,7 @@ package com.example.taskmanager;
 
 public class Type {
     private int typeId;
-    private String name;
+    public String name;
     private String icon;
 
     private int color;
