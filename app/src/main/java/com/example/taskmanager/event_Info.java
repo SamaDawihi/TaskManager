@@ -18,13 +18,13 @@ public class event_Info extends AppCompatActivity {
     //MyTasksDB myTasksDB;
     EventModel eventModel ;
     TextView name, type, dateAndTime, priority;
-    CheckBox[] tasksCheckboxes;
+    // CheckBox[] tasksCheckboxes;
     TaskManagerController taskcontroller;
     Type[] types;
     String typeString;
     Task[] tasks;
-    TableRow toBeRemovedRow, newRow;
-    TableLayout parentOfRow;
+    //TableRow toBeRemovedRow, newRow;
+    //TableLayout parentOfRow;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,32 +40,29 @@ public class event_Info extends AppCompatActivity {
             eventModel = taskcontroller.getEventById(eventID);
 
             types = taskcontroller.getAllTypes().toArray(new Type[0]);
+            //finding the type string
             for (int i=0; i<types.length;i++){
                 if (types[i].getTypeId()==eventModel.getTypeId())
                     typeString = types[i].getName();
             }
-
+            //we have the type string now
             tasks = taskcontroller.getTasksByEventId(eventID).toArray(new Task[0]);
+           /* if (tasks.length == 0){
+                TableLayout parent = findViewById(R.id.tablelayout);
+                TableRow buttonsrow = findViewById(R.id.targetrow);
+                int index = parent.indexOfChild(buttonsrow);
+                TableRow space = new TableRow(this);
+                space.setPadding(0,0,0,100);
+                parent.addView(space,index);
+            }
+            else{
+
+            }*/
 
             //printing to the screen
             name.setText("Name:     "+eventModel.getName());
             type.setText("Type:     "+typeString);
             dateAndTime.setText("Date&Time:     "+eventModel.getDateTime());
-            if(tasks != null){
-                toBeRemovedRow = (TableRow) findViewById(R.id.toberemoved);
-                parentOfRow = (TableLayout) findViewById(R.id.tablelayout);
-                parentOfRow.removeView(toBeRemovedRow);
-                for (int i=0; i<tasks.length; i++){
-                    if(tasks[i]!=null){
-                       newRow = new TableRow(this);
-                        View targetRow = findViewById(R.id.targetrow);
-                        int targetIndex = parentOfRow.indexOfChild(targetRow);
-                        parentOfRow.addView(newRow, targetIndex);
-                        newRow.setBackgroundColor(Color.BLUE);
-
-                    }
-                }
-            }
         }
 
     }
@@ -81,4 +78,19 @@ public class event_Info extends AppCompatActivity {
             dateAndTime.setText(dateAndTime.getText()+desiredEvent.getDateTime());
             //priority.setText(priority.getText()+desiredEvent.getPriority());
         }*/
+    /*if(tasks != null){
+                toBeRemovedRow = (TableRow) findViewById(R.id.toberemoved);
+                parentOfRow = (TableLayout) findViewById(R.id.tablelayout);
+                parentOfRow.removeView(toBeRemovedRow);
+                for (int i=0; i<tasks.length; i++){
+                    if(tasks[i]!=null){
+                       newRow = new TableRow(this);
+                        View targetRow = findViewById(R.id.targetrow);
+                        int targetIndex = parentOfRow.indexOfChild(targetRow);
+                        parentOfRow.addView(newRow, targetIndex);
+                        newRow.setBackgroundColor(Color.BLUE);
+
+                    }
+                }
+            }*/
 }
