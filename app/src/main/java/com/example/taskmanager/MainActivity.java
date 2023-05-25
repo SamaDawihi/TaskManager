@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.RadioButton;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -27,6 +28,11 @@ public class MainActivity extends AppCompatActivity {
 
     MyTasksDB myTasksDB;
 
+    //toggle buttons
+    RadioButton upcoming;
+    RadioButton all;
+    MainActivity context = this;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,6 +40,9 @@ public class MainActivity extends AppCompatActivity {
 
         addEvent = findViewById(R.id.addEvent);
         addEvent.setOnClickListener(l -> startNewEvent());
+
+        //toggle buttons
+        upcoming = findViewById(R.id.upcoming);
 
         //listView = findViewById(R.id.listView);
         table = findViewById(R.id.eventTable);
@@ -44,22 +53,49 @@ public class MainActivity extends AppCompatActivity {
         List<EventModel> eventList = myTasksDB.getAllEvents();
         List<String> list = new ArrayList<>();
 
-
-        for(int i = 0; i < eventList.size(); i++){
-            row = new TableRow(this);
-            textView = new TextView(this);
-            //list.add( eventList.get(i).getDateTime()+ "\n"+ eventList.get(i).getEventId() +" "+ eventList.get(i).getName());
-            //listView.setBackgroundColor(eventList.get(i).getColor());
-            textView.setText(eventList.get(i).getDateTime()+ "\n"+ eventList.get(i).getEventId() +" "+ eventList.get(i).getName());
-            row.addView(textView);
-            row.setBackgroundColor(eventList.get(i).getColor());
-            table.addView(row);
-        }
         //ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.list_item, list);
         //listView.setAdapter(adapter);
 
+        upcoming.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                for(int i = 0; i < 5; i++){
+                    row = new TableRow(context);
+                    textView = new TextView(context);
+                    textView.setText(eventList.get(i).getDateTime() + "\n"+ Integer.toString(eventList.get(i).getEventId()) +" "+ eventList.get(i).getName());
+                    row.addView(textView);
+                   // row.setBackgroundColor(eventList.get(i).getColor());
+//                    row.setPadding(15, 20, 15, 20);
+//                    row.getOutlineProvider();
+//                    row.setElevation(100);
+//                    table.addView(row);
+                }
+            }
+        });
+
+//        all.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                for(int i = 0; i < 5; i++){
+//                    row = new TableRow(context);
+//                    textView = new TextView(context);
+//                    //list.add( eventList.get(i).getDateTime()+ "\n"+ eventList.get(i).getEventId() +" "+ eventList.get(i).getName());
+//                    //listView.setBackgroundColor(eventList.get(i).getColor());
+//                    textView.setText(eventList.get(i).getDateTime()+ "\n"+ eventList.get(i).getEventId() +" "+ eventList.get(i).getName());
+//                    row.addView(textView);
+//                    row.setBackgroundColor(eventList.get(i).getColor());
+//                    row.setPadding(15, 20, 15, 20);
+//                    row.getOutlineProvider();
+//                    row.setElevation(100);
+//                    table.addView(row);
+//                }
+//            }
+//        });
+
 
     }
+
+
 
 
 
