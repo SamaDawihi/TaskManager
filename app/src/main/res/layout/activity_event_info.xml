@@ -6,7 +6,8 @@
     android:id="@+id/tablelayout">
 
     <TableRow android:gravity="center"
-        android:paddingBottom="8pt">
+        android:paddingBottom="20pt"
+        android:paddingTop="8pt">
         <TextView
             android:text="Details"
             android:textAlignment="center"
@@ -83,8 +84,9 @@
         android:id="@+id/row1"
         android:paddingBottom="4pt"
         android:layout_height="50pt"
-        android:visibility="gone">
-        <CheckBox>
+        android:visibility="gone"
+        android:paddingLeft="20pt">
+        <CheckBox >
         </CheckBox>
     </TableRow>
 
@@ -92,43 +94,52 @@
         android:id="@+id/row2"
         android:paddingBottom="4pt"
         android:layout_height="50pt"
-        android:visibility="gone">
-        <CheckBox></CheckBox>
+        android:visibility="gone"
+        android:paddingLeft="20pt">
+        <CheckBox ></CheckBox>
     </TableRow>
 
     <TableRow
         android:id="@+id/row3"
         android:paddingBottom="4pt"
         android:layout_height="50pt"
-        android:visibility="gone">
-        <CheckBox></CheckBox>
+        android:visibility="gone"
+        android:paddingLeft="20pt">
+        <CheckBox ></CheckBox>
     </TableRow>
 
     <TableRow
         android:id="@+id/row4"
         android:paddingBottom="4pt"
         android:layout_height="50pt"
-        android:visibility="gone">
-        <CheckBox></CheckBox>
+        android:visibility="gone"
+        android:paddingLeft="20pt">
+        <CheckBox ></CheckBox>
     </TableRow>
 
     <TableRow
         android:id="@+id/targetrow"
-        android:paddingBottom="8pt">
+        android:paddingTop="8pt"
+        android:layout_width="match_parent">
+
         <Button
+            android:id="@+id/editButton"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_width="10pt"
-            android:text="edit"
-            android:layout_marginLeft="10pt"
+            android:layout_marginLeft="5pt"
             android:layout_marginRight="5pt"
             android:layout_weight="1"
-            />
+            android:onClick="deleteOrEdit"
+            android:text="edit" />
+
         <Button
-            android:layout_height="wrap_content"
+            android:id="@+id/deleteButton"
             android:layout_width="wrap_content"
-            android:text="delete"
+            android:layout_height="wrap_content"
             android:layout_marginLeft="5pt"
-            android:layout_marginRight="10pt"
-            android:layout_weight="1"/>
+            android:layout_marginRight="5pt"
+            android:layout_weight="1"
+            android:onClick="deleteOrEdit"
+            android:text="delete" />
     </TableRow>
 </TableLayout>

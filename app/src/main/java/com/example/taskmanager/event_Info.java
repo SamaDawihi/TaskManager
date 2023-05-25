@@ -1,11 +1,14 @@
 package com.example.taskmanager;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.TableLayout;
 import android.widget.TableRow;
@@ -17,7 +20,7 @@ public class event_Info extends AppCompatActivity {
     Integer eventID;
     //MyTasksDB myTasksDB;
     EventModel eventModel ;
-    TextView name, type, dateAndTime, priority;
+    TextView name, type, dateAndTime,note, priority;
     // CheckBox[] tasksCheckboxes;
     TaskManagerController taskcontroller;
     Type[] types;
@@ -25,6 +28,7 @@ public class event_Info extends AppCompatActivity {
     Task[] tasks;
     //TableRow toBeRemovedRow, newRow;
     //TableLayout parentOfRow;
+    Button editButton, deleteButton;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,6 +37,7 @@ public class event_Info extends AppCompatActivity {
         name = findViewById(R.id.tvname);
         type = findViewById(R.id.tvtype);
         dateAndTime = findViewById(R.id.tvdatetime);
+        note = findViewById(R.id.tvnote);
         priority = findViewById(R.id.tvpriority);
         Intent intent = getIntent();
         if (intent != null) {
@@ -47,25 +52,67 @@ public class event_Info extends AppCompatActivity {
             }
             //we have the type string now
             tasks = taskcontroller.getTasksByEventId(eventID).toArray(new Task[0]);
-           /* if (tasks.length == 0){
-                TableLayout parent = findViewById(R.id.tablelayout);
-                TableRow buttonsrow = findViewById(R.id.targetrow);
-                int index = parent.indexOfChild(buttonsrow);
-                TableRow space = new TableRow(this);
-                space.setPadding(0,0,0,100);
-                parent.addView(space,index);
+            if (tasks != null){
+                TableRow row;
+                int nor = tasks.length;
+                row = findViewById(R.id.row1);
+                row.setVisibility(row.VISIBLE);
+                CheckBox chB1 =(CheckBox) row.getChildAt(0);
+                chB1.setText(tasks[0].getDescription());
+                nor --;
+                if (nor!=0){
+                    row = findViewById(R.id.row2);
+                    row.setVisibility(row.VISIBLE);
+                    CheckBox chB2 =(CheckBox) row.getChildAt(0);
+                    chB2.setText(tasks[1].getDescription());
+                    nor --;
+                }
+                if (nor!=0){
+                    row = findViewById(R.id.row3);
+                    row.setVisibility(row.VISIBLE);
+                    CheckBox chB3 =(CheckBox) row.getChildAt(0);
+                    chB3.setText(tasks[2].getDescription());
+                    nor --;
+                }
+                if (nor!=0){
+                    row = findViewById(R.id.row4);
+                    row.setVisibility(row.VISIBLE);
+                    CheckBox chB4 =(CheckBox) row.getChildAt(0);
+                    chB4.setText(tasks[3].getDescription());
+                }
             }
-            else{
-
-            }*/
 
             //printing to the screen
             name.setText("Name:     "+eventModel.getName());
             type.setText("Type:     "+typeString);
             dateAndTime.setText("Date&Time:     "+eventModel.getDateTime());
+            note.setText("note:     "+eventModel.getNote());
+
         }
 
     }
+    public void deleteOrEdit (View view){
+        if (view.getId() == R.id.deleteButton){
+            AlertDialog.Builder builder = new AlertDialog.Builder(event_Info.this);
+
+            builder.setTitle("Confirmation")
+                    .setMessage("Are you sure you want to delete this event?")
+                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            taskcontroller.removeEvent(eventID);
+                            Intent intent = new Intent(event_Info.this, MainActivity.class);
+                            startActivity(intent);
+                        }
+                    })
+                    .setNegativeButton("Cancel", null) // null to dismiss the dialog without performing any action
+                    .show();
+        }
+        else{
+
+        }
+    }
+
            /* myTasksDB = new MyTasksDB(this);
             List<EventModel> eventList = myTasksDB.getAllEvents();
             for (int i=0 ; i<eventList.size();i++){
@@ -93,4 +140,10 @@ public class event_Info extends AppCompatActivity {
                     }
                 }
             }*/
+    /*     TableLayout parent = findViewById(R.id.tablelayout);
+                TableRow buttonsrow = findViewById(R.id.targetrow);
+                int index = parent.indexOfChild(buttonsrow);
+                TableRow space = new TableRow(this);
+                space.setPadding(0,0,0,1000);
+                parent.addView(space,index);*/
 }
