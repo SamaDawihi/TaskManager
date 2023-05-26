@@ -17,6 +17,9 @@ import java.util.List;
 public class TaskManagerController {
     private MyTasksDB dbHelper;
 
+    private AlarmManager alarmManager;
+    private PendingIntent pendingIntent;
+
     public TaskManagerController(Context c) {
         dbHelper = new MyTasksDB(c);
     }
@@ -35,6 +38,31 @@ public class TaskManagerController {
         if (added != -1) {
 
             // Perform notification and add to calendar methods
+
+            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            Date date;
+            try {
+                date = format.parse(fDateTime);
+
+                // Create a calendar object with the selected date and time
+                Calendar calendar = Calendar.getInstance();
+                calendar.setTime(date);
+
+                // Create an intent to start the AlarmReceiver class
+                Intent intent = new Intent(context, AlarmReceiver.class);
+
+                // Create a pending intent that will be triggered when the alarm goes off
+                pendingIntent = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_IMMUTABLE);
+
+                // Set the alarm to the calendar time
+                alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
+                Toast.makeText(context, "Notification set for " + calendar.YEAR + "/" + (calendar.MONTH + 1) + "/" + calendar.DAY_OF_MONTH + " " + calendar.HOUR_OF_DAY + ":" + calendar.MINUTE, Toast.LENGTH_SHORT).show();
+
+
+
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
 
         }
         return added;

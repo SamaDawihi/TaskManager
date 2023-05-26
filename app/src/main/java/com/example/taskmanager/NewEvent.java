@@ -48,8 +48,6 @@ import android.content.ContentValues;
 import android.content.Context;
 
 public class NewEvent extends AppCompatActivity {
-    private AlarmManager alarmManager;
-    private PendingIntent pendingIntent;
 
 
     //---------------------------Views-----------------------------
@@ -383,34 +381,6 @@ public class NewEvent extends AppCompatActivity {
             displayErrors();
             return false;
         }
-
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        Date date;
-        try {
-            date = format.parse(fDateTime);
-
-            // Create a calendar object with the selected date and time
-            Calendar calendar = Calendar.getInstance();
-            calendar.setTime(date);
-
-            // Create an intent to start the AlarmReceiver class
-            Intent intent = new Intent(this, AlarmReceiver.class);
-
-            // Create a pending intent that will be triggered when the alarm goes off
-            pendingIntent = PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_IMMUTABLE);
-
-            // Set the alarm to the calendar time
-            alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
-            Toast.makeText(this, "Notification set for " + calendar.YEAR + "/" + (calendar.MONTH + 1) + "/" + calendar.DAY_OF_MONTH + " " + calendar.HOUR_OF_DAY + ":" + calendar.MINUTE, Toast.LENGTH_SHORT).show();
-
-
-
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-
-
-
 
         if(fSubTask1 != null && fSubTask1 != "")
             controller.addTask(eventId, fSubTask1);
