@@ -14,35 +14,67 @@
 
     tools:context=".MainActivity">
 
+    <RadioGroup
+        android:checkedButton="@+id/offer"
+        android:id="@+id/toggle"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
 
+        android:layout_marginLeft="50dp"
+        android:layout_marginRight="50dp"
+
+        android:background="@drawable/pink_out_line"
+        android:orientation="horizontal">
+
+        <RadioButton
+            android:layout_marginTop="1dp"
+            android:layout_marginBottom="1dp"
+            android:layout_marginLeft="1dp"
+            android:id="@+id/upcoming"
+            android:background="@drawable/toggle_widget_background"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:button="@null"
+            android:gravity="center"
+            android:text="Upcoming"
+            android:textColor="@color/white" />
+
+        <RadioButton
+            android:layout_marginRight="1dp"
+            android:layout_marginTop="1dp"
+            android:layout_marginBottom="1dp"
+            android:id="@+id/all"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/toggle_widget_background"
+            android:button="@null"
+            android:gravity="center"
+            android:text="All"
+            android:textColor="@color/white" />
+    </RadioGroup>
     <Button
         android:id="@+id/addEvent"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
         android:layout_marginTop="10dp"
+        android:background="@drawable/circle_button_background"
         android:gravity="center"
+        android:layout_gravity="center"
         android:text="+"
-        android:textSize="30dp" />
-<!--    <Button-->
-<!--        android:id="@+id/dbState"-->
-<!--        android:layout_marginTop="10dp"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_gravity="center"-->
-<!--        android:gravity="center"-->
-<!--        android:text="DB State PAGE"-->
-<!--        android:textSize="30dp"/>
+        android:textSize="30dp"
+        />
 
-    <ListView
-        android:id="@+id/listView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
-    -->
     <TableLayout
         android:id="@+id/eventTable"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
     </TableLayout>
+
+
+
+
+
+
 </LinearLayout>
