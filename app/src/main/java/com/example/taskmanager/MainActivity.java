@@ -62,9 +62,9 @@ public class MainActivity extends AppCompatActivity {
                     try{
                         Log.e("list", eventList.get(i).getName());
 
-                        //if(dateFormat(eventList.get(i).getDateTime(), eventList, i)) {
+                        if(dateFormat(eventList.get(i).getDateTime(), eventList, i)) {
                             list.add(eventList.get(i));
-                        //}
+                        }
 
                         Log.e("list2", list.get(i).getName());
                             int finalI = i;
@@ -80,7 +80,7 @@ public class MainActivity extends AppCompatActivity {
                                 startActivity(intent);
                             }
                         });
-                    }catch (IndexOutOfBoundsException  | NullPointerException e){}
+                    }catch (IndexOutOfBoundsException  |ParseException | NullPointerException e){}
                 }
                 loadList(list);
             }
@@ -135,9 +135,13 @@ public class MainActivity extends AppCompatActivity {
 //                if (date.after(today) || date.equals(today)) {
 //                    Log.e("after", list.get(i).getDateTime());
                     textView.setText(list.get(i).getDateTime() + "\n" + list.get(i).getEventId() + " " + list.get(i).getName());
-                    textView.setTextColor(255-255-255-255);
+                    textView.setTextColor(Color.parseColor("#FFFFFF"));
+                    textView.setTextSize(18);
                     row.addView(textView);
                     row.setBackgroundColor(list.get(i).getColor());
+                    row.setElevation(54);//shadow
+                    row.setPadding(16,16,16,16);
+
                     table.addView(row);
              //   }
             }catch (IndexOutOfBoundsException |NullPointerException  e){}
@@ -146,20 +150,21 @@ public class MainActivity extends AppCompatActivity {
 
     public boolean dateFormat(String d, List<EventModel> list, int i) throws ParseException {
         Log.e("enetred", list.get(i).getDateTime());
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Log.e("date", list.get(i).getDateTime());
         String D = list.get(i).getDateTime();
         Date date = format.parse(D);
         Log.e("datec", "h");
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(date);
+        Date today = Calendar.getInstance().getTime();
 //        int diff = date.compareTo(today);
 //        Log.e("diff", String.valueOf(diff));
-//        if (date.compareTo(today) >= 0) {
-//                    return true;
-//                }
+        if (date.compareTo(today) >= 0) {
+                    return true;
+                }
                     Log.e("after", list.get(i).getDateTime());
-                return true;
+                return false;
     }
 
 

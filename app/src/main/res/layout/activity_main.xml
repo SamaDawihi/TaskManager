@@ -63,28 +63,16 @@
         android:gravity="center"
         android:layout_gravity="center"
         android:text="+"
-        android:textSize="30dp" />
+        android:textSize="30dp"
+        />
 
-
-    <!--    <Button-->
-    <!--        android:id="@+id/dbState"-->
-    <!--        android:layout_marginTop="10dp"-->
-    <!--        android:layout_width="wrap_content"-->
-    <!--        android:layout_height="wrap_content"-->
-    <!--        android:layout_gravity="center"-->
-    <!--        android:gravity="center"-->
-    <!--        android:text="DB State PAGE"-->
-    <!--        android:textSize="30dp"/>
-
-        <ListView
-            android:id="@+id/listView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-        -->
     <TableLayout
         android:id="@+id/eventTable"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"></TableLayout>
+        android:layout_height="match_parent">
+    </TableLayout>
+
+
 
 
 
