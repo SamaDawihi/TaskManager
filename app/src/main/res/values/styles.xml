@@ -2,14 +2,14 @@
 <resources>
     <!-- Style for the EditText -->
     <style name="EditTextStyleSpan3">
-        <item name="android:layout_width">180dp</item>
+        <item name="android:layout_width">370dp</item>
         <item name="android:layout_height">match_parent</item>
         <item name="android:layout_span">3</item>
         <item name="android:fontFamily">@font/acme</item>
         <item name="android:textSize">15sp</item>
     </style>
     <style name="EditTextStyleSpan2">
-        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_width">180dp</item>
         <item name="android:layout_height">match_parent</item>
         <item name="android:layout_span">2</item>
         <item name="android:fontFamily">@font/acme</item>
@@ -52,7 +52,7 @@
         <item name="android:textSize">15sp</item>
     </style>
     <style name="SpinnerStyleSpan3">
-        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_width">370dp</item>
         <item name="android:layout_height">match_parent</item>
         <item name="android:layout_span">3</item>
         <item name="android:background">@android:drawable/btn_dropdown</item>
@@ -74,7 +74,7 @@
     </style>
 
     <style name="ButtonStyleSpan3">
-        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_width">370dp</item>
         <item name="android:layout_height">match_parent</item>
         <item name="android:layout_margin">5dp</item>
         <item name="android:layout_span">3</item>

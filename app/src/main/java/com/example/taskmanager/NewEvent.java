@@ -8,6 +8,8 @@ import android.app.DatePickerDialog;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.TimePickerDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -268,7 +270,8 @@ public class NewEvent extends AppCompatActivity {
             public void onOk(AmbilWarnaDialog dialog, int color) {
                 // color is the color selected by the user.
                 fNewTypeColor = color;
-                newTypeColor.setBackgroundColor(color);
+                newTypeColor.setTextColor(color);
+                newTypeName.setTextColor(color);
             }
 
             @Override
@@ -356,13 +359,11 @@ public class NewEvent extends AppCompatActivity {
                 + "Note: " + fNote + "\n"
                 + "Reminder: " + fReminderDuration + " " + fReminderUnit + (fReminderDuration > 1? "s" : "") + "\n"
                 + "Priority: " + fPriority + "\n";
-        //result.setText(r);
-        //result.setTextColor(fColor);
         Log.i("ADDED_EVENT", r);
 
         int eventId = controller.addEvent(fName, fTypeId, fColor, fDateTime, fNote, fReminderDuration, fReminderUnit, fPriority, this);
         if(eventId == -1) {
-            errors.add("Failed to add new event");
+            errors.add("Failed to add new event Try again");
             displayErrors();
             return false;
         }
@@ -392,9 +393,16 @@ public class NewEvent extends AppCompatActivity {
 
         // Create and configure the AlertDialog
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        DialogInterface.OnClickListener listener = new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                startActivity(new Intent((Context) dialog, MainActivity.class));
+            }
+        };
         builder.setTitle("Errors")
                 .setMessage(errorMessage.toString())
-                .setPositiveButton("OK", null);
+                .setPositiveButton("OK", null)
+                .setNegativeButton("Cancel Adding", listener);
 
         // Show the dialog
         AlertDialog dialog = builder.create();
@@ -430,7 +438,7 @@ public class NewEvent extends AppCompatActivity {
         if(fName == null || fName == "") {
             errors.add("SET NAME");
         }
-        if(fTypeId < 0 ){//|| controller.doesTypeExist(fTypeId)) {
+        if(fTypeId < 0 ){
             errors.add("SELECT TYPE");
         }
         if(fDateTime == null) {
