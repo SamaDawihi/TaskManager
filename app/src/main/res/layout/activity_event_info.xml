@@ -83,7 +83,8 @@
     <TableRow
         android:id="@+id/row1"
         android:paddingBottom="4pt"
-        android:layout_height="50pt"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:visibility="gone"
         android:paddingLeft="20pt">
         <CheckBox >

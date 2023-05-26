@@ -384,6 +384,7 @@ public class NewEvent extends AppCompatActivity {
             return false;
         }
 
+        /*
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date date;
         try {
@@ -412,6 +413,8 @@ public class NewEvent extends AppCompatActivity {
 
 
 
+
+         */
         if(fSubTask1 != null && fSubTask1 != "")
             controller.addTask(eventId, fSubTask1);
 
