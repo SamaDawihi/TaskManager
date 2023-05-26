@@ -3,11 +3,15 @@ package com.example.taskmanager;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
 
+import android.app.AlarmManager;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Notification;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.TimePickerDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -29,16 +33,21 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import yuku.ambilwarna.AmbilWarnaDialog;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.ContentValues;
+import android.content.Context;
+
 public class NewEvent extends AppCompatActivity {
-
-
     //---------------------------Views-----------------------------
     TableLayout table;
     EditText name, note, reminderDuration, sub1, sub2, sub3, sub4, newTypeName;
@@ -55,8 +64,6 @@ public class NewEvent extends AppCompatActivity {
 
     Calendar calendar;
 
-
-
     //---------------------------Outputs Variables-----------------------------
     String fName, fDateTime, fDate, fTime, fNote,fReminderUnit, fNewTypeName, fNewTypeIcon;
     String fSubTask1, fSubTask2, fSubTask3, fSubTask4;
@@ -68,10 +75,8 @@ public class NewEvent extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_event);
 
-
         calendar = Calendar.getInstance();
         controller = new TaskManagerController(this);
-
 
         setDefault();
         findViews();
@@ -86,6 +91,17 @@ public class NewEvent extends AppCompatActivity {
         fName = fDateTime = fDate = fTime = fNote = fReminderUnit = fNewTypeName  = fNewTypeIcon = fSubTask1 = fSubTask2 = fSubTask3 = fSubTask4 = null;
         fTypeId = fPriority = fReminderDuration = -1;
         fNewTypeColor = fColor = Color.BLUE;
+
+        Calendar initial = Calendar.getInstance();
+        initial.add(Calendar.HOUR, 5);
+
+        // Create a SimpleDateFormat object to format the date in the desired format.
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
+
+        // Set the text of the dateTextView to the formatted date.
+        fDate = dateFormat.format(initial.getTime());
+        fTime = timeFormat.format(initial.getTime());
     }
     private void findViews() {
         name = findViewById(R.id.name);
@@ -96,9 +112,14 @@ public class NewEvent extends AppCompatActivity {
         type  = findViewById(R.id.typeList);
         newTypeName = findViewById(R.id.newTypeName);
         date  = findViewById(R.id.date);
+        time  = findViewById(R.id.time);
         dateTV = findViewById(R.id.dateTV);
         timeTV = findViewById(R.id.timeTV);
-        time  = findViewById(R.id.time);
+
+        if(fDate != null)
+            dateTV.setText(fDate);
+        if(fTime != null)
+            timeTV.setText(fTime);
 
         addNewType = findViewById(R.id.addType);
         newTypeColor = findViewById(R.id.newTypeColor);
@@ -123,7 +144,6 @@ public class NewEvent extends AppCompatActivity {
         removeTask4 = findViewById(R.id.removeSub4);
 
         add  = findViewById(R.id.add);
-        result = findViewById(R.id.result);
     }
 
     private void hideSubTasksAndNewTypeRows() {
@@ -268,7 +288,8 @@ public class NewEvent extends AppCompatActivity {
             public void onOk(AmbilWarnaDialog dialog, int color) {
                 // color is the color selected by the user.
                 fNewTypeColor = color;
-                newTypeColor.setBackgroundColor(color);
+                newTypeColor.setTextColor(color);
+                newTypeName.setTextColor(color);
             }
 
             @Override
@@ -356,29 +377,28 @@ public class NewEvent extends AppCompatActivity {
                 + "Note: " + fNote + "\n"
                 + "Reminder: " + fReminderDuration + " " + fReminderUnit + (fReminderDuration > 1? "s" : "") + "\n"
                 + "Priority: " + fPriority + "\n";
-        result.setText(r);
-        result.setTextColor(fColor);
         Log.i("ADDED_EVENT", r);
 
-        int eventId = controller.addEvent(fName, fTypeId, fColor, fDateTime, fNote, fReminderDuration, fReminderUnit, fPriority, this);
+        int eventId = controller.addEvent(fName, fTypeId, fColor, fDateTime, fNote, fReminderDuration, fReminderUnit, fPriority, fDate, fTime,  this);
         if(eventId == -1) {
-            errors.add("Failed to add new event");
+            errors.add("Failed to add new event Try again");
             displayErrors();
             return false;
         }
 
-        if(fSubTask1 != null && fSubTask1 != "")
+
+        Log.i("fSub1", "-" + fSubTask1 + "-");
+        if(fSubTask1 != null && fSubTask1.length() > 0)
             controller.addTask(eventId, fSubTask1);
 
-        if(fSubTask2 != null && fSubTask2 != "")
+        if(fSubTask2 != null && fSubTask2.length() > 0)
             controller.addTask(eventId, fSubTask2);
 
-        if(fSubTask3 != null && fSubTask3 != "")
+        if(fSubTask3 != null && fSubTask3.length() > 0)
             controller.addTask(eventId, fSubTask3);
 
-        if(fSubTask4 != null && fSubTask4 != "")
+        if(fSubTask4 != null && fSubTask4.length() > 0)
             controller.addTask(eventId, fSubTask4);
-
 
         return true;
     }
@@ -392,9 +412,16 @@ public class NewEvent extends AppCompatActivity {
 
         // Create and configure the AlertDialog
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        DialogInterface.OnClickListener listener = new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                startActivity(new Intent((Context) dialog, MainActivity.class));
+            }
+        };
         builder.setTitle("Errors")
                 .setMessage(errorMessage.toString())
-                .setPositiveButton("OK", null);
+                .setPositiveButton("OK", null)
+                .setNegativeButton("Cancel Adding", listener);
 
         // Show the dialog
         AlertDialog dialog = builder.create();
@@ -430,7 +457,7 @@ public class NewEvent extends AppCompatActivity {
         if(fName == null || fName == "") {
             errors.add("SET NAME");
         }
-        if(fTypeId < 0 ){//|| controller.doesTypeExist(fTypeId)) {
+        if(fTypeId < 0 ){
             errors.add("SELECT TYPE");
         }
         if(fDateTime == null) {

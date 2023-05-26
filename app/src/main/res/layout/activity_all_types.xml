@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="20dp"
+    android:background="#E5E8E8"
+    tools:context=".AllTypes">
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_horizontal"
+        android:layout_gravity="center">
+        <!-- Type Row -->
+        <TableRow
+            android:gravity="center_horizontal"
+            android:layout_gravity="center">
+
+            <Spinner
+                android:id="@+id/typeList"
+                style="@style/SpinnerStyleSpan2"
+                android:contentDescription="Select The Event Type"
+                android:hint="typeId"/>
+
+            <!-- Button to Show Add New Type Row -->
+            <Button
+                android:id="@+id/addType"
+                style="@style/IconButtonStyle"
+                android:drawableBottom="@drawable/baseline_add_24"
+                android:text="" />
+        </TableRow>
+
+        <!-- Add New Type Row -->
+        <!-- Hide At Execute -->
+        <TableRow
+            android:gravity="center_horizontal"
+            android:layout_gravity="center"
+            android:id="@+id/newTypeRow">
+
+            <EditText
+                android:id="@+id/newTypeName"
+                style="@style/EditTextStyle"
+                android:hint="New Type Name"
+                />
+
+            <Button
+                android:id="@+id/newTypeColor"
+                android:layout_width="20dp"
+                android:layout_height="40dp"
+                android:layout_margin="5dp"
+                android:background="@drawable/circular_button_background"
+                android:drawableBottom="@drawable/baseline_color_lens_24"
+                android:text=""
+                android:textSize="15sp" />
+
+            <Button
+                android:id="@+id/submitNewType"
+                style="@style/IconButtonStyle"
+                android:drawableBottom="@drawable/baseline_done_24"
+                />
+        </TableRow>
+
+    </TableLayout>
+
+</LinearLayout>

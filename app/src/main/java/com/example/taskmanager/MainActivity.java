@@ -1,11 +1,15 @@
 package com.example.taskmanager;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -14,6 +18,7 @@ import android.widget.RadioButton;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -50,6 +55,7 @@ public class MainActivity extends AppCompatActivity {
         table = findViewById(R.id.eventTable);
         myTasksDB = new MyTasksDB(this);
         List<EventModel> eventList = myTasksDB.getAllEvents();
+
         List<EventModel> list = new ArrayList<>();
 
 
@@ -120,6 +126,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+
     public void loadList(List<EventModel> list){
         for (int i = 0; i < list.size(); i++){
             try {
@@ -179,5 +186,26 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this,event_Info.class);
         intent.putExtra("eventId",eventID);
         startActivity(intent);
+    }
+
+    //Option Menu
+    public boolean onCreateOptionsMenu(Menu menu){
+        super.onCreateOptionsMenu(menu);
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.main_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        Toast.makeText(this, (item.toString()), Toast.LENGTH_SHORT).show();
+        if(item.getItemId() == R.id.viewAllEventsOption){
+            Intent intent = new Intent(this, AllEvents.class);
+            startActivity(intent);
+        }else if(item.getItemId() == R.id.viewAllTypesOption){
+            Intent intent = new Intent(this, AllTypes.class);
+            startActivity(intent);
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

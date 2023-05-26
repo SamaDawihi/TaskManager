@@ -237,12 +237,11 @@ public class MyTasksDB extends SQLiteOpenHelper {
             do {
                 int taskId = cursor.getInt(Math.max(cursor.getColumnIndex("taskId"),0));
                 int eventId = cursor.getInt(Math.max(cursor.getColumnIndex("eventId"),0));
-                String name = cursor.getString(Math.max(cursor.getColumnIndex("name"),0));
+                String description = cursor.getString(Math.max(cursor.getColumnIndex("description"),0));
                 int doneInt = cursor.getInt(Math.max(cursor.getColumnIndex("done"),0));
                 boolean done = (doneInt == 1); // Convert 0/1 to boolean
-                int priority = cursor.getInt(Math.max(cursor.getColumnIndex("priority"),0));
 
-                Task task = new Task(taskId, eventId, name, done, priority);
+                Task task = new Task(taskId, eventId, description, done);
                 taskList.add(task);
             } while (cursor.moveToNext());
         }
@@ -295,9 +294,8 @@ public class MyTasksDB extends SQLiteOpenHelper {
                 String description = cursor.getString(Math.max(cursor.getColumnIndex("description"), 0));
                 int doneInt = cursor.getInt(Math.max(cursor.getColumnIndex("done"), 0));
                 boolean done = (doneInt == 1); // Convert 0/1 to boolean
-                int priority = cursor.getInt(Math.max(cursor.getColumnIndex("priority"), 0));
 
-                Task task = new Task(taskId, eventId, description, done, priority);
+                Task task = new Task(taskId, eventId, description, done);
                 taskList.add(task);
             } while (cursor.moveToNext());
         }
