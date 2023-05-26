@@ -48,10 +48,6 @@ import android.content.ContentValues;
 import android.content.Context;
 
 public class NewEvent extends AppCompatActivity {
-    private AlarmManager alarmManager;
-    private PendingIntent pendingIntent;
-
-
     //---------------------------Views-----------------------------
     TableLayout table;
     EditText name, note, reminderDuration, sub1, sub2, sub3, sub4, newTypeName;
@@ -67,9 +63,6 @@ public class NewEvent extends AppCompatActivity {
     TaskManagerController controller;
 
     Calendar calendar;
-    //NotificationCreater nc;
-
-
 
     //---------------------------Outputs Variables-----------------------------
     String fName, fDateTime, fDate, fTime, fNote,fReminderUnit, fNewTypeName, fNewTypeIcon;
@@ -82,10 +75,8 @@ public class NewEvent extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_event);
 
-
         calendar = Calendar.getInstance();
         controller = new TaskManagerController(this);
-
 
         setDefault();
         findViews();
@@ -95,15 +86,22 @@ public class NewEvent extends AppCompatActivity {
         setPrioritiesSpinner();
         setOnClickListeners();
 
-        //nc=new NotificationCreater(this);
-
-
-
     }
     private void setDefault() {
         fName = fDateTime = fDate = fTime = fNote = fReminderUnit = fNewTypeName  = fNewTypeIcon = fSubTask1 = fSubTask2 = fSubTask3 = fSubTask4 = null;
         fTypeId = fPriority = fReminderDuration = -1;
         fNewTypeColor = fColor = Color.BLUE;
+
+        Calendar initial = Calendar.getInstance();
+        initial.add(Calendar.HOUR, 5);
+
+        // Create a SimpleDateFormat object to format the date in the desired format.
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
+
+        // Set the text of the dateTextView to the formatted date.
+        fDate = dateFormat.format(initial.getTime());
+        fTime = timeFormat.format(initial.getTime());
     }
     private void findViews() {
         name = findViewById(R.id.name);
@@ -114,9 +112,14 @@ public class NewEvent extends AppCompatActivity {
         type  = findViewById(R.id.typeList);
         newTypeName = findViewById(R.id.newTypeName);
         date  = findViewById(R.id.date);
+        time  = findViewById(R.id.time);
         dateTV = findViewById(R.id.dateTV);
         timeTV = findViewById(R.id.timeTV);
-        time  = findViewById(R.id.time);
+
+        if(fDate != null)
+            dateTV.setText(fDate);
+        if(fTime != null)
+            timeTV.setText(fTime);
 
         addNewType = findViewById(R.id.addType);
         newTypeColor = findViewById(R.id.newTypeColor);
@@ -141,7 +144,6 @@ public class NewEvent extends AppCompatActivity {
         removeTask4 = findViewById(R.id.removeSub4);
 
         add  = findViewById(R.id.add);
-        //result = findViewById(R.id.result);
     }
 
     private void hideSubTasksAndNewTypeRows() {
@@ -384,50 +386,19 @@ public class NewEvent extends AppCompatActivity {
             return false;
         }
 
-        /*
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        Date date;
-        try {
-            date = format.parse(fDateTime);
 
-            // Create a calendar object with the selected date and time
-            Calendar calendar = Calendar.getInstance();
-            calendar.setTime(date);
-
-            // Create an intent to start the AlarmReceiver class
-            Intent intent = new Intent(this, AlarmReceiver.class);
-
-            // Create a pending intent that will be triggered when the alarm goes off
-            pendingIntent = PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_IMMUTABLE);
-
-            // Set the alarm to the calendar time
-            alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
-            Toast.makeText(this, "Notification set for " + calendar.YEAR + "/" + (calendar.MONTH + 1) + "/" + calendar.DAY_OF_MONTH + " " + calendar.HOUR_OF_DAY + ":" + calendar.MINUTE, Toast.LENGTH_SHORT).show();
-
-
-
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-
-
-
-
-
-         */
-        if(fSubTask1 != null && fSubTask1 != "")
+        Log.i("fSub1", "-" + fSubTask1 + "-");
+        if(fSubTask1 != null && fSubTask1.length() > 0)
             controller.addTask(eventId, fSubTask1);
 
-        if(fSubTask2 != null && fSubTask2 != "")
+        if(fSubTask2 != null && fSubTask2.length() > 0)
             controller.addTask(eventId, fSubTask2);
 
-        if(fSubTask3 != null && fSubTask3 != "")
+        if(fSubTask3 != null && fSubTask3.length() > 0)
             controller.addTask(eventId, fSubTask3);
 
-        if(fSubTask4 != null && fSubTask4 != "")
+        if(fSubTask4 != null && fSubTask4.length() > 0)
             controller.addTask(eventId, fSubTask4);
-
-
 
         return true;
     }
