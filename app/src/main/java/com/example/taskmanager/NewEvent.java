@@ -361,7 +361,7 @@ public class NewEvent extends AppCompatActivity {
                 + "Priority: " + fPriority + "\n";
         Log.i("ADDED_EVENT", r);
 
-        int eventId = controller.addEvent(fName, fTypeId, fColor, fDateTime, fNote, fReminderDuration, fReminderUnit, fPriority, this);
+        int eventId = controller.addEvent(fName, fTypeId, fColor, fDateTime, fNote, fReminderDuration, fReminderUnit, fPriority, fDate, fTime,  this);
         if(eventId == -1) {
             errors.add("Failed to add new event Try again");
             displayErrors();
