@@ -3,10 +3,12 @@ package com.example.taskmanager;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
 
+import android.app.AlarmManager;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Notification;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -31,14 +33,23 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import yuku.ambilwarna.AmbilWarnaDialog;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.ContentValues;
+import android.content.Context;
+
 public class NewEvent extends AppCompatActivity {
+    private AlarmManager alarmManager;
+    private PendingIntent pendingIntent;
 
 
     //---------------------------Views-----------------------------
@@ -56,7 +67,7 @@ public class NewEvent extends AppCompatActivity {
     TaskManagerController controller;
 
     Calendar calendar;
-    NotificationCreater nc;
+    //NotificationCreater nc;
 
 
 
@@ -85,6 +96,8 @@ public class NewEvent extends AppCompatActivity {
         setOnClickListeners();
 
         //nc=new NotificationCreater(this);
+
+
 
     }
     private void setDefault() {
@@ -371,6 +384,34 @@ public class NewEvent extends AppCompatActivity {
             return false;
         }
 
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date date;
+        try {
+            date = format.parse(fDateTime);
+
+            // Create a calendar object with the selected date and time
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(date);
+
+            // Create an intent to start the AlarmReceiver class
+            Intent intent = new Intent(this, AlarmReceiver.class);
+
+            // Create a pending intent that will be triggered when the alarm goes off
+            pendingIntent = PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_IMMUTABLE);
+
+            // Set the alarm to the calendar time
+            alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
+            Toast.makeText(this, "Notification set for " + calendar.YEAR + "/" + (calendar.MONTH + 1) + "/" + calendar.DAY_OF_MONTH + " " + calendar.HOUR_OF_DAY + ":" + calendar.MINUTE, Toast.LENGTH_SHORT).show();
+
+
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+
+
+
         if(fSubTask1 != null && fSubTask1 != "")
             controller.addTask(eventId, fSubTask1);
 
@@ -382,6 +423,7 @@ public class NewEvent extends AppCompatActivity {
 
         if(fSubTask4 != null && fSubTask4 != "")
             controller.addTask(eventId, fSubTask4);
+
 
 
         return true;

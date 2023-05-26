@@ -1,7 +1,16 @@
 package com.example.taskmanager;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
+import android.widget.Toast;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 
 import java.util.List;
 
@@ -22,11 +31,11 @@ public class TaskManagerController {
 
     public int addEvent(String fName, int fType, int fColor, String fDateTime, String fNote, int fRemainderDuration, String fReminderUnit, int fPriority, String fDate, String fTime, Context context) {
         int added = dbHelper.addEvent(fName, fType, fColor, fDateTime, fNote, fRemainderDuration, fReminderUnit, fPriority);
+
         if (added != -1) {
-            // Perform notification and add to calendar methods
-            // ...
 
             // Perform notification and add to calendar methods
+
         }
         return added;
     }
