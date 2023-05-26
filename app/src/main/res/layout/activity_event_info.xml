@@ -87,7 +87,8 @@
         android:layout_height="match_parent"
         android:visibility="gone"
         android:paddingLeft="20pt">
-        <CheckBox >
+        <CheckBox
+            android:onClick="">
         </CheckBox>
     </TableRow>
 

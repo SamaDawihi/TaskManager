@@ -64,6 +64,13 @@ public class event_Info extends AppCompatActivity {
                     done = tasks[0].isDone();
                     if (done == true)
                         chB1.setChecked(true);
+                    boolean finalDone = done;
+                    chB1.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            taskcontroller.changeTaskStatus(tasks[0].getTaskId(),!finalDone);
+                        }
+                    });
                     nor--;
                 }
                 if (nor!=0){
@@ -74,6 +81,13 @@ public class event_Info extends AppCompatActivity {
                     done = tasks[1].isDone();
                     if (done==true)
                         chB2.setChecked(true);
+                    boolean finalDone1 = done;
+                    chB2.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            taskcontroller.changeTaskStatus(tasks[1].getTaskId(),!finalDone1);
+                        }
+                    });
                     nor --;
                 }
                 if (nor!=0){
@@ -84,6 +98,13 @@ public class event_Info extends AppCompatActivity {
                     done = tasks[2].isDone();
                     if (done==true)
                         chB3.setChecked(true);
+                    boolean finalDone2 = done;
+                    chB3.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            taskcontroller.changeTaskStatus(tasks[2].getTaskId(),!finalDone2);
+                        }
+                    });
                     nor --;
                 }
                 if (nor!=0){
@@ -94,6 +115,13 @@ public class event_Info extends AppCompatActivity {
                     done = tasks[3].isDone();
                     if (done==true)
                         chB4.setChecked(true);
+                    boolean finalDone3 = done;
+                    chB4.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            taskcontroller.changeTaskStatus(tasks[3].getTaskId(),!finalDone3);
+                        }
+                    });
                 }
             }
 
