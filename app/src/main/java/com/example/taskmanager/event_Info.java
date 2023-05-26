@@ -52,19 +52,28 @@ public class event_Info extends AppCompatActivity {
             }
             //we have the type string now
             tasks = taskcontroller.getTasksByEventId(eventID).toArray(new Task[0]);
-            if (tasks != null){
+            boolean done;
+            if (tasks!=null){
                 TableRow row;
                 int nor = tasks.length;
-                row = findViewById(R.id.row1);
-                row.setVisibility(row.VISIBLE);
-                CheckBox chB1 =(CheckBox) row.getChildAt(0);
-                chB1.setText(tasks[0].getDescription());
-                nor --;
+                if(nor!=0) {
+                    row = findViewById(R.id.row1);
+                    row.setVisibility(row.VISIBLE);
+                    CheckBox chB1 = (CheckBox) row.getChildAt(0);
+                    chB1.setText(tasks[0].getDescription());
+                    done = tasks[0].isDone();
+                    if (done == true)
+                        chB1.setChecked(true);
+                    nor--;
+                }
                 if (nor!=0){
                     row = findViewById(R.id.row2);
                     row.setVisibility(row.VISIBLE);
                     CheckBox chB2 =(CheckBox) row.getChildAt(0);
                     chB2.setText(tasks[1].getDescription());
+                    done = tasks[1].isDone();
+                    if (done==true)
+                        chB2.setChecked(true);
                     nor --;
                 }
                 if (nor!=0){
@@ -72,6 +81,9 @@ public class event_Info extends AppCompatActivity {
                     row.setVisibility(row.VISIBLE);
                     CheckBox chB3 =(CheckBox) row.getChildAt(0);
                     chB3.setText(tasks[2].getDescription());
+                    done = tasks[2].isDone();
+                    if (done==true)
+                        chB3.setChecked(true);
                     nor --;
                 }
                 if (nor!=0){
@@ -79,6 +91,9 @@ public class event_Info extends AppCompatActivity {
                     row.setVisibility(row.VISIBLE);
                     CheckBox chB4 =(CheckBox) row.getChildAt(0);
                     chB4.setText(tasks[3].getDescription());
+                    done = tasks[3].isDone();
+                    if (done==true)
+                        chB4.setChecked(true);
                 }
             }
 

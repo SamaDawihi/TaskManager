@@ -120,24 +120,25 @@
     <TableRow
         android:id="@+id/targetrow"
         android:paddingTop="8pt"
-        android:layout_width="match_parent">
+        android:layout_width="match_parent"
+        android:gravity="center">
 
         <Button
             android:id="@+id/editButton"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="5pt"
-            android:layout_marginRight="5pt"
+            android:layout_marginStart="5pt"
+            android:layout_marginEnd="5pt"
             android:layout_weight="1"
             android:onClick="deleteOrEdit"
             android:text="edit" />
 
         <Button
             android:id="@+id/deleteButton"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="5pt"
-            android:layout_marginRight="5pt"
+            android:layout_marginStart="5pt"
+            android:layout_marginEnd="5pt"
             android:layout_weight="1"
             android:onClick="deleteOrEdit"
             android:text="delete" />
