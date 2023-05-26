@@ -1,5 +1,10 @@
 package com.example.taskmanager;
 
+import static android.app.PendingIntent.getActivity;
+import static android.content.Context.ALARM_SERVICE;
+
+import static androidx.core.content.ContextCompat.getSystemService;
+
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.ContentValues;
@@ -38,7 +43,7 @@ public class TaskManagerController {
         if (added != -1) {
 
             // Perform notification and add to calendar methods
-
+            alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
             SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             Date date;
             try {
