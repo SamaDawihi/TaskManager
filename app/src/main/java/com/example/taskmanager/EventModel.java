@@ -1,5 +1,11 @@
 package com.example.taskmanager;
 
+import android.util.Log;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class EventModel  {
     private int eventId;
     private int typeId;
@@ -41,6 +47,14 @@ public class EventModel  {
 
     public String getDateTime() {
         return dateTime;
+    }
+
+    public Date getDate() throws ParseException {
+
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+        Date date = format.parse(dateTime);
+
+        return date;
     }
 
     public String getNote() {
