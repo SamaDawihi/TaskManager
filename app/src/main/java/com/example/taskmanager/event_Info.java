@@ -18,7 +18,6 @@ import java.util.List;
 
 public class event_Info extends AppCompatActivity {
     Integer eventID;
-    //MyTasksDB myTasksDB;
     EventModel eventModel ;
     TextView name, type, dateAndTime,note, priority;
     // CheckBox[] tasksCheckboxes;
@@ -42,6 +41,7 @@ public class event_Info extends AppCompatActivity {
         Intent intent = getIntent();
         if (intent != null) {
             eventID = intent.getIntExtra("eventId", -1);
+
             eventModel = taskcontroller.getEventById(eventID);
 
             types = taskcontroller.getAllTypes().toArray(new Type[0]);
@@ -54,16 +54,16 @@ public class event_Info extends AppCompatActivity {
 
             int pInt = eventModel.getPriority();
             switch (pInt){
-                case 0:
+                case 4:
                     priorityString = "Urgent";
                     break;
-                case 1:
+                case 3:
                     priorityString = "High";
                     break;
                 case 2:
                     priorityString = "Medium";
                     break;
-                case 3:
+                case 1:
                     priorityString = "Low";
                     break;
             }

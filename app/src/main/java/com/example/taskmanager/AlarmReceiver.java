@@ -18,9 +18,20 @@ import android.widget.Toast;
 import androidx.core.app.NotificationCompat;
 
 public class AlarmReceiver extends BroadcastReceiver {
+
+    int eventId;
+    String eventName;
+    int eventPriority;
+
     @Override
     public void onReceive(Context context, Intent intent) {
-        Toast.makeText(context, "Notification set for " +intent.getExtras().getString("EventName") , Toast.LENGTH_SHORT).show();
+        eventId = intent.getExtras().getInt("Event_Id");
+        eventName = intent.getExtras().getString("EventName");
+        eventPriority = intent.getExtras().getInt("EventName");
+
+        Toast.makeText(context, "EVENT ID: " + eventId , Toast.LENGTH_SHORT).show();
+
+        Toast.makeText(context, "Notification set for " + eventName , Toast.LENGTH_SHORT).show();
 
 
         // Get the notification manager service
@@ -64,14 +75,14 @@ public class AlarmReceiver extends BroadcastReceiver {
         }
 
         Intent notificationIntent = new Intent (context, event_Info.class); // specify the activity to open
-        notificationIntent.putExtra ("eventId", intent.getExtras().getInt("Event_Id")); // pass some data to the activity
+        notificationIntent.putExtra ("eventId", eventId); // pass some data to the activity
         PendingIntent contentIntent = PendingIntent.getActivity (context, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT); // create the pending intent
 
         // Create a notification builder
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, "notification_channel")
                 .setSmallIcon(R.drawable.ic_launcher_foreground)
                 .setContentTitle("Notification")
-                .setContentText("Your event ("+intent.getExtras().getString("EventName")+ ") is coming soon")
+                .setContentText("Your event ("+ eventName + ") is coming soon")
                 .setDefaults(Notification.DEFAULT_ALL)
                 .setContentIntent (contentIntent);
 
@@ -103,7 +114,7 @@ public class AlarmReceiver extends BroadcastReceiver {
 
         // Show the notification
         notificationManager.notify(0, builder.build());
-        Toast.makeText(context, "Notification set for " +intent.getExtras().getString("EventName") , Toast.LENGTH_SHORT).show();
+        Toast.makeText(context, "Notification set for " + eventName , Toast.LENGTH_SHORT).show();
 
 
     }

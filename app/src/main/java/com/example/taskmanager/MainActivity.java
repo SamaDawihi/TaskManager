@@ -37,6 +37,8 @@ public class MainActivity extends AppCompatActivity {
     TextView textView;
     MyTasksDB myTasksDB;
 
+    List<EventModel> list, eventList;
+
     //toggle buttons
     RadioButton upcoming;
     RadioButton all;
@@ -49,98 +51,69 @@ public class MainActivity extends AppCompatActivity {
 
         addEvent = findViewById(R.id.addEvent);
         addEvent.setOnClickListener(l -> startNewEvent());
-        //toggle buttons
+
         upcoming = findViewById(R.id.upcoming);
         all = findViewById(R.id.all);
         table = findViewById(R.id.eventTable);
         myTasksDB = new MyTasksDB(this);
-        List<EventModel> eventList = myTasksDB.getAllEvents();
 
-        List<EventModel> list = new ArrayList<>();
+        eventList = myTasksDB.getAllEvents();
 
-
-        upcoming.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                table.removeAllViews();
-                list.clear();
-                for (int i = eventList.size()-5 ; i < eventList.size() ; i++) {
-                    try{
-                        Log.e("list", eventList.get(i).getName());
-
-                        if(dateFormat(eventList.get(i).getDateTime(), eventList, i)) {
-                            list.add(eventList.get(i));
-                        }
-
-                        Log.e("list2", list.get(i).getName());
-                            int finalI = i;
-                            int finalI1 = i;
+        list = new ArrayList<>();
 
 
-                        row.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                // Toast.makeText(MainActivity.this, "rowClicked", Toast.LENGTH_SHORT).show();
-                                Intent intent = new Intent(getApplicationContext(), event_Info.class);
-                                intent.putExtra("eventId", eventList.get(finalI1).getEventId());
-                                startActivity(intent);
-                            }
-                        });
-                    }catch (IndexOutOfBoundsException  |ParseException | NullPointerException e){}
-                }
-                loadList(list);
-            }
+        upcoming.setOnClickListener(m -> loadUpcoming());
 
-        });
-
-        all.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                table.removeAllViews();
-                list.clear();
-                for (int i = 0; i < eventList.size(); i++) {
-                    try{
-                        Log.e("list", eventList.get(i).getName());
-                            list.add(eventList.get(i));
-
-                        Log.e("list2", list.get(i).getName());
-                        int finalI = i;
-                        int finalI1 = i;
-
-
-                        row.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                // Toast.makeText(MainActivity.this, "rowClicked", Toast.LENGTH_SHORT).show();
-                                Intent intent = new Intent(getApplicationContext(), event_Info.class);
-                                intent.putExtra("eventId", eventList.get(finalI1).getEventId());
-                                startActivity(intent);
-                            }
-                        });
-                    }catch (IndexOutOfBoundsException  | NullPointerException e){}
-                }
-                loadList(list);
-            }
-
-        });
+        all.setOnClickListener(v -> loadAll());
 
     }
+    void loadUpcoming(){
+            table.removeAllViews();
+            list.clear();
+            for (int i = eventList.size()-5 ; i < eventList.size(); i++) {
+                try{
+                    Log.i("list", eventList.get(i).getName());
+
+                    if(dateFormat(eventList.get(i).getDateTime(), eventList, i)) {
+                        list.add(eventList.get(i));
+                    }
+
+                    Log.i("list2", list.get(i).getName());
+
+
+
+                }catch (IndexOutOfBoundsException  | ParseException | NullPointerException e){}
+            }
+            loadList(list);
+        }
+        void loadAll(){
+            table.removeAllViews();
+            list.clear();
+            for (int i = 0; i < eventList.size(); i++) {
+                try{
+                    Log.i("list", eventList.get(i).getName());
+                    list.add(eventList.get(i));
+
+                    Log.i("list2", list.get(i).getName());
+
+
+                }catch (IndexOutOfBoundsException  | NullPointerException e){}
+            }
+            loadList(list);
+        }
+
 
 
     public void loadList(List<EventModel> list){
         for (int i = 0; i < list.size(); i++){
             try {
 
-                Log.e("loading", list.get(i).getName());
+                Log.i("loading", list.get(i).getName());
                 row = new TableRow(context);
                 textView = new TextView(context);
 
-//                DateFormat format = new SimpleDateFormat("yyyy/MM/dd");
-//                Date date = format.parse(list.get(i).getDateTime());
-//                Log.e("datec", list.get(i).getDateTime());
-//                Date today = Calendar.getInstance().getTime();
-//                if (date.after(today) || date.equals(today)) {
-//                    Log.e("after", list.get(i).getDateTime());
+                int eventID = eventList.get(i).getEventId();
+
                     textView.setText(list.get(i).getDateTime() + "\n" + list.get(i).getEventId() + " " + list.get(i).getName());
                     textView.setTextColor(Color.parseColor("#FFFFFF"));
                     textView.setTextSize(18);
@@ -148,9 +121,8 @@ public class MainActivity extends AppCompatActivity {
                     row.setBackgroundColor(list.get(i).getColor());
                     row.setElevation(54);//shadow
                     row.setPadding(16,16,16,16);
-
+                    row.setOnClickListener(l -> viewDetails(eventID));
                     table.addView(row);
-             //   }
             }catch (IndexOutOfBoundsException |NullPointerException  e){}
         }
     }
@@ -184,7 +156,8 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public void viewDetails(View v, int eventID){
+    public void viewDetails( int eventID){
+
         Intent intent = new Intent(this,event_Info.class);
         intent.putExtra("eventId",eventID);
         startActivity(intent);
