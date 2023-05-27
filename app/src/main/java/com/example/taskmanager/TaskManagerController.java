@@ -2,6 +2,7 @@ package com.example.taskmanager;
 
 import static android.app.PendingIntent.getActivity;
 import static android.content.Context.ALARM_SERVICE;
+import static android.content.Context.MODE_PRIVATE;
 
 import static androidx.core.content.ContextCompat.getSystemService;
 
@@ -10,6 +11,7 @@ import android.app.PendingIntent;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.widget.Toast;
 
 import java.text.ParseException;
@@ -24,6 +26,8 @@ public class TaskManagerController {
 
     private AlarmManager alarmManager;
     private PendingIntent pendingIntent;
+    public static final String SHARED_PREFS= "sharedPrefs";
+    public static final String NOTIFICATION_ID= "notificationid";
 
     public TaskManagerController(Context c) {
         dbHelper = new MyTasksDB(c);
@@ -55,9 +59,26 @@ public class TaskManagerController {
 
                 // Create an intent to start the AlarmReceiver class
                 Intent intent = new Intent(context, AlarmReceiver.class);
+                intent.putExtra("EventName", fName);
+                intent.putExtra("EventPriority", fPriority);
 
                 // Create a pending intent that will be triggered when the alarm goes off
-                pendingIntent = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_IMMUTABLE);
+
+                SharedPreferences sharedPreferences = context.getSharedPreferences("intent_code", Context.MODE_PRIVATE);
+
+                // Get the current notification ID from the preferences or 0 if not found
+                int reqCode = sharedPreferences.getInt("intent_code", 0);
+
+                // Increment the notification ID by 1
+                reqCode++;
+
+                // Save the new notification ID to the preferences
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.putInt("intent_code", reqCode);
+                editor.apply();
+
+                pendingIntent = PendingIntent.getBroadcast(context, reqCode, intent, PendingIntent.FLAG_IMMUTABLE);
+
 
                 // Set the alarm to the calendar time
                 alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
