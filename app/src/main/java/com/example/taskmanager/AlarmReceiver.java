@@ -7,6 +7,7 @@ import static android.content.Context.MODE_PRIVATE;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -62,12 +63,17 @@ public class AlarmReceiver extends BroadcastReceiver {
 
         }
 
+        Intent notificationIntent = new Intent (context, event_Info.class); // specify the activity to open
+        notificationIntent.putExtra ("event_id", intent.getExtras().getInt("Event_Id")); // pass some data to the activity
+        PendingIntent contentIntent = PendingIntent.getActivity (context, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT); // create the pending intent
+
         // Create a notification builder
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, "notification_channel")
                 .setSmallIcon(R.drawable.ic_launcher_foreground)
                 .setContentTitle("Notification")
                 .setContentText("Your event ("+intent.getExtras().getString("EventName")+ ") is coming soon")
-                .setDefaults(Notification.DEFAULT_ALL);
+                .setDefaults(Notification.DEFAULT_ALL)
+                .setContentIntent (contentIntent);
 
         //set priority
         int notificationPriority;

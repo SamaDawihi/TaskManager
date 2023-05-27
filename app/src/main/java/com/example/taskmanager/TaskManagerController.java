@@ -43,7 +43,7 @@ public class TaskManagerController {
     public int addEvent(String fName, int fType, int fColor, String fDateTime, String fNote, int fRemainderDuration, String fReminderUnit, int fPriority, String fDate, String fTime, Context context) {
         int added = dbHelper.addEvent(fName, fType, fColor, fDateTime, fNote, fRemainderDuration, fReminderUnit, fPriority);
 
-        if (added != -1 ) {
+        if (added != -1 ) { // & false
 
             // Perform notification and add to calendar methods
             alarmManager = (AlarmManager) context.getSystemService(ALARM_SERVICE);
@@ -60,6 +60,7 @@ public class TaskManagerController {
                 Intent intent = new Intent(context, AlarmReceiver.class);
                 intent.putExtra("EventName", fName);
                 intent.putExtra("EventPriority", fPriority);
+                intent.putExtra("Event_Id", added);
 
                 // Create a pending intent that will be triggered when the alarm goes off
                 pendingIntent = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_IMMUTABLE);
