@@ -496,5 +496,4 @@ public class NewEvent extends AppCompatActivity {
         }
         return true;
     }
-
 }
