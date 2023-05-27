@@ -24,7 +24,7 @@ public class event_Info extends AppCompatActivity {
     // CheckBox[] tasksCheckboxes;
     TaskManagerController taskcontroller;
     Type[] types;
-    String typeString;
+    String typeString, priorityString;
     Task[] tasks;
     //TableRow toBeRemovedRow, newRow;
     //TableLayout parentOfRow;
@@ -51,6 +51,22 @@ public class event_Info extends AppCompatActivity {
                     typeString = types[i].getName();
             }
             //we have the type string now
+
+            int pInt = eventModel.getPriority();
+            switch (pInt){
+                case 0:
+                    priorityString = "Urgent";
+                    break;
+                case 1:
+                    priorityString = "High";
+                    break;
+                case 2:
+                    priorityString = "Medium";
+                    break;
+                case 3:
+                    priorityString = "Low";
+                    break;
+            }
             tasks = taskcontroller.getTasksByEventId(eventID).toArray(new Task[0]);
             boolean done;
             if (tasks!=null){
@@ -79,7 +95,7 @@ public class event_Info extends AppCompatActivity {
                     CheckBox chB2 =(CheckBox) row.getChildAt(0);
                     chB2.setText(tasks[1].getDescription());
                     done = tasks[1].isDone();
-                    if (done==true)
+                    if (done)
                         chB2.setChecked(true);
                     boolean finalDone1 = done;
                     chB2.setOnClickListener(new View.OnClickListener() {
@@ -130,7 +146,7 @@ public class event_Info extends AppCompatActivity {
             type.setText("Type:     "+typeString);
             dateAndTime.setText("Date&Time:     "+eventModel.getDateTime());
             note.setText("note:     "+eventModel.getNote());
-
+            priority.setText("priority:     "+priorityString);
         }
 
     }
