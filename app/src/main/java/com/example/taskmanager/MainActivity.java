@@ -64,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 table.removeAllViews();
                 list.clear();
-                for (int i = 0; i < 5; i++) {
+                for (int i = eventList.size()-5 ; i < eventList.size() ; i++) {
                     try{
                         Log.e("list", eventList.get(i).getName());
 
@@ -156,22 +156,24 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public boolean dateFormat(String d, List<EventModel> list, int i) throws ParseException {
-        Log.e("enetred", list.get(i).getDateTime());
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        Log.e("date", list.get(i).getDateTime());
         String D = list.get(i).getDateTime();
+        Log.e("date", D);
         Date date = format.parse(D);
-        Log.e("datec", "h");
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(date);
         Date today = Calendar.getInstance().getTime();
-//        int diff = date.compareTo(today);
-//        Log.e("diff", String.valueOf(diff));
-        if (date.compareTo(today) >= 0) {
-                    return true;
-                }
-                    Log.e("after", list.get(i).getDateTime());
-                return false;
+        Log.e("today", String.valueOf(today));
+        if (date.compareTo(today) < 0) {
+            System.out.println("Date 1 is before Date 2");
+            return false;
+        } else if (date.compareTo(today) == 0) {
+            System.out.println("Date 1 is equal to Date 2");
+            return true;
+        } else if (date.after(today)) {
+            System.out.println("Date 1 is after Date 2");
+            return true;
+        }
+
+        return false;
     }
 
 
