@@ -26,8 +26,7 @@ public class TaskManagerController {
 
     private AlarmManager alarmManager;
     private PendingIntent pendingIntent;
-    public static final String SHARED_PREFS= "sharedPrefs";
-    public static final String NOTIFICATION_ID= "notificationid";
+
 
     public TaskManagerController(Context c) {
         dbHelper = new MyTasksDB(c);
@@ -63,21 +62,7 @@ public class TaskManagerController {
                 intent.putExtra("EventPriority", fPriority);
 
                 // Create a pending intent that will be triggered when the alarm goes off
-
-                SharedPreferences sharedPreferences = context.getSharedPreferences("intent_code", Context.MODE_PRIVATE);
-
-                // Get the current notification ID from the preferences or 0 if not found
-                int reqCode = sharedPreferences.getInt("intent_code", 0);
-
-                // Increment the notification ID by 1
-                reqCode++;
-
-                // Save the new notification ID to the preferences
-                SharedPreferences.Editor editor = sharedPreferences.edit();
-                editor.putInt("intent_code", reqCode);
-                editor.apply();
-
-                pendingIntent = PendingIntent.getBroadcast(context, reqCode, intent, PendingIntent.FLAG_IMMUTABLE);
+                pendingIntent = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_IMMUTABLE);
 
 
                 // Set the alarm to the calendar time

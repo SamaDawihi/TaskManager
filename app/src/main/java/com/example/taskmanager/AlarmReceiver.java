@@ -10,13 +10,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
+import android.widget.Toast;
 
 import androidx.core.app.NotificationCompat;
 
 public class AlarmReceiver extends BroadcastReceiver {
-    public static final String SHARED_PREFS= "sharedPrefs";
-    public static final String NOTIFICATION_ID= "notificationid";
-
     @Override
     public void onReceive(Context context, Intent intent) {
 
@@ -100,23 +98,7 @@ public class AlarmReceiver extends BroadcastReceiver {
         }*/
 
         // Show the notification
-
-        // Get the shared preferences object
-        SharedPreferences sharedPreferences = context.getSharedPreferences("notification_prefs", Context.MODE_PRIVATE);
-
-        // Get the current notification ID from the preferences or 0 if not found
-        int notificationId = sharedPreferences.getInt("notification_id", 0);
-
-        // Increment the notification ID by 1
-        notificationId++;
-
-        // Save the new notification ID to the preferences
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putInt("notification_id", notificationId);
-        editor.apply();
-
-
-        notificationManager.notify(notificationId, builder.build());
+        notificationManager.notify(0, builder.build());
 
     }
 }
