@@ -1,5 +1,7 @@
 package com.example.taskmanager;
 
+import static android.app.NotificationManager.IMPORTANCE_DEFAULT;
+import static android.app.NotificationManager.IMPORTANCE_LOW;
 import static android.content.Context.MODE_PRIVATE;
 
 import android.app.Notification;
@@ -17,88 +19,86 @@ import androidx.core.app.NotificationCompat;
 public class AlarmReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
+        Toast.makeText(context, "Notification set for " +intent.getExtras().getString("EventName") , Toast.LENGTH_SHORT).show();
+
 
         // Get the notification manager service
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-        String Event_priority=intent.getExtras().getString("EventPriority");
+        // Get the priority
+        int Event_priority=intent.getExtras().getInt("EventPriority");
 
 
         // Create a notification channel for Android O and above
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
 
-            NotificationChannel channel;
-            //switch (Event_priority) {
-             //   case "Urgent":
-                    channel = new NotificationChannel("notification_channel", "Notification Channel", NotificationManager.IMPORTANCE_HIGH);
-                   /* break;
+            //set importance
+            int channelImportance;
+             switch (Event_priority) {
+                case 4: //Urgent
+                    channelImportance = NotificationManager.IMPORTANCE_HIGH;
+                     break;
 
-                case "High":
-                    channel = new NotificationChannel("notification_channel", "Notification Channel", NotificationManager.IMPORTANCE_DEFAULT);
+                case 3: //High
+                    channelImportance = IMPORTANCE_DEFAULT;
                     break;
 
-                case "Medium":
-                    channel = new NotificationChannel("notification_channel", "Notification Channel", NotificationManager.IMPORTANCE_LOW);
+                case 2: //Medium
+                    channelImportance = IMPORTANCE_LOW;
                     break;
 
-                case "Low":
-                    channel = new NotificationChannel("notification_channel", "Notification Channel", NotificationManager.IMPORTANCE_MIN);
+                case 1: //Low
+                    channelImportance = NotificationManager.IMPORTANCE_MIN;
                     break;
 
                 default:
                     throw new IllegalStateException("Unexpected value: " + Event_priority);
 
-            }*/
+            }
 
-            notificationManager.createNotificationChannel(channel);
+
+             NotificationChannel channel = new NotificationChannel("notification_channel", "Notification Channel", channelImportance);
+             //channel.setImportance(IMPORTANCE_LOW);
+             notificationManager.createNotificationChannel(channel);
+
         }
 
         // Create a notification builder
-        NotificationCompat.Builder builder;
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(context, "notification_channel")
+                .setSmallIcon(R.drawable.ic_launcher_foreground)
+                .setContentTitle("Notification")
+                .setContentText("Your event ("+intent.getExtras().getString("EventName")+ ") is coming soon")
+                .setDefaults(Notification.DEFAULT_ALL);
 
-       // switch (Event_priority)
-        //{
-          //  case "Urgent":
-               builder = new NotificationCompat.Builder(context, "notification_channel")
-                        .setSmallIcon(R.drawable.ic_launcher_foreground)
-                        .setContentTitle("Notification")
-                        .setContentText("Your event ("+intent.getExtras().getString("EventName")+ ") is coming soon")
-                        .setPriority(NotificationCompat.PRIORITY_HIGH)
-                        .setDefaults(Notification.DEFAULT_ALL);
-                /*break;
+        //set priority
+        int notificationPriority;
+          switch (Event_priority)
+         {
+             case 4: //Urgent
+                 notificationPriority = NotificationCompat.PRIORITY_HIGH;
+                 break;
 
-            case "High":
-                builder = new NotificationCompat.Builder(context, "notification_channel")
-                        .setSmallIcon(R.drawable.ic_launcher_foreground)
-                        .setContentTitle("Notification")
-                        .setContentText("Your event ("+intent.getExtras().getString("EventName")+ ") is coming soon")
-                        .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-                        .setDefaults(Notification.DEFAULT_ALL);
+            case 3: //High
+                notificationPriority = NotificationCompat.PRIORITY_DEFAULT;
                 break;
 
-            case "Medium":
-                builder = new NotificationCompat.Builder(context, "notification_channel")
-                        .setSmallIcon(R.drawable.ic_launcher_foreground)
-                        .setContentTitle("Notification")
-                        .setContentText("Your event ("+intent.getExtras().getString("EventName")+ ") is coming soon")
-                        .setPriority(NotificationCompat.PRIORITY_LOW)
-                        .setDefaults(Notification.DEFAULT_ALL);
+            case 2: //Medium
+                notificationPriority = NotificationCompat.PRIORITY_LOW;
                 break;
 
-            case "Low":
-                builder = new NotificationCompat.Builder(context, "notification_channel")
-                        .setSmallIcon(R.drawable.ic_launcher_foreground)
-                        .setContentTitle("Notification")
-                        .setContentText("Your event ("+intent.getExtras().getString("EventName")+ ") is coming soon")
-                        .setPriority(NotificationCompat.PRIORITY_MIN)
-                        .setDefaults(Notification.DEFAULT_ALL);
+            case 1: //Low
+                notificationPriority = NotificationCompat.PRIORITY_MIN;
                 break;
 
             default:
                 throw new IllegalStateException("Unexpected value: " + Event_priority);
-        }*/
+        }
+        builder.setPriority(notificationPriority);
+
 
         // Show the notification
         notificationManager.notify(0, builder.build());
+        Toast.makeText(context, "Notification set for " +intent.getExtras().getString("EventName") , Toast.LENGTH_SHORT).show();
+
 
     }
 }

@@ -43,7 +43,7 @@ public class TaskManagerController {
     public int addEvent(String fName, int fType, int fColor, String fDateTime, String fNote, int fRemainderDuration, String fReminderUnit, int fPriority, String fDate, String fTime, Context context) {
         int added = dbHelper.addEvent(fName, fType, fColor, fDateTime, fNote, fRemainderDuration, fReminderUnit, fPriority);
 
-        if (added != -1 && false) {
+        if (added != -1 ) {
 
             // Perform notification and add to calendar methods
             alarmManager = (AlarmManager) context.getSystemService(ALARM_SERVICE);
@@ -68,6 +68,8 @@ public class TaskManagerController {
                 // Set the alarm to the calendar time
                 alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
                 Toast.makeText(context, "Notification set for " + calendar.YEAR + "/" + (calendar.MONTH + 1) + "/" + calendar.DAY_OF_MONTH + " " + calendar.HOUR_OF_DAY + ":" + calendar.MINUTE, Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "priority is " +fPriority , Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "Event name is  " +fName , Toast.LENGTH_SHORT).show();
 
 
 
