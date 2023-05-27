@@ -58,6 +58,16 @@
             android:paddingLeft="20pt"
             />
     </TableRow>
+    <TableRow android:paddingBottom="8pt">
+        <TextView
+            android:id="@+id/tvstate"
+            android:text="state: "
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            android:paddingLeft="20pt"
+            />
+    </TableRow>
 
     <TableRow android:paddingBottom="8pt">
         <TextView
@@ -87,8 +97,7 @@
         android:layout_height="match_parent"
         android:visibility="gone"
         android:paddingLeft="20pt">
-        <CheckBox
-            android:onClick="">
+        <CheckBox>
         </CheckBox>
     </TableRow>
 
@@ -132,7 +141,7 @@
             android:layout_marginStart="5pt"
             android:layout_marginEnd="5pt"
             android:layout_weight="1"
-            android:onClick="deleteOrEdit"
+            android:onClick="buttonActions"
             android:text="edit" />
 
         <Button
@@ -142,7 +151,7 @@
             android:layout_marginStart="5pt"
             android:layout_marginEnd="5pt"
             android:layout_weight="1"
-            android:onClick="deleteOrEdit"
+            android:onClick="buttonActions"
             android:text="delete" />
     </TableRow>
 </TableLayout>

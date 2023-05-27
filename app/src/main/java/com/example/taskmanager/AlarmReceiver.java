@@ -76,7 +76,8 @@ public class AlarmReceiver extends BroadcastReceiver {
         }
 
         Intent notificationIntent = new Intent (context, event_Info.class); // specify the activity to open
-        notificationIntent.putExtra ("eventId", eventId); // pass some data to the activity
+        notificationIntent.putExtra ("eventId", eventId);// pass some data to the activity
+        notificationIntent.putExtra("fromNotification",00);
         PendingIntent contentIntent = PendingIntent.getActivity (context, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT); // create the pending intent
 
         // Create a notification builder

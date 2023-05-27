@@ -20,7 +20,7 @@ import java.util.List;
 public class event_Info extends AppCompatActivity {
     Integer eventID;
     EventModel eventModel ;
-    TextView name, type, dateAndTime,note, priority;
+    TextView name, type, dateAndTime,note, priority, state;
     // CheckBox[] tasksCheckboxes;
     TaskManagerController taskcontroller;
     Type[] types;
@@ -40,6 +40,9 @@ public class event_Info extends AppCompatActivity {
         dateAndTime = findViewById(R.id.tvdatetime);
         note = findViewById(R.id.tvnote);
         priority = findViewById(R.id.tvpriority);
+        state= findViewById(R.id.tvstate);
+        deleteButton = findViewById(R.id.deleteButton);
+        editButton = findViewById(R.id.editButton);
         Intent intent = getIntent();
         if (intent != null) {
             eventID = intent.getIntExtra("eventId", -1);
@@ -142,6 +145,11 @@ public class event_Info extends AppCompatActivity {
                     });
                 }
             }
+            int checkFromNotification = intent.getIntExtra("fromNotification",-1);
+            if (checkFromNotification != -1){
+                deleteButton.setText("confirm");
+                editButton.setText("dismiss");
+            }
 
             //printing to the screen
             name.setText("Name:     "+eventModel.getName());
@@ -149,11 +157,12 @@ public class event_Info extends AppCompatActivity {
             dateAndTime.setText("Date&Time:     "+eventModel.getDateTime());
             note.setText("note:     "+eventModel.getNote());
             priority.setText("priority:     "+priorityString);
+            state.setText("state:     "+eventModel.getState());
         }
 
     }
-    public void deleteOrEdit (View view){
-        if (view.getId() == R.id.deleteButton){
+    public void buttonActions (View view){
+        if (((Button)view).getText().equals("delete")){
             AlertDialog.Builder builder = new AlertDialog.Builder(event_Info.this);
 
             builder.setTitle("Confirmation")
@@ -169,8 +178,14 @@ public class event_Info extends AppCompatActivity {
                     .setNegativeButton("Cancel", null) // null to dismiss the dialog without performing any action
                     .show();
         }
-        else{
+        else if(((Button)view).getText().equals("edit")){
 
+        }
+        else if(((Button)view).getText().equals("confirm")){
+            taskcontroller.changeEventState(eventID,"confirmed");
+        }
+        else if(((Button)view).getText().equals("dismiss")){
+            taskcontroller.changeEventState(eventID,"dismissed");
         }
     }
 
