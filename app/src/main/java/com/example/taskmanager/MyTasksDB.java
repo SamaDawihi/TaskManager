@@ -67,6 +67,7 @@ public class MyTasksDB extends SQLiteOpenHelper {
                         ", reminderDuration INTEGER NOT NULL" +
                         ", reminderUnit TEXT NOT NULL" +
                         ", priority INTEGER NOT NULL" +
+                        ", state TEXT NOT NULL" +
                         ", FOREIGN KEY (typeId) REFERENCES Type(typeId) ON DELETE CASCADE" +
                         ")";
         db.execSQL(query);
@@ -104,7 +105,7 @@ public class MyTasksDB extends SQLiteOpenHelper {
         db.close();
 
     }
-    int addEvent(String name, int typeId, int color, String dateTime, String note , int reminderDuration, String reminderUnit, int priority) {
+    int addEvent(String name, int typeId, int color, String dateTime, String note , int reminderDuration, String reminderUnit, int priority, String state) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
@@ -116,6 +117,7 @@ public class MyTasksDB extends SQLiteOpenHelper {
         values.put("reminderDuration", reminderDuration);
         values.put("reminderUnit", reminderUnit);
         values.put("priority", priority);
+        values.put("state", state);
         int eventId = (int) db.insert("Event", null, values);
         Log.i("ADD_EVENT", "ADDED EVENT ID IS " + String.valueOf(eventId));
 
@@ -190,9 +192,10 @@ public class MyTasksDB extends SQLiteOpenHelper {
                 int reminderDuration = cursor.getInt(Math.max(cursor.getColumnIndex("reminderDuration"), 0));
                 String reminderUnit = cursor.getString(Math.max(cursor.getColumnIndex("reminderUnit"), 0));
                 int priority = cursor.getInt(Math.max(cursor.getColumnIndex("priority"), 0));
+                String state = cursor.getString(Math.max(cursor.getColumnIndex("state"), 0));
 
 
-                EventModel event = new EventModel(eventId, typeId, name, color, dateTime, note, reminderDuration, reminderUnit, priority);
+                EventModel event = new EventModel(eventId, typeId, name, color, dateTime, note, reminderDuration, reminderUnit, priority, state);
                 eventList.add(event);
             } while (cursor.moveToNext());
         }
@@ -270,8 +273,9 @@ public class MyTasksDB extends SQLiteOpenHelper {
             int reminderDuration = cursor.getInt(Math.max(cursor.getColumnIndex("reminderDuration"), 0));
             String reminderUnit = cursor.getString(Math.max(cursor.getColumnIndex("reminderUnit"), 0));
             int priority = cursor.getInt(Math.max(cursor.getColumnIndex("priority"), 0));
+            String state = cursor.getString(Math.max(cursor.getColumnIndex("state"), 0));
 
-            event = new EventModel(eventId, typeId, name, color, dateTime, note, reminderDuration, reminderUnit, priority);
+            event = new EventModel(eventId, typeId, name, color, dateTime, note, reminderDuration, reminderUnit, priority, state);
         }
 
         cursor.close();
@@ -317,6 +321,7 @@ public class MyTasksDB extends SQLiteOpenHelper {
         values.put("reminderDuration", reminderDuration);
         values.put("reminderUnit", reminderUnit);
         values.put("priority", priority);
+        values.put("state", "Pending");
 
         String[] args = new String[]{String.valueOf(eventId)};
         db.update(EVENT, values, "eventId = ?", args);
@@ -345,6 +350,18 @@ public class MyTasksDB extends SQLiteOpenHelper {
 
         db.close();
     }
+    public void changeEventState(int eventId, String state) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put("state", state);
+
+        String[] args = new String[]{String.valueOf(eventId)};
+        db.update(EVENT, values, "eventId = ?", args);
+
+        db.close();
+    }
+
     void removeType(int typeId) {
         SQLiteDatabase db = this.getWritableDatabase();
         String[] whereArgs = {String.valueOf(typeId)};

@@ -5,6 +5,9 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.drawable.ShapeDrawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -109,7 +112,13 @@ public class MainActivity extends AppCompatActivity {
             try {
 
                 Log.i("loading", list.get(i).getName());
+
+
+                // Create the row
                 row = new TableRow(context);
+
+
+
                 textView = new TextView(context);
 
                 int eventID = eventList.get(i).getEventId();

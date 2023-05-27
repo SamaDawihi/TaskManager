@@ -13,6 +13,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
+import android.util.Log;
 import android.widget.Toast;
 
 import androidx.core.app.NotificationCompat;
@@ -27,7 +28,7 @@ public class AlarmReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         eventId = intent.getExtras().getInt("Event_Id");
         eventName = intent.getExtras().getString("EventName");
-        eventPriority = intent.getExtras().getInt("EventName");
+        eventPriority = intent.getExtras().getInt("EventPriority");
 
         Toast.makeText(context, "EVENT ID: " + eventId , Toast.LENGTH_SHORT).show();
 
@@ -116,6 +117,6 @@ public class AlarmReceiver extends BroadcastReceiver {
         notificationManager.notify(0, builder.build());
         Toast.makeText(context, "Notification set for " + eventName , Toast.LENGTH_SHORT).show();
 
-
+        Log.i("ALARM RECEIVER", "END");
     }
 }

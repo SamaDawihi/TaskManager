@@ -12,6 +12,9 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.provider.CalendarContract;
+import android.util.Log;
 import android.widget.Toast;
 
 import java.text.ParseException;
@@ -41,14 +44,14 @@ public class TaskManagerController {
     }
 
     public int addEvent(String fName, int fType, int fColor, String fDateTime, String fNote, int fRemainderDuration, String fReminderUnit, int fPriority, String fDate, String fTime, Context context) {
-        int added = dbHelper.addEvent(fName, fType, fColor, fDateTime, fNote, fRemainderDuration, fReminderUnit, fPriority);
+        int added = dbHelper.addEvent(fName, fType, fColor, fDateTime, fNote, fRemainderDuration, fReminderUnit, fPriority, "Pending");
 
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date date;
         if (added != -1 ) { // & false
-
-            // Perform notification and add to calendar methods
+            Log.i("AddEventController", "StartNotification1");
+            // Perform notification methods
             alarmManager = (AlarmManager) context.getSystemService(ALARM_SERVICE);
-            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            Date date;
             try {
                 date = format.parse(fDateTime);
 
@@ -72,11 +75,34 @@ public class TaskManagerController {
                 Toast.makeText(context, "priority is " +fPriority , Toast.LENGTH_SHORT).show();
                 Toast.makeText(context, "Event name is  " +fName , Toast.LENGTH_SHORT).show();
 
+                Log.i("AddEventController", "Start Calendar");
 
+                //calendar methods
+            // Create an intent to add an event to the calendar
+            Intent calendarIntent = new Intent(Intent.ACTION_INSERT)
+                    .setData(CalendarContract.Events.CONTENT_URI)
+                    .putExtra(CalendarContract.Events.TITLE, fName)
+                    .putExtra(CalendarContract.Events.DESCRIPTION, fNote)
+                    .putExtra(CalendarContract.Events.EVENT_COLOR, fColor) // Set the event color here
+                    .putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, date.getTime())
+                    .putExtra(CalendarContract.Events.AVAILABILITY, CalendarContract.Events.AVAILABILITY_BUSY);
+
+            // Check if there is a calendar app available to handle the intent
+            if (intent.resolveActivity(context.getPackageManager()) != null) {
+                // Start the activity with the intent
+                Log.i("AddEventController", "Will start Calendar Intent");
+                context.startActivity(calendarIntent);
+            } else {
+                // Handle the case where no calendar app is available
+                Log.i("AddEventController", "No calendar app found");
+                Toast.makeText(context, "No calendar app found", Toast.LENGTH_SHORT).show();
+            }
 
             } catch (ParseException e) {
                 e.printStackTrace();
             }
+            Log.i("AddEventController", "End Calendar Calendar");
+
 
         }
         return added;
@@ -104,6 +130,9 @@ public class TaskManagerController {
 
     public void changeTaskStatus(int taskId, boolean done) {
         dbHelper.changeTaskStatus(taskId, done);
+    }
+    void changeEventState(int eventId, String state){
+        dbHelper.changeEventState(eventId, state);
     }
     public void removeType(int typeId) {
         dbHelper.removeType(typeId);
