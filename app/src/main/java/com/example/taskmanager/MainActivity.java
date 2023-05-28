@@ -2,8 +2,12 @@ package com.example.taskmanager;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.drawable.ShapeDrawable;
@@ -47,6 +51,9 @@ public class MainActivity extends AppCompatActivity {
     RadioButton all;
     MainActivity context = this;
 
+    private static final int PERMISSION_REQUEST_CODE = 100;
+    boolean isCalendarAllowed, isNotificationAllowed;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,43 +76,36 @@ public class MainActivity extends AppCompatActivity {
 
         all.setOnClickListener(v -> loadAll());
 
+        checkPermissions();
     }
     void loadUpcoming(){
-            table.removeAllViews();
-            list.clear();
-            for (int i = eventList.size()-5 ; i < eventList.size(); i++) {
-                try{
-                    Log.i("list", eventList.get(i).getName());
-
-                    if(dateFormat(eventList.get(i).getDateTime(), eventList, i)) {
-                        list.add(eventList.get(i));
-                    }
-
-                    Log.i("list2", list.get(i).getName());
-
-
-
-                }catch (IndexOutOfBoundsException  | ParseException | NullPointerException e){}
-            }
-            loadList(list);
-        }
-        void loadAll(){
-            table.removeAllViews();
-            list.clear();
-            for (int i = 0; i < eventList.size(); i++) {
-                try{
-                    Log.i("list", eventList.get(i).getName());
+        table.removeAllViews();
+        list.clear();
+        for (int i = eventList.size()-5 ; i < eventList.size(); i++) {
+            try{
+                Log.i("list", eventList.get(i).getName());
+                if(dateFormat(eventList.get(i).getDateTime(), eventList, i)) {
                     list.add(eventList.get(i));
+                }
 
-                    Log.i("list2", list.get(i).getName());
+                Log.i("list2", list.get(i).getName());
 
-
-                }catch (IndexOutOfBoundsException  | NullPointerException e){}
-            }
-            loadList(list);
+            }catch (IndexOutOfBoundsException  | ParseException | NullPointerException e){}
         }
-
-
+        loadList(list);
+    }
+    void loadAll(){
+        table.removeAllViews();
+        list.clear();
+        for (int i = 0; i < eventList.size(); i++) {
+            try{
+                Log.i("list", eventList.get(i).getName());
+                list.add(eventList.get(i));
+                Log.i("list2", list.get(i).getName());
+            }catch (IndexOutOfBoundsException  | NullPointerException e){}
+        }
+        loadList(list);
+    }
 
     public void loadList(List<EventModel> list){
         for (int i = 0; i < list.size(); i++){
@@ -157,9 +157,6 @@ public class MainActivity extends AppCompatActivity {
         return false;
     }
 
-
-
-
     public void startNewEvent() {
         Intent intent = new Intent(this, NewEvent.class);
         startActivity(intent);
@@ -192,4 +189,63 @@ public class MainActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+
+
+    private boolean checkPermissions() {
+        boolean needPermission = false;
+
+        if (Build.VERSION.SDK_INT >= 23) {
+            List<String> permissions = new ArrayList<>();
+
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.SET_ALARM) != PackageManager.PERMISSION_GRANTED) {
+                permissions.add(Manifest.permission.SET_ALARM);
+            }
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+                permissions.add(Manifest.permission.POST_NOTIFICATIONS);
+            }
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_CALENDAR) != PackageManager.PERMISSION_GRANTED) {
+                permissions.add(Manifest.permission.READ_CALENDAR);
+            }
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_CALENDAR) != PackageManager.PERMISSION_GRANTED) {
+                permissions.add(Manifest.permission.WRITE_CALENDAR);
+            }
+
+            if (!permissions.isEmpty()) {
+                needPermission = true;
+                ActivityCompat.requestPermissions(this, permissions.toArray(new String[0]), PERMISSION_REQUEST_CODE);
+            }
+        }
+
+        return needPermission;
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        if (requestCode == PERMISSION_REQUEST_CODE) {
+            boolean allPermissionsGranted = true;
+
+            for (int result : grantResults) {
+                if (result != PackageManager.PERMISSION_GRANTED) {
+                    allPermissionsGranted = false;
+                    break;
+                }
+            }
+
+            if (allPermissionsGranted) {
+                // All permissions granted, enableBtn();
+                Toast.makeText(this, "allPermissionsGranted", Toast.LENGTH_SHORT).show();
+
+            } else {
+                int v = 0;
+                for(String i : permissions) {
+                    if (grantResults[v++] != PackageManager.PERMISSION_GRANTED)
+                        Toast.makeText(this, i+ " NOT Granted", Toast.LENGTH_SHORT).show();
+                }
+            }
+        }
+    }
+
+
 }
