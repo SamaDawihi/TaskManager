@@ -52,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
     MainActivity context = this;
 
     private static final int PERMISSION_REQUEST_CODE = 100;
-    boolean isCalendarAllowed, isNotificationAllowed;
+    boolean allGranted;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,7 +76,7 @@ public class MainActivity extends AppCompatActivity {
 
         all.setOnClickListener(v -> loadAll());
 
-        checkPermissions();
+        allGranted = checkPermissions();
     }
     void loadUpcoming(){
         table.removeAllViews();
@@ -107,34 +107,44 @@ public class MainActivity extends AppCompatActivity {
         loadList(list);
     }
 
-    public void loadList(List<EventModel> list){
-        for (int i = 0; i < list.size(); i++){
+    public void loadList(List<EventModel> list) {
+        if (list.size() == 0) {
+            row = new TableRow(context);
+            textView = new TextView(context);
+            textView.setText("There are no events yet. Click here to add a new event.");
+            textView.setTextColor(Color.parseColor("#FFFFFF"));
+            textView.setTextSize(18);
+            row.addView(textView);
+            row.setElevation(54); // shadow
+            row.setPadding(16, 16, 16, 16);
+            row.setOnClickListener(l -> startNewEvent());
+            table.addView(row);
+        }
+        for (int i = 0; i < list.size(); i++) {
             try {
-
                 Log.i("loading", list.get(i).getName());
-
 
                 // Create the row
                 row = new TableRow(context);
-
-
 
                 textView = new TextView(context);
 
                 int eventID = eventList.get(i).getEventId();
 
-                    textView.setText(list.get(i).getDateTime() + "\n" + list.get(i).getEventId() + " " + list.get(i).getName());
-                    textView.setTextColor(Color.parseColor("#FFFFFF"));
-                    textView.setTextSize(18);
-                    row.addView(textView);
-                    row.setBackgroundColor(list.get(i).getColor());
-                    row.setElevation(54);//shadow
-                    row.setPadding(16,16,16,16);
-                    row.setOnClickListener(l -> viewDetails(eventID));
-                    table.addView(row);
-            }catch (IndexOutOfBoundsException |NullPointerException  e){}
+                textView.setText(list.get(i).getDateTime() + "\n" + list.get(i).getEventId() + " " + list.get(i).getName());
+                textView.setTextColor(Color.parseColor("#FFFFFF"));
+                textView.setTextSize(18);
+                textView.setBackgroundResource(R.drawable.rounded_background); // Apply a rounded background drawable
+                textView.setPadding(16, 16, 16, 16);
+                textView.setOnClickListener(l -> viewDetails(eventID));
+                row.addView(textView);
+                table.addView(row);
+
+            } catch (IndexOutOfBoundsException | NullPointerException e) {
+            }
         }
     }
+
 
     public boolean dateFormat(String d, List<EventModel> list, int i) throws ParseException {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -197,9 +207,6 @@ public class MainActivity extends AppCompatActivity {
         if (Build.VERSION.SDK_INT >= 23) {
             List<String> permissions = new ArrayList<>();
 
-            if (ContextCompat.checkSelfPermission(this, Manifest.permission.SET_ALARM) != PackageManager.PERMISSION_GRANTED) {
-                permissions.add(Manifest.permission.SET_ALARM);
-            }
             if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
                 permissions.add(Manifest.permission.POST_NOTIFICATIONS);
             }

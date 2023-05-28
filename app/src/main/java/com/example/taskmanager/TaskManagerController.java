@@ -88,7 +88,7 @@ public class TaskManagerController {
 
                 Log.i("AddEventController", "Start Calendar");
 
-/*
+                /*
                 Intent i= new Intent(Intent.ACTION_INSERT);
                 i.setData(CalendarContract.Events.CONTENT_URI);
                 i.putExtra(CalendarContract.Events.TITLE, fName);
@@ -105,32 +105,33 @@ public class TaskManagerController {
 
 
 
+
                 //calendar methods
                 // Create an intent to add an event to the calendar
-
-
                 Intent calendarIntent = null;
 
-    calendarIntent = new Intent(Intent.ACTION_INSERT)
-            .setData(CalendarContract.Events.CONTENT_URI)
-            .putExtra(CalendarContract.Events.TITLE, fName)
-            .putExtra(CalendarContract.Events.DESCRIPTION, fNote)
-            .putExtra(CalendarContract.Events.EVENT_COLOR, fColor) // Set the event color here
-            .putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, date.getTime())
-            .putExtra(CalendarContract.Events.AVAILABILITY, CalendarContract.Events.AVAILABILITY_BUSY);
+                calendarIntent = new Intent(Intent.ACTION_INSERT)
+                    .setData(CalendarContract.Events.CONTENT_URI)
+                    .putExtra(CalendarContract.Events.TITLE, fName)
+                    .putExtra(CalendarContract.Events.DESCRIPTION, fNote)
+                    .putExtra(CalendarContract.Events.EVENT_COLOR, fColor) // Set the event color here
+                    .putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, date.getTime())
+                    .putExtra(CalendarContract.Events.AVAILABILITY, CalendarContract.Events.AVAILABILITY_BUSY);
 
 
-    // Check if there is a calendar app available to handle the intent
-    if (intent.resolveActivity(context.getPackageManager()) != null) {
-        // Start the activity with the intent
-        Log.i("AddEventController", "Will start Calendar Intent");
-        context.startActivity(calendarIntent);
-        Toast.makeText(context, "calendar app found", Toast.LENGTH_SHORT).show();
-    } else {
-        // Handle the case where no calendar app is available
-        Log.i("AddEventController", "No calendar app found");
-        Toast.makeText(context, "No calendar app found", Toast.LENGTH_SHORT).show();
-    }
+                // Check if there is a calendar app available to handle the intent
+                if (intent.resolveActivity(context.getPackageManager()) != null) {
+                    // Start the activity with the intent
+                    Log.i("AddEventController", "Will start Calendar Intent");
+                    context.startActivity(calendarIntent);
+                    //Toast.makeText(context, "calendar app found", Toast.LENGTH_SHORT).show();
+                } else {
+                    // Handle the case where no calendar app is available
+                    Log.i("AddEventController", "No calendar app found");
+                    //Toast.makeText(context, "No calendar app found", Toast.LENGTH_SHORT).show();
+                }
+
+
 
             } catch (ParseException e) {
                 e.printStackTrace();
