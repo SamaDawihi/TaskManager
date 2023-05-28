@@ -87,7 +87,7 @@ public class AlarmReceiver extends BroadcastReceiver {
                 .setContentText("Your event ("+ eventName + ") is coming soon")
                 .setDefaults(Notification.DEFAULT_ALL)
                 .setContentIntent (contentIntent);
-/*
+
         //set priority
         int notificationPriority;
           switch (Event_priority)
@@ -112,7 +112,7 @@ public class AlarmReceiver extends BroadcastReceiver {
                 throw new IllegalStateException("Unexpected value: " + Event_priority);
         }
         builder.setPriority(notificationPriority);
-*/
+
 
         // Show the notification
         notificationManager.notify(0, builder.build());
