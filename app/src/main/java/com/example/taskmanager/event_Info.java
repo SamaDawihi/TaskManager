@@ -179,7 +179,11 @@ public class event_Info extends AppCompatActivity {
                     .show();
         }
         else if(((Button)view).getText().equals("edit")){
-
+            view.setOnClickListener(v -> {
+                Intent EUIntent = new Intent(this, UpdateEvent.class);
+                EUIntent.putExtra("eventId", eventID);
+                startActivity(EUIntent);
+            });
         }
         else if(((Button)view).getText().equals("confirm")){
             taskcontroller.changeEventState(eventID,"confirmed");

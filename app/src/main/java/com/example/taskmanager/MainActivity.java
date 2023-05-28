@@ -134,9 +134,10 @@ public class MainActivity extends AppCompatActivity {
                 textView.setText(list.get(i).getDateTime() + "\n" + list.get(i).getEventId() + " " + list.get(i).getName());
                 textView.setTextColor(Color.parseColor("#FFFFFF"));
                 textView.setTextSize(18);
-                textView.setBackgroundResource(R.drawable.rounded_background); // Apply a rounded background drawable
-                textView.setPadding(16, 16, 16, 16);
-                textView.setOnClickListener(l -> viewDetails(eventID));
+                row.setBackgroundResource(R.drawable.rounded_background); // Apply a rounded background drawable
+                row.setBackgroundColor(list.get(i).getColor());
+                row.setPadding(16, 16, 16, 16);
+                row.setOnClickListener(l -> viewDetails(eventID));
                 row.addView(textView);
                 table.addView(row);
 
