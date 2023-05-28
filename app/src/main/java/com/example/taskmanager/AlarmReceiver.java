@@ -78,7 +78,7 @@ public class AlarmReceiver extends BroadcastReceiver {
         Intent notificationIntent = new Intent (context, event_Info.class); // specify the activity to open
         notificationIntent.putExtra ("eventId", eventId);// pass some data to the activity
         notificationIntent.putExtra("fromNotification",00);
-        PendingIntent contentIntent = PendingIntent.getActivity (context, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT); // create the pending intent
+        PendingIntent contentIntent = PendingIntent.getActivity (context, 100, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT); // create the pending intent
 
         // Create a notification builder
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, "notification_channel")
@@ -87,7 +87,7 @@ public class AlarmReceiver extends BroadcastReceiver {
                 .setContentText("Your event ("+ eventName + ") is coming soon")
                 .setDefaults(Notification.DEFAULT_ALL)
                 .setContentIntent (contentIntent);
-
+/*
         //set priority
         int notificationPriority;
           switch (Event_priority)
@@ -112,11 +112,15 @@ public class AlarmReceiver extends BroadcastReceiver {
                 throw new IllegalStateException("Unexpected value: " + Event_priority);
         }
         builder.setPriority(notificationPriority);
-
+*/
 
         // Show the notification
         notificationManager.notify(0, builder.build());
         Toast.makeText(context, "Notification set for " + eventName , Toast.LENGTH_SHORT).show();
+        Toast.makeText(context, " id is "+ eventId , Toast.LENGTH_SHORT).show();
+
+
+
 
         Log.i("ALARM RECEIVER", "END");
     }

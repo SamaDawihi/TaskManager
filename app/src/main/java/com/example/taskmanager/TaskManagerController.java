@@ -3,16 +3,20 @@ package com.example.taskmanager;
 import static android.app.PendingIntent.getActivity;
 import static android.content.Context.ALARM_SERVICE;
 import static android.content.Context.MODE_PRIVATE;
+import static android.content.Context.NOTIFICATION_SERVICE;
 
 import static androidx.core.content.ContextCompat.getSystemService;
 
 import android.app.AlarmManager;
+import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.provider.CalendarContract;
 import android.util.Log;
 import android.widget.Toast;
@@ -29,6 +33,9 @@ public class TaskManagerController {
 
     private AlarmManager alarmManager;
     private PendingIntent pendingIntent;
+    String Event_name;
+    int Event_priority;
+    int Event_Id;
 
 
     public TaskManagerController(Context c) {
@@ -46,9 +53,13 @@ public class TaskManagerController {
     public int addEvent(String fName, int fType, int fColor, String fDateTime, String fNote, int fRemainderDuration, String fReminderUnit, int fPriority, String fDate, String fTime, Context context) {
         int added = dbHelper.addEvent(fName, fType, fColor, fDateTime, fNote, fRemainderDuration, fReminderUnit, fPriority, "Pending");
 
+        Event_name=fName;
+        Event_priority=fPriority;
+
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date date;
         if (added != -1 ) { // & false
+            Event_Id=added;
             Log.i("AddEventController", "StartNotification1");
             // Perform notification methods
             alarmManager = (AlarmManager) context.getSystemService(ALARM_SERVICE);
@@ -77,26 +88,49 @@ public class TaskManagerController {
 
                 Log.i("AddEventController", "Start Calendar");
 
-                //calendar methods
-            // Create an intent to add an event to the calendar
-            Intent calendarIntent = new Intent(Intent.ACTION_INSERT)
-                    .setData(CalendarContract.Events.CONTENT_URI)
-                    .putExtra(CalendarContract.Events.TITLE, fName)
-                    .putExtra(CalendarContract.Events.DESCRIPTION, fNote)
-                    .putExtra(CalendarContract.Events.EVENT_COLOR, fColor) // Set the event color here
-                    .putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, date.getTime())
-                    .putExtra(CalendarContract.Events.AVAILABILITY, CalendarContract.Events.AVAILABILITY_BUSY);
+/*
+                Intent i= new Intent(Intent.ACTION_INSERT);
+                i.setData(CalendarContract.Events.CONTENT_URI);
+                i.putExtra(CalendarContract.Events.TITLE, fName);
+                i.putExtra(CalendarContract.Events.DESCRIPTION, fNote);
+                i.putExtra(CalendarContract.Events.EVENT_COLOR, fColor);
+                i.putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, date.getTime());
+                i.putExtra(CalendarContract.Events.ALL_DAY, false );
 
-            // Check if there is a calendar app available to handle the intent
-            if (intent.resolveActivity(context.getPackageManager()) != null) {
-                // Start the activity with the intent
-                Log.i("AddEventController", "Will start Calendar Intent");
-                context.startActivity(calendarIntent);
-            } else {
-                // Handle the case where no calendar app is available
-                Log.i("AddEventController", "No calendar app found");
-                Toast.makeText(context, "No calendar app found", Toast.LENGTH_SHORT).show();
-            }
+                if (i.resolveActivity(context.getPackageManager()) != null){
+                    context.startActivity(i);
+                }else{
+                    Toast.makeText(context, "No app that supports this action", Toast.LENGTH_SHORT).show();
+                }*/
+
+
+
+                //calendar methods
+                // Create an intent to add an event to the calendar
+
+
+                Intent calendarIntent = null;
+
+    calendarIntent = new Intent(Intent.ACTION_INSERT)
+            .setData(CalendarContract.Events.CONTENT_URI)
+            .putExtra(CalendarContract.Events.TITLE, fName)
+            .putExtra(CalendarContract.Events.DESCRIPTION, fNote)
+            .putExtra(CalendarContract.Events.EVENT_COLOR, fColor) // Set the event color here
+            .putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, date.getTime())
+            .putExtra(CalendarContract.Events.AVAILABILITY, CalendarContract.Events.AVAILABILITY_BUSY);
+
+
+    // Check if there is a calendar app available to handle the intent
+    if (intent.resolveActivity(context.getPackageManager()) != null) {
+        // Start the activity with the intent
+        Log.i("AddEventController", "Will start Calendar Intent");
+        context.startActivity(calendarIntent);
+        Toast.makeText(context, "calendar app found", Toast.LENGTH_SHORT).show();
+    } else {
+        // Handle the case where no calendar app is available
+        Log.i("AddEventController", "No calendar app found");
+        Toast.makeText(context, "No calendar app found", Toast.LENGTH_SHORT).show();
+    }
 
             } catch (ParseException e) {
                 e.printStackTrace();
@@ -138,8 +172,28 @@ public class TaskManagerController {
         dbHelper.removeType(typeId);
     }
 
-    public void removeEvent(int eventId) {
+    public void removeEvent(int eventId, Context context) {
         dbHelper.removeEvent(eventId);
+
+        // Create an intent with the same class and extras as the one used to set the alarm
+        Intent intent = new Intent(context, AlarmReceiver.class);
+        intent.putExtra("EventName", Event_name);
+        intent.putExtra("EventPriority", Event_priority);
+        intent.putExtra("Event_Id", eventId);
+        Toast.makeText(context, "id is "+eventId, Toast.LENGTH_SHORT).show();
+
+        // Create a pending intent with the same id and intent as the one used to set the alarm
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_IMMUTABLE);
+
+
+        // Get the alarm manager service
+        AlarmManager alarmManager = (AlarmManager) context.getSystemService(ALARM_SERVICE);
+
+        // Cancel the alarm and the pending intent
+        alarmManager.cancel(pendingIntent);
+        pendingIntent.cancel();
+        Toast.makeText(context, "notification cancled", Toast.LENGTH_SHORT).show();
+
     }
 
     public void removeTask(int taskId) {

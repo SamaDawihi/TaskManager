@@ -170,7 +170,7 @@ public class event_Info extends AppCompatActivity {
                     .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            taskcontroller.removeEvent(eventID);
+                            taskcontroller.removeEvent(eventID, getApplicationContext());
                             Intent intent = new Intent(event_Info.this, MainActivity.class);
                             startActivity(intent);
                         }
