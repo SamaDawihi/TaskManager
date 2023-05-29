@@ -81,16 +81,22 @@ public class MainActivity extends AppCompatActivity {
     void loadUpcoming(){
         table.removeAllViews();
         list.clear();
-        for (int i = eventList.size()-5 ; i < eventList.size(); i++) {
+        List<EventModel> listUnordered = new ArrayList<>();
+        for (int i = eventList.size()-1 ; i >=0 ; i--) {
             try{
                 Log.i("list", eventList.get(i).getName());
                 if(dateFormat(eventList.get(i).getDateTime(), eventList, i)) {
-                    list.add(eventList.get(i));
+                    if(listUnordered.size()< 5) {
+                        listUnordered.add(eventList.get(i));
+                    }
                 }
 
                 Log.i("list2", list.get(i).getName());
 
             }catch (IndexOutOfBoundsException  | ParseException | NullPointerException e){}
+        }
+        for (int i = 0; i < listUnordered.size(); i++) {
+            list.add(listUnordered.get(listUnordered.size() - 1 - i));
         }
         loadList(list);
     }
