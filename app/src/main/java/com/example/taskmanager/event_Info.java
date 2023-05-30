@@ -32,7 +32,6 @@ public class event_Info extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.i("EVENTINFO", "INFO");
         setContentView(R.layout.activity_event_info);
         taskcontroller = new TaskManagerController(this);
         name = findViewById(R.id.tvname);

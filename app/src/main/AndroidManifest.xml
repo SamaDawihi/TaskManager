@@ -21,12 +21,6 @@
             android:name=".UpdateEvent"
             android:exported="false" />
         <activity
-            android:name=".AllTypes"
-            android:exported="false" />
-        <activity
-            android:name=".AllEvents"
-            android:exported="false" />
-        <activity
             android:name=".event_Info"
             android:exported="false" />
         <activity

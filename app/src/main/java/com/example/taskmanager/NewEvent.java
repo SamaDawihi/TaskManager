@@ -160,7 +160,6 @@ public class NewEvent extends AppCompatActivity {
         int i = 0;
         for (Type t : types){
             items[i++] = t;
-            Log.i("TYPE_NAME", t.getName());
         }
 
         ArrayAdapter<Type> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, items);
@@ -327,7 +326,6 @@ public class NewEvent extends AppCompatActivity {
                         if(hourOfDay < 10) hour = "0" + hour;
                         fTime = hour + ":" + min + ":00";
                         timeTV.setText(fTime);
-                        Log.i("TimePicker","time picked is: " + fTime);
 
                     }
                 },
@@ -345,7 +343,6 @@ public class NewEvent extends AppCompatActivity {
                     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd"); // HH:mm:ss
                     fDate = dateFormat.format(calendar.getTime());
                     dateTV.setText(fDate);
-                    Log.i("DatePicker","date picked is: " + fDate);
 
                 }, Calendar.getInstance().get(Calendar.YEAR),
                 Calendar.getInstance().get(Calendar.MONTH),
@@ -387,7 +384,6 @@ public class NewEvent extends AppCompatActivity {
         }
 
 
-        Log.i("fSub1", "-" + fSubTask1 + "-");
         if(fSubTask1 != null && fSubTask1.length() > 0)
             controller.addTask(eventId, fSubTask1);
 

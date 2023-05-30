@@ -126,7 +126,6 @@ public class MyTasksDB extends SQLiteOpenHelper {
         return eventId;
     }
     int addTask(int eventId, String description) {
-        Log.i("ADDING_TASK", "ADDED TASK Desc IS " + description);
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
@@ -135,9 +134,7 @@ public class MyTasksDB extends SQLiteOpenHelper {
         values.put("done", false);
 
         int taskId = (int) db.insert("Task", null, values);
-        Log.i("ADD_TASK", "ADDED TASK ID IS " + String.valueOf(taskId));
-
-
+        Log.i("ADDING_TASK", "ADDED TASK ID IS " + String.valueOf(taskId) + " AND Desc IS " + description);
         db.close();
         return taskId;
 

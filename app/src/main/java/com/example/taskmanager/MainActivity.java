@@ -84,14 +84,14 @@ public class MainActivity extends AppCompatActivity {
         List<EventModel> listUnordered = new ArrayList<>();
         for (int i = eventList.size()-1 ; i >=0 ; i--) {
             try{
-                Log.i("list", eventList.get(i).getName());
+                //Log.i("list", eventList.get(i).getName());
                 if(dateFormat(eventList.get(i).getDateTime(), eventList, i)) {
                     if(listUnordered.size()< 5) {
                         listUnordered.add(eventList.get(i));
                     }
                 }
 
-                Log.i("list2", list.get(i).getName());
+                //Log.i("list2", list.get(i).getName());
 
             }catch (IndexOutOfBoundsException  | ParseException | NullPointerException e){}
         }
@@ -105,9 +105,9 @@ public class MainActivity extends AppCompatActivity {
         list.clear();
         for (int i = 0; i < eventList.size(); i++) {
             try{
-                Log.i("list", eventList.get(i).getName());
+                //Log.i("list", eventList.get(i).getName());
                 list.add(eventList.get(i));
-                Log.i("list2", list.get(i).getName());
+                //Log.i("list2", list.get(i).getName());
             }catch (IndexOutOfBoundsException  | NullPointerException e){}
         }
         loadList(list);
@@ -128,7 +128,7 @@ public class MainActivity extends AppCompatActivity {
         }
         for (int i = 0; i < list.size(); i++) {
             try {
-                Log.i("loading", list.get(i).getName());
+                Log.i("loading", "EventName " + list.get(i).getName());
 
                 // Create the row
                 row = new TableRow(context);
@@ -156,18 +156,18 @@ public class MainActivity extends AppCompatActivity {
     public boolean dateFormat(String d, List<EventModel> list, int i) throws ParseException {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String D = list.get(i).getDateTime();
-        Log.e("date", D);
+        Log.i("EventDate", D);
         Date date = format.parse(D);
         Date today = Calendar.getInstance().getTime();
-        Log.e("today", String.valueOf(today));
+        Log.i("today", String.valueOf(today));
         if (date.compareTo(today) < 0) {
-            System.out.println("Date 1 is before Date 2");
+            //System.out.println("Date 1 is before Date 2");
             return false;
         } else if (date.compareTo(today) == 0) {
-            System.out.println("Date 1 is equal to Date 2");
+            //System.out.println("Date 1 is equal to Date 2");
             return true;
         } else if (date.after(today)) {
-            System.out.println("Date 1 is after Date 2");
+            //System.out.println("Date 1 is after Date 2");
             return true;
         }
 
@@ -185,29 +185,6 @@ public class MainActivity extends AppCompatActivity {
         intent.putExtra("eventId",eventID);
         startActivity(intent);
     }
-
-    //Option Menu
-    public boolean onCreateOptionsMenu(Menu menu){
-        super.onCreateOptionsMenu(menu);
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.main_menu, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        Toast.makeText(this, (item.toString()), Toast.LENGTH_SHORT).show();
-        if(item.getItemId() == R.id.viewAllEventsOption){
-            Intent intent = new Intent(this, AllEvents.class);
-            startActivity(intent);
-        }else if(item.getItemId() == R.id.viewAllTypesOption){
-            Intent intent = new Intent(this, AllTypes.class);
-            startActivity(intent);
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
-
     private boolean checkPermissions() {
         boolean needPermission = false;
 

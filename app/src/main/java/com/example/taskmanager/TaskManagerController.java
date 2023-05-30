@@ -63,7 +63,7 @@ public class TaskManagerController {
         Date date;
         if (added != -1 ) { // & false
             Event_Id=added;
-            Log.i("AddEventController", "StartNotification1");
+            Log.i("AddEventController", "Start Notification");
             // Perform notification methods
             alarmManager = (AlarmManager) context.getSystemService(ALARM_SERVICE);
             try {
@@ -147,9 +147,6 @@ public class TaskManagerController {
             } catch (ParseException e) {
                 e.printStackTrace();
             }
-            Log.i("AddEventController", "End Calendar Calendar");
-
-
         }
         return added;
     }

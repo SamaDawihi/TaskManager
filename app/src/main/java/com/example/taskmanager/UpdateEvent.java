@@ -184,7 +184,6 @@ public class UpdateEvent extends AppCompatActivity {
         int i = 0;
         for (Type t : types){
             items[i++] = t;
-            Log.i("TYPE_NAME", t.getName());
         }
 
         ArrayAdapter<Type> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, items);
@@ -373,7 +372,6 @@ public class UpdateEvent extends AppCompatActivity {
                         if(hourOfDay < 10) hour = "0" + hour;
                         fTime = hour + ":" + min + ":00";
                         timeTV.setText(fTime);
-                        Log.i("TimePicker","time picked is: " + fTime);
 
                     }
                 },
@@ -390,7 +388,6 @@ public class UpdateEvent extends AppCompatActivity {
                     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd"); // HH:mm:ss
                     fDate = dateFormat.format(calendar.getTime());
                     dateTV.setText(fDate);
-                    Log.i("DatePicker","date picked is: " + fDate);
 
                 }, Calendar.getInstance().get(Calendar.YEAR),
                 Calendar.getInstance().get(Calendar.MONTH),
@@ -449,11 +446,7 @@ public class UpdateEvent extends AppCompatActivity {
         return true;
     }
     public void  updateEvent(int id){
-        MyTasksDB myTasksDB;
-        myTasksDB = new MyTasksDB(this);
-        myTasksDB.updateEventById(id,fName,fTypeId,fColor,fDateTime,fNote,fReminderDuration,fReminderUnit,fPriority);
-
-
+        taskcontroller.updateEventById(id,fName,fTypeId,fColor,fDateTime,fNote,fReminderDuration,fReminderUnit,fPriority, this);
 
 
         Toast.makeText(this, "change saved", Toast.LENGTH_SHORT).show();
