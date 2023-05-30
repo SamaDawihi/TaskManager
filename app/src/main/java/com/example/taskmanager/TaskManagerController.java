@@ -121,13 +121,13 @@ public class TaskManagerController {
                 // Create an intent to add an event to the calendar
                 Intent calendarIntent = null;
 
-                calendarIntent = new Intent(Intent.ACTION_INSERT)
-                    .setData(CalendarContract.Events.CONTENT_URI)
-                    .putExtra(CalendarContract.Events.TITLE, fName)
-                    .putExtra(CalendarContract.Events.DESCRIPTION, fNote)
-                    .putExtra(CalendarContract.Events.EVENT_COLOR, fColor) // Set the event color here
-                    .putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, date.getTime())
-                    .putExtra(CalendarContract.Events.AVAILABILITY, CalendarContract.Events.AVAILABILITY_BUSY);
+                calendarIntent = new Intent(Intent.ACTION_INSERT);
+                calendarIntent.setData(CalendarContract.Events.CONTENT_URI);
+                calendarIntent.putExtra(CalendarContract.Events.TITLE, fName);
+                calendarIntent.putExtra(CalendarContract.Events.DESCRIPTION, fNote);
+                calendarIntent.putExtra(CalendarContract.Events.EVENT_COLOR, fColor);// Set the event color here
+                calendarIntent.putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, date.getTime());
+                calendarIntent.putExtra(CalendarContract.Events.AVAILABILITY, CalendarContract.Events.AVAILABILITY_BUSY);
 
 
                 // Check if there is a calendar app available to handle the intent

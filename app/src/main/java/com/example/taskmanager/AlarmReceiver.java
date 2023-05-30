@@ -2,8 +2,6 @@ package com.example.taskmanager;
 
 import static android.app.NotificationManager.IMPORTANCE_DEFAULT;
 import static android.app.NotificationManager.IMPORTANCE_LOW;
-import static android.content.Context.MODE_PRIVATE;
-
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -11,11 +9,9 @@ import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Build;
 import android.util.Log;
 import android.widget.Toast;
-
 import androidx.core.app.NotificationCompat;
 
 public class AlarmReceiver extends BroadcastReceiver {
@@ -24,7 +20,7 @@ public class AlarmReceiver extends BroadcastReceiver {
     String eventName;
     int eventPriority;
     int eventReminder;
-    String eventRemindreUnit;
+    String eventReminderUnit;
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -32,7 +28,7 @@ public class AlarmReceiver extends BroadcastReceiver {
         eventName = intent.getExtras().getString("EventName");
         eventPriority = intent.getExtras().getInt("EventPriority");
         eventReminder= intent.getExtras().getInt("Remainder_Duration");
-        eventRemindreUnit= String.valueOf(intent.getExtras().getInt("Reminder_Unit"));
+        eventReminderUnit = String.valueOf(intent.getExtras().getInt("Reminder_Unit"));
 
 
         Toast.makeText(context, "EVENT ID: " + eventId , Toast.LENGTH_SHORT).show();
