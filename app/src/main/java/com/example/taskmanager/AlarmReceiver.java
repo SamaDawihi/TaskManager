@@ -23,15 +23,19 @@ public class AlarmReceiver extends BroadcastReceiver {
     int eventId;
     String eventName;
     int eventPriority;
+    int eventReminder;
+    String eventRemindreUnit;
 
     @Override
     public void onReceive(Context context, Intent intent) {
         eventId = intent.getExtras().getInt("Event_Id");
         eventName = intent.getExtras().getString("EventName");
         eventPriority = intent.getExtras().getInt("EventPriority");
+        eventReminder= intent.getExtras().getInt("Remainder_Duration");
+        eventRemindreUnit= String.valueOf(intent.getExtras().getInt("Reminder_Unit"));
+
 
         Toast.makeText(context, "EVENT ID: " + eventId , Toast.LENGTH_SHORT).show();
-
         Toast.makeText(context, "Notification set for " + eventName , Toast.LENGTH_SHORT).show();
 
 
@@ -78,7 +82,7 @@ public class AlarmReceiver extends BroadcastReceiver {
         Intent notificationIntent = new Intent (context, event_Info.class); // specify the activity to open
         notificationIntent.putExtra ("eventId", eventId);// pass some data to the activity
         notificationIntent.putExtra("fromNotification",00);
-        PendingIntent contentIntent = PendingIntent.getActivity (context, 100, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT); // create the pending intent
+        PendingIntent contentIntent = PendingIntent.getActivity (context, eventId, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT); // create the pending intent
 
         // Create a notification builder
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, "notification_channel")
@@ -115,7 +119,7 @@ public class AlarmReceiver extends BroadcastReceiver {
 
 
         // Show the notification
-        notificationManager.notify(0, builder.build());
+        notificationManager.notify(eventId, builder.build());
         Toast.makeText(context, "Notification set for " + eventName , Toast.LENGTH_SHORT).show();
         Toast.makeText(context, " id is "+ eventId , Toast.LENGTH_SHORT).show();
 

@@ -183,7 +183,7 @@ public class NewEvent extends AppCompatActivity {
         });
     }
     private void setUnitsSpinner() {
-        String[] items = new String[]{"Minutes", "Hours", "Day", "Weak", "month" };
+        String[] items = new String[]{"Minutes", "Hours", "Days", "Weeks", "At time of event" }; //modified
 
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, items);
 
@@ -379,7 +379,7 @@ public class NewEvent extends AppCompatActivity {
                 + "Priority: " + fPriority + "\n";
         Log.i("ADDED_EVENT", r);
 
-        int eventId = controller.addEvent(fName, fTypeId, fColor, fDateTime, fNote, fReminderDuration, fReminderUnit, fPriority, fDate, fTime,  this);
+        int eventId = controller.addEvent(fName, fTypeId, fColor, fDateTime, fNote, fReminderDuration, fReminderUnit, fPriority,  this);
         if(eventId == -1) {
             errors.add("Failed to add new event Try again");
             displayErrors();
