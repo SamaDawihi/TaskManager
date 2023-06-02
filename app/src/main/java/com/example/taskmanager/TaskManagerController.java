@@ -208,6 +208,12 @@ public class TaskManagerController {
         pendingIntent.cancel();
         Toast.makeText(context, "notification cancled", Toast.LENGTH_SHORT).show();
 
+        //remove event from calendar app
+        Uri eventUri = ContentUris.withAppendedId(CalendarContract.Events.CONTENT_URI, Event_Id);
+        ContentValues event = new ContentValues();
+        event.put(CalendarContract.Events.DELETED, 1);
+        context.getContentResolver().update(eventUri, event, null, null);
+
     }
 
     public void removeTask(int taskId) {
