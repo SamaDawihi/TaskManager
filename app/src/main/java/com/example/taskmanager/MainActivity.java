@@ -78,7 +78,8 @@ public class MainActivity extends AppCompatActivity {
 
         allGranted = checkPermissions();
 
-        addCalendar();
+        Toast.makeText(this,addCalendar(), Toast.LENGTH_SHORT ).show();
+        //addCalendar();
 
     }
 
@@ -182,11 +183,15 @@ public class MainActivity extends AppCompatActivity {
         startActivity(startNewEventActivity);
     }
 
-    private void addCalendar() {
+    private String addCalendar() {
+        String result = "no addCalendarIntent";
+
         if(getIntent().getIntExtra("addCalendar", -1) > -1){
-            int eventId = getIntent().getIntExtra("eventId", -1);
-            EventModel eventToCal = controller.getEventById(eventId);
-            if(eventToCal == null) return;
+            int newEventId = getIntent().getIntExtra("eventId", -1);
+            EventModel eventToCal = controller.getEventById(newEventId);
+            if(eventToCal == null || eventToCal.getName() == null || eventToCal.getName().equals("")) return "Problems";
+
+            result = eventToCal.getName();
 
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             DialogInterface.OnClickListener addEventToCalendar = new DialogInterface.OnClickListener() {
@@ -196,7 +201,6 @@ public class MainActivity extends AppCompatActivity {
                         Date eventDate = null;
                         try {
                             eventDate = format.parse(eventToCal.getDateTime());
-
                             Intent calendarIntent = new Intent(Intent.ACTION_INSERT);
                             calendarIntent.setData(CalendarContract.Events.CONTENT_URI);
                             calendarIntent.putExtra(CalendarContract.Events.TITLE, eventToCal.getName());
@@ -204,7 +208,7 @@ public class MainActivity extends AppCompatActivity {
                             calendarIntent.putExtra(CalendarContract.Events.EVENT_COLOR, eventToCal.getColor());// Set the event color here
                             calendarIntent.putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, eventDate.getTime());
                             calendarIntent.putExtra(CalendarContract.Events.AVAILABILITY, CalendarContract.Events.AVAILABILITY_BUSY);
-                            calendarIntent.putExtra(CalendarContract.Events.ALL_DAY, true);
+                            calendarIntent.putExtra(CalendarContract.Events.ALL_DAY, false);
                             calendarIntent.putExtra(CalendarContract.Events.HAS_ALARM, false);
 
 
@@ -234,6 +238,7 @@ public class MainActivity extends AppCompatActivity {
             AlertDialog dialog = builder.create();
             dialog.show();
         }
+        return "added: " + result;
     }
 
 

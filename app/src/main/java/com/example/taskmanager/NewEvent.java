@@ -27,6 +27,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.Spinner;
 import android.widget.TableLayout;
@@ -55,15 +56,14 @@ public class NewEvent extends AppCompatActivity {
     EditText name, note, reminderDuration, sub1, sub2, sub3, sub4, newTypeName;
     Button addNewType, date, time, add, addTask1, removeTask2, removeTask3, removeTask4, newTypeColor, submitNewType;
     Spinner type, priority, reminderUnit;
-    TextView dateTV, timeTV, result;
-    TableRow row1,row2, row3,row4, newTypeRow;
+    TextView dateTV, timeTV;
+    LinearLayout row1,row2, row3,row4, newTypeRow;
     //---------------------------Views-----------------------------
 
     List<String> visibleRows;
     List<String> errors;
 
     TaskManagerController controller;
-    Context context = this;
 
     Calendar calendar;
 
