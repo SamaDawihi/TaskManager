@@ -402,7 +402,13 @@ public class NewEvent extends AppCompatActivity {
         if(fSubTask4 != null && fSubTask4.length() > 0)
             controller.addTask(eventId, fSubTask4);
 
+        addEventToCalendar(eventId);
+
         return true;
+    }
+
+    private void addEventToCalendar(int eventId) {
+
     }
 
     private void displayErrors() {

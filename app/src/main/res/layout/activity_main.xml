@@ -67,12 +67,16 @@
         android:textSize="30dp"
         />
 
-    <TableLayout
-        android:id="@+id/eventTable"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-    </TableLayout>
-
+        android:layout_height="match_parent"
+        >
+        <TableLayout
+            android:id="@+id/eventTable"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+        </TableLayout>
+    </ScrollView>
 
 
 

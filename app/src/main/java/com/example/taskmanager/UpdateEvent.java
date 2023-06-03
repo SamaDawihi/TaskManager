@@ -22,6 +22,7 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -31,10 +32,10 @@ import java.util.List;
 import yuku.ambilwarna.AmbilWarnaDialog;
 
 public class UpdateEvent extends AppCompatActivity {
+
     //-------------intent-----------
     Intent startedIntent;
     int eventId;
-
 
     //---------------------------Views-----------------------------
     TableLayout table;
@@ -83,9 +84,7 @@ public class UpdateEvent extends AppCompatActivity {
 
     }
 
-    public void getTaskByEventId(int id)
-    {
-
+    public void getTaskByEventId(int id) {
         task = taskcontroller.getTasksByEventId(id).toArray(new Task[0]);
 
     }
@@ -141,9 +140,8 @@ public class UpdateEvent extends AppCompatActivity {
 
         name.setText(selectedEvent.getName()) ;
         note.setText(selectedEvent.getNote());
-        reminderDuration.setText(selectedEvent.getReminderDuration()+" ");
+        reminderDuration.setText(selectedEvent.getReminderDuration() == -1? "" : selectedEvent.getReminderDuration() + "");
 
-        //newTypeName.setText(selectedEvent.getTypeId());
 
         dateTV = findViewById(R.id.dateTV);
 
@@ -206,7 +204,7 @@ public class UpdateEvent extends AppCompatActivity {
         });
     }
     private void setUnitsSpinner() {
-        String[] items = new String[]{"Minutes", "Hours", "Day", "Weak", "month" };
+        String[] items = new String[]{"At time of event", "Minutes", "Hours", "Days", "Weeks"}; //modified
 
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, items);
 
@@ -216,6 +214,11 @@ public class UpdateEvent extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 fReminderUnit = (String) parent.getItemAtPosition(position);
+                if(fReminderUnit.equals("At time of event")){
+                    reminderDuration.setVisibility(View.GONE);
+                }else{
+                    reminderDuration.setVisibility(View.VISIBLE);
+                }
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
@@ -225,10 +228,10 @@ public class UpdateEvent extends AppCompatActivity {
         });
     }
     void setPrioritiesSpinner(){
-        Priority p1 = new Priority(NotificationManager.IMPORTANCE_HIGH, "Urgent");
-        Priority p2 = new Priority(NotificationManager.IMPORTANCE_DEFAULT, "High");
-        Priority p3 = new Priority(NotificationManager.IMPORTANCE_LOW, "Medium");
-        Priority p4 = new Priority(NotificationManager.IMPORTANCE_MIN, "Low");
+        Priority p1 = new Priority(NotificationCompat.PRIORITY_HIGH, "Urgent");
+        Priority p2 = new Priority(NotificationCompat.PRIORITY_DEFAULT, "High");
+        Priority p3 = new Priority(NotificationCompat.PRIORITY_LOW, "Medium");
+        Priority p4 = new Priority(NotificationCompat.PRIORITY_MIN, "Low");
 
         Priority[] items = new Priority[]{p1,p2,p3, p4};
 
@@ -432,16 +435,13 @@ public class UpdateEvent extends AppCompatActivity {
         }
         if(fReminderUnit == null) {
             errors.add("SELECT REMINDER UNIT");
-            return false;
         }
-
         if(fReminderDuration < 0) {
-            errors.add("SET Reminder Duration");
-            return false;
+            if(!fReminderUnit.equals("At time of event"))
+                errors.add("SET Reminder Duration");
         }
-        if(fPriority < 0) {
+        if(fPriority < -2 || fPriority > 1) {
             errors.add("SELECT PRIORITY");
-            return false;
         }
         return true;
     }
@@ -466,10 +466,10 @@ public class UpdateEvent extends AppCompatActivity {
         fNote = note.getText().toString();
 
         String reminderD = reminderDuration.getText().toString();
-        if (!(reminderD == null || reminderD.isEmpty()))
+        if ( !reminderD.equals(""))
             fReminderDuration = Integer.parseInt(reminderD.replaceAll("\\s", ""));
-        fSubTask1 = fSubTask2 = fSubTask3 = fSubTask4 = null;
 
+        fSubTask1 = fSubTask2 = fSubTask3 = fSubTask4 = null;
 
         fSubTask1 = sub1.getText().toString();
         if(visibleRows.contains("Row2"))
@@ -480,109 +480,80 @@ public class UpdateEvent extends AppCompatActivity {
             fSubTask4 = sub4.getText().toString();
 
 
-        if("".equalsIgnoreCase(fSubTask1)||fSubTask1==null)
-        {
-            if(task.length>=1)
-            {
 
+        //add, update or remove task1
+        if("".equalsIgnoreCase(fSubTask1) || fSubTask1==null)
+        {
+            if(task.length >= 1) {
                 taskcontroller.removeTask(task[0].getTaskId());
                 Toast.makeText(this, "removeTask", Toast.LENGTH_SHORT).show();
             }
-
-
         }
-        else if ("".equalsIgnoreCase(fSubTask1)||fSubTask1!=null)
-        {
-
-            if(task.length>=1)
-            {
-
+        else {
+            if(task.length >= 1) {
                 taskcontroller.updateTaskById(task[0].getTaskId(),fSubTask1+"");
                 Toast.makeText(this, "updateTaskById", Toast.LENGTH_SHORT).show();
 
             }
-            else
-            {
+            else {
                 taskcontroller.addTask(eventId,fSubTask1+"");
                 Toast.makeText(this, "addTask", Toast.LENGTH_SHORT).show();
-
-
             }
-
-
-
         }
-
 
         /////////////////////
 
-        if("".equalsIgnoreCase(fSubTask2)||fSubTask2==null)
+        if("".equalsIgnoreCase(fSubTask2) || fSubTask2 == null)
         {
             if(task.length>=2)
             {
 
-                taskcontroller.removeTask(task[1].getTaskId());
+                taskcontroller.removeTask (task[1].getTaskId());
                 Toast.makeText(this, "removeTask 2", Toast.LENGTH_SHORT).show();
             }
 
 
         }
-        else if ("".equalsIgnoreCase(fSubTask2)||fSubTask2!=null)
+        else
         {
-
             if(task.length>=2)
             {
-
                 taskcontroller.updateTaskById(task[1].getTaskId(),fSubTask2+"");
                 Toast.makeText(this, "updateTaskById", Toast.LENGTH_SHORT).show();
-
             }
             else
             {
                 taskcontroller.addTask(eventId,fSubTask2+"");
                 Toast.makeText(this, "addTask", Toast.LENGTH_SHORT).show();
-
-
             }
-
-
-
         }
-        //////////
-        if("".equalsIgnoreCase(fSubTask3)||fSubTask3==null)
+
+        if("".equalsIgnoreCase(fSubTask3) || fSubTask3 == null)
         {
             if(task.length>=3)
             {
-
                 taskcontroller.removeTask(task[2].getTaskId());
                 Toast.makeText(this, "removeTask 2", Toast.LENGTH_SHORT).show();
             }
-
-
         }
-        else if ("".equalsIgnoreCase(fSubTask3)||fSubTask3!=null)
+        else
         {
-
             if(task.length>=2)
             {
-
                 taskcontroller.updateTaskById(task[2].getTaskId(),fSubTask3+"");
                 Toast.makeText(this, "updateTaskById", Toast.LENGTH_SHORT).show();
-
             }
             else
             {
                 taskcontroller.addTask(eventId,fSubTask3+"");
                 Toast.makeText(this, "addTask", Toast.LENGTH_SHORT).show();
-
-
             }
 
 
 
         }
-        /////////
-        if("".equalsIgnoreCase(fSubTask4)||fSubTask4==null)
+
+        if("".equalsIgnoreCase(fSubTask4) || fSubTask4==null)
         {
             if(task.length>=4)
             {
@@ -593,7 +564,7 @@ public class UpdateEvent extends AppCompatActivity {
 
 
         }
-        else if ("".equalsIgnoreCase(fSubTask4)||fSubTask4!=null)
+        else
         {
 
             if(task.length>=4)
@@ -608,9 +579,6 @@ public class UpdateEvent extends AppCompatActivity {
                 taskcontroller.addTask(eventId,fSubTask4+"");
                 Toast.makeText(this, "addTask", Toast.LENGTH_SHORT).show();
             }
-
-
-
         }
 
     }

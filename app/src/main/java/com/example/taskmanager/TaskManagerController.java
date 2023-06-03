@@ -172,9 +172,6 @@ public class TaskManagerController {
     public void updateEventById(int eventId, String name, int typeId, int color, String dateTime, String note, int reminderDuration, String reminderUnit, int priority, Context context) {
         dbHelper.updateEventById(eventId, name, typeId, color, dateTime, note, reminderDuration, reminderUnit, priority);
 
-        removeEvent(eventId, context);
-        addEvent(name, typeId, color, dateTime, note, reminderDuration, reminderUnit,priority, context);
-
     }
 
     public void updateTaskById(int taskId, String description) {

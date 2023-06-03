@@ -69,6 +69,7 @@ public class MainActivity extends AppCompatActivity {
         all.setOnClickListener(v -> loadAll());
 
         allGranted = checkPermissions();
+
     }
     void loadUpcoming(){
         table.removeAllViews();
@@ -76,14 +77,11 @@ public class MainActivity extends AppCompatActivity {
         List<EventModel> listUnordered = new ArrayList<>();
         for (int i = eventList.size()-1 ; i >=0 ; i--) {
             try{
-                //Log.i("list", eventList.get(i).getName());
                 if(dateFormat(eventList.get(i).getDateTime(), eventList, i)) {
                     if(listUnordered.size()< 5) {
                         listUnordered.add(eventList.get(i));
                     }
                 }
-
-                //Log.i("list2", list.get(i).getName());
 
             }catch (IndexOutOfBoundsException  | ParseException | NullPointerException e){}
         }
@@ -97,9 +95,7 @@ public class MainActivity extends AppCompatActivity {
         list.clear();
         for (int i = 0; i < eventList.size(); i++) {
             try{
-                //Log.i("list", eventList.get(i).getName());
                 list.add(eventList.get(i));
-                //Log.i("list2", list.get(i).getName());
             }catch (IndexOutOfBoundsException  | NullPointerException e){}
         }
         loadList(list);
@@ -110,8 +106,7 @@ public class MainActivity extends AppCompatActivity {
             row = new TableRow(context);
             textView = new TextView(context);
             textView.setText("There are no events yet. Click here to add a new event.");
-            textView.setTextColor(Color.parseColor("#FFFFFF"));
-            textView.setTextSize(18);
+            textView.setTextSize(14);
             row.addView(textView);
             row.setElevation(54); // shadow
             row.setPadding(16, 16, 16, 16);
@@ -156,18 +151,13 @@ public class MainActivity extends AppCompatActivity {
     public boolean dateFormat(String d, List<EventModel> list, int i) throws ParseException {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String D = list.get(i).getDateTime();
-        Log.i("EventDate", D);
         Date date = format.parse(D);
         Date today = Calendar.getInstance().getTime();
-        Log.i("today", String.valueOf(today));
         if (date.compareTo(today) < 0) {
-            //System.out.println("Date 1 is before Date 2");
             return false;
         } else if (date.compareTo(today) == 0) {
-            //System.out.println("Date 1 is equal to Date 2");
             return true;
         } else if (date.after(today)) {
-            //System.out.println("Date 1 is after Date 2");
             return true;
         }
 
@@ -226,8 +216,8 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
 
+            /*
             if (allPermissionsGranted) {
-                // All permissions granted, enableBtn();
                 Toast.makeText(this, "allPermissionsGranted", Toast.LENGTH_SHORT).show();
 
             } else {
@@ -237,6 +227,8 @@ public class MainActivity extends AppCompatActivity {
                         Toast.makeText(this, i+ " NOT Granted", Toast.LENGTH_SHORT).show();
                 }
             }
+
+             */
         }
     }
 
