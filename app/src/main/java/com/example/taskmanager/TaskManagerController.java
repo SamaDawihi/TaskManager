@@ -113,42 +113,8 @@ public class TaskManagerController {
 
                 // Set the alarm to the calendar time
                 alarmManager.set(AlarmManager.RTC_WAKEUP, reminderTime, pendingIntent);
-                Toast.makeText(context, "Notification set for " + remainderCal.YEAR + "/" + (remainderCal.MONTH + 1) + "/" + remainderCal.DAY_OF_MONTH + " " + remainderCal.HOUR_OF_DAY + ":" + remainderCal.MINUTE, Toast.LENGTH_SHORT).show();
                 Toast.makeText(context, "priority is " + fPriority , Toast.LENGTH_SHORT).show();
                 Toast.makeText(context, "Event name is  " +fName , Toast.LENGTH_SHORT).show();
-
-                Log.i("AddEventController", "Start Calendar");
-
-
-                //calendar methods
-                // Create an intent to add an event to the calendar
-                Intent calendarIntent = null;
-
-                calendarIntent = new Intent(Intent.ACTION_INSERT);
-                calendarIntent.setData(CalendarContract.Events.CONTENT_URI);
-                calendarIntent.putExtra(CalendarContract.Events.TITLE, fName);
-                calendarIntent.putExtra(CalendarContract.Events.DESCRIPTION, fNote);
-                calendarIntent.putExtra(CalendarContract.Events.EVENT_COLOR, fColor);// Set the event color here
-                calendarIntent.putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, date.getTime());
-                calendarIntent.putExtra(CalendarContract.Events.AVAILABILITY, CalendarContract.Events.AVAILABILITY_BUSY);
-                calendarIntent.putExtra(CalendarContract.Events.ALL_DAY, true);
-                calendarIntent.putExtra(CalendarContract.Events.HAS_ALARM, false);
-
-
-                // Check if there is a calendar app available to handle the intent
-                if (intent.resolveActivity(context.getPackageManager()) != null) {
-                    // Start the activity with the intent
-                    Log.i("AddEventController", "Will start Calendar Intent");
-                    context.startActivity(calendarIntent);
-                    //Toast.makeText(context, "calendar app found", Toast.LENGTH_SHORT).show();
-
-                } else {
-                    // Handle the case where no calendar app is available
-                    Log.i("AddEventController", "No calendar app found");
-                    //Toast.makeText(context, "No calendar app found", Toast.LENGTH_SHORT).show();
-                }
-
-
 
             } catch (ParseException e) {
                 e.printStackTrace();

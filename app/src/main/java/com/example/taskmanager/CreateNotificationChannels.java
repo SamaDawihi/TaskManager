@@ -29,20 +29,4 @@ public class CreateNotificationChannels{
             notificationManager.createNotificationChannel(channelM);
         }
     }
-
-    public NotificationChannel getChannelD() {
-        return channelD;
-    }
-
-    public NotificationChannel getChannelH() {
-        return channelH;
-    }
-
-    public NotificationChannel getChannelL() {
-        return channelL;
-    }
-
-    public NotificationChannel getChannelM() {
-        return channelM;
-    }
 }

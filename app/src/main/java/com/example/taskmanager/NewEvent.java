@@ -17,6 +17,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.provider.CalendarContract;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -62,6 +63,7 @@ public class NewEvent extends AppCompatActivity {
     List<String> errors;
 
     TaskManagerController controller;
+    Context context = this;
 
     Calendar calendar;
 
@@ -252,8 +254,13 @@ public class NewEvent extends AppCompatActivity {
         date.setOnClickListener( l -> showDateSelector());
         time.setOnClickListener( l -> showTimeSelector());
         add.setOnClickListener(l -> {
-            if(add())
-                startActivity(new Intent(this, MainActivity.class));
+            int eventId = add();
+            if(eventId > -1) {
+                Intent toMain = new Intent(this, MainActivity.class);
+                toMain.putExtra("addCalendar", 1);
+                toMain.putExtra("eventId", eventId);
+                startActivity(toMain);
+            }
 
         });
 
@@ -358,7 +365,7 @@ public class NewEvent extends AppCompatActivity {
     }
 
 
-    boolean add(){
+    int add(){
 
         //Toast.makeText(this, "typeId = " + fTypeId * 100, Toast.LENGTH_SHORT).show();
         errors = new ArrayList<>();
@@ -369,7 +376,7 @@ public class NewEvent extends AppCompatActivity {
 
         if (!errors.isEmpty()) {
             displayErrors();
-            return false;
+            return -1;
         }
 
 
@@ -386,7 +393,7 @@ public class NewEvent extends AppCompatActivity {
         if(eventId == -1) {
             errors.add("Failed to add new event Try again");
             displayErrors();
-            return false;
+            return -1;
         }
 
 
@@ -402,14 +409,11 @@ public class NewEvent extends AppCompatActivity {
         if(fSubTask4 != null && fSubTask4.length() > 0)
             controller.addTask(eventId, fSubTask4);
 
-        addEventToCalendar(eventId);
 
-        return true;
+        return eventId;
     }
 
-    private void addEventToCalendar(int eventId) {
 
-    }
 
     private void displayErrors() {
         // Concatenate the error messages

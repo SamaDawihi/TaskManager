@@ -1,16 +1,20 @@
 package com.example.taskmanager;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import android.Manifest;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.CalendarContract;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.RadioButton;
@@ -27,11 +31,14 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
+    private static final int NEW_EVENT_REQUEST_CODE = 111;
     Button addEvent;
     TableLayout table;
     TableRow row;
     TextView textView, textView2;
     MyTasksDB myTasksDB;
+
+    TaskManagerController controller;
 
     List<EventModel> list, eventList;
 
@@ -58,6 +65,7 @@ public class MainActivity extends AppCompatActivity {
         all = findViewById(R.id.all);
         table = findViewById(R.id.eventTable);
         myTasksDB = new MyTasksDB(this);
+        controller = new TaskManagerController(this);
 
         eventList = myTasksDB.getAllEvents();
 
@@ -70,7 +78,12 @@ public class MainActivity extends AppCompatActivity {
 
         allGranted = checkPermissions();
 
+        addCalendar();
+
     }
+
+
+
     void loadUpcoming(){
         table.removeAllViews();
         list.clear();
@@ -165,11 +178,66 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void startNewEvent() {
-        Intent intent = new Intent(this, NewEvent.class);
-        startActivity(intent);
+        Intent startNewEventActivity = new Intent(this, NewEvent.class);
+        startActivity(startNewEventActivity);
     }
 
-    public void viewDetails( int eventID){
+    private void addCalendar() {
+        if(getIntent().getIntExtra("addCalendar", -1) > -1){
+            int eventId = getIntent().getIntExtra("eventId", -1);
+            EventModel eventToCal = controller.getEventById(eventId);
+            if(eventToCal == null) return;
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            DialogInterface.OnClickListener addEventToCalendar = new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                        Date eventDate = null;
+                        try {
+                            eventDate = format.parse(eventToCal.getDateTime());
+
+                            Intent calendarIntent = new Intent(Intent.ACTION_INSERT);
+                            calendarIntent.setData(CalendarContract.Events.CONTENT_URI);
+                            calendarIntent.putExtra(CalendarContract.Events.TITLE, eventToCal.getName());
+                            calendarIntent.putExtra(CalendarContract.Events.DESCRIPTION, eventToCal.getNote());
+                            calendarIntent.putExtra(CalendarContract.Events.EVENT_COLOR, eventToCal.getColor());// Set the event color here
+                            calendarIntent.putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, eventDate.getTime());
+                            calendarIntent.putExtra(CalendarContract.Events.AVAILABILITY, CalendarContract.Events.AVAILABILITY_BUSY);
+                            calendarIntent.putExtra(CalendarContract.Events.ALL_DAY, true);
+                            calendarIntent.putExtra(CalendarContract.Events.HAS_ALARM, false);
+
+
+                            // Check if there is a calendar app available to handle the intent
+                            if (getIntent().resolveActivity(getPackageManager()) != null) {
+                                // Start the activity with the intent
+                                Log.i("AddEventController", "Will start Calendar Intent");
+                                startActivity(calendarIntent);
+                                Toast.makeText(context, "calendar app found", Toast.LENGTH_SHORT).show();
+
+                            } else {
+                                // Handle the case where no calendar app is available
+                                Toast.makeText(context, "No calendar app found", Toast.LENGTH_SHORT).show();
+                            }
+                        } catch (ParseException e) {
+                            Log.i("PARSE_ERROR", e.toString());
+                        }
+                    }
+                };
+
+            builder.setTitle("Calendar")
+                    .setMessage("Do you want to add this event to the calendar")
+                    .setPositiveButton("Yes", addEventToCalendar)
+                    .setNegativeButton("No", null);
+
+                // Show the dialog
+            AlertDialog dialog = builder.create();
+            dialog.show();
+        }
+    }
+
+
+    public void viewDetails(int eventID){
 
         Intent intent = new Intent(this,event_Info.class);
         intent.putExtra("eventId",eventID);
