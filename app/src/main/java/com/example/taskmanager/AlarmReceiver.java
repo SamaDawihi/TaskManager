@@ -10,8 +10,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
-import android.util.Log;
-import android.widget.Toast;
 import androidx.core.app.NotificationCompat;
 
 public class AlarmReceiver extends BroadcastReceiver {
@@ -40,15 +38,6 @@ public class AlarmReceiver extends BroadcastReceiver {
             fword = EventDurationUnit.substring(0, spacePos);
             notmsg = "Your event \""+eventName+"\" is coming in " + EventDuration + " " + fword + "!";
             }
-
-        Toast.makeText(context, " spacePOs: " + spacePos , Toast.LENGTH_SHORT).show();
-        Toast.makeText(context, "fword =: " + fword , Toast.LENGTH_SHORT).show();
-        Toast.makeText(context, "notmsg =: " + notmsg , Toast.LENGTH_SHORT).show();
-
-
-        Toast.makeText(context, "EVENT ID: " + eventId , Toast.LENGTH_SHORT).show();
-        Toast.makeText(context, "Notification set for " + eventName , Toast.LENGTH_SHORT).show();
-
 
         // Get the notification manager service
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
@@ -101,10 +90,5 @@ public class AlarmReceiver extends BroadcastReceiver {
 
         // Show the notification
         notificationManager.notify(eventId, builder.build());
-        Toast.makeText(context, "Notification set for " + eventName , Toast.LENGTH_SHORT).show();
-        Toast.makeText(context, " id is "+ eventId , Toast.LENGTH_SHORT).show();
-
-
-        Log.i("ALARM RECEIVER", "END");
     }
 }

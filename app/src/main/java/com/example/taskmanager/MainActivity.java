@@ -79,8 +79,7 @@ public class MainActivity extends AppCompatActivity {
         allGranted = checkPermissions();
 
         addCalendar();
-        deleteCalendar();
-
+        //deleteCalendar();
     }
 
 
@@ -140,7 +139,7 @@ public class MainActivity extends AppCompatActivity {
 
                 int eventID = list.get(i).getEventId();
 
-                textView.setText("    " + list.get(i).getEventId() + " " + list.get(i).getName() + "    ");
+                textView.setText("    " + list.get(i).getName() + "    ");
                 textView.setPadding(8, 0, 8, 0);
                 textView2.setText("    " + list.get(i).getDateTime() + "    ");
                 textView.setPadding(8, 0, 8, 0);
@@ -183,15 +182,14 @@ public class MainActivity extends AppCompatActivity {
         startActivity(startNewEventActivity);
     }
 
-    private String addCalendar() {
-        String result = "no addCalendarIntent";
+
+    private void addCalendar() {
 
         if(getIntent().getIntExtra("addCalendar", -1) > -1){
             int newEventId = getIntent().getIntExtra("eventId", -1);
             EventModel eventToCal = controller.getEventById(newEventId);
-            if(eventToCal == null || eventToCal.getName() == null || eventToCal.getName().equals("")) return "Problems";
+            if(eventToCal == null || eventToCal.getName() == null || eventToCal.getName().equals("")) return;
 
-            result = eventToCal.getName();
 
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             DialogInterface.OnClickListener addEventToCalendar = new DialogInterface.OnClickListener() {
@@ -216,13 +214,6 @@ public class MainActivity extends AppCompatActivity {
                             if (getIntent().resolveActivity(getPackageManager()) != null) {
                                 // Start the activity with the intent
                                 startActivity(calendarIntent);
-                                Toast.makeText(context, "calendar app found", Toast.LENGTH_SHORT).show();
-
-                                Uri eventUri = calendarIntent.getData();
-                                if (eventUri != null) {
-                                    String calEventId = eventUri.getLastPathSegment();
-                                    controller.updateCalEventId(newEventId, calEventId);
-                                }
 
                             } else {
                                 // Handle the case where no calendar app is available
@@ -243,8 +234,9 @@ public class MainActivity extends AppCompatActivity {
             AlertDialog dialog = builder.create();
             dialog.show();
         }
-        return "added: " + result;
     }
+
+    /*
     private void deleteCalendar() {
         if(getIntent().getIntExtra("deleteCalendar", -1) > -1){
             long calEventId = -1;
@@ -279,6 +271,7 @@ public class MainActivity extends AppCompatActivity {
             dialog.show();
         }
     }
+     */
 
 
     public void viewDetails(int eventID){

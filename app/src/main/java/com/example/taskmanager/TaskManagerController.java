@@ -62,7 +62,6 @@ public class TaskManagerController {
 
 
         if (eventId != -1 ) {
-
             // Perform notification methods
             alarmManager = (AlarmManager) context.getSystemService(ALARM_SERVICE);
             try {
@@ -237,6 +236,4 @@ public class TaskManagerController {
         dbHelper.removeTask(taskId);
     }
 
-    public String getCalEventId(int eventId) {return dbHelper.getCalEventId(eventId);}
-    public void updateCalEventId(int eventId, String calEventId){dbHelper.updateCalEventId(eventId,calEventId);}
 }

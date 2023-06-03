@@ -23,9 +23,11 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NotificationCompat;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import yuku.ambilwarna.AmbilWarnaDialog;
@@ -429,6 +431,25 @@ public class UpdateEvent extends AppCompatActivity {
         if(fDateTime == null) {
             errors.add("SET DATE AND TIME");
             return false;
+        }else{
+            try {
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"); // specify the format of the string date
+                Date date = sdf.parse(fDateTime); // parse the string into a date object
+                Calendar cal = Calendar.getInstance(); // get a calendar instance
+                cal.setTime(date); // set the calendar date to the parsed date
+
+                Calendar currentCalendar = Calendar.getInstance(); // get the current calendar
+
+                // check if the user's calendar is before the current calendar
+                boolean result = cal.before(currentCalendar);
+
+                if (result) {
+                    // user's calendar is before current calendar
+                    errors.add("you cant enter a date of time in the past");
+                }
+            }catch (ParseException e){
+                Log.i("ParseExceptionATAdd", e.toString());
+            }
         }
         if(fNote == null || fNote == "") {
             fNote = "";

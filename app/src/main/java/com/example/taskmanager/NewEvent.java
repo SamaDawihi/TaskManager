@@ -313,7 +313,7 @@ public class NewEvent extends AppCompatActivity {
     private void submitNewType() {
         fNewTypeName = newTypeName.getText().toString();
         if(fNewTypeName == "" || fNewTypeName == null){
-            Toast.makeText(this, "Faild To add new Type, Make Sure To Write a name", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Failed To add new Type, Make Sure To Write a name", Toast.LENGTH_SHORT).show();
             fNewTypeName = null;
         }else {
             Toast.makeText(this, "New Type " + fNewTypeName + " Added Successfully", Toast.LENGTH_SHORT).show();
@@ -365,7 +365,6 @@ public class NewEvent extends AppCompatActivity {
 
     int add(){
 
-        //Toast.makeText(this, "typeId = " + fTypeId * 100, Toast.LENGTH_SHORT).show();
         errors = new ArrayList<>();
 
         submitData();
@@ -406,6 +405,8 @@ public class NewEvent extends AppCompatActivity {
 
         if(fSubTask4 != null && fSubTask4.length() > 0)
             controller.addTask(eventId, fSubTask4);
+
+        Toast.makeText(this, "Event is added successfully", Toast.LENGTH_SHORT).show();
 
 
         return eventId;
