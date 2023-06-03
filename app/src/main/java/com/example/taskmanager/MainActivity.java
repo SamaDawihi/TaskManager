@@ -30,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
     Button addEvent;
     TableLayout table;
     TableRow row;
-    TextView textView;
+    TextView textView, textView2;
     MyTasksDB myTasksDB;
 
     List<EventModel> list, eventList;
@@ -126,17 +126,25 @@ public class MainActivity extends AppCompatActivity {
                 row = new TableRow(context);
 
                 textView = new TextView(context);
+                textView2 = new TextView(context);
+
 
                 int eventID = list.get(i).getEventId();
 
-                textView.setText(list.get(i).getDateTime() + "\n" + list.get(i).getEventId() + " " + list.get(i).getName());
-                textView.setTextColor(Color.parseColor("#FFFFFF"));
+                textView.setText("    " + list.get(i).getEventId() + " " + list.get(i).getName() + "    ");
+                textView.setPadding(8, 0, 8, 0);
+                textView2.setText("    " + list.get(i).getDateTime() + "    ");
+                textView.setPadding(8, 0, 8, 0);
+                textView.setTextColor(list.get(i).getColor());
+                textView2.setTextColor(list.get(i).getColor());
                 textView.setTextSize(18);
+                textView2.setTextSize(18);
                 row.setBackgroundResource(R.drawable.rounded_background); // Apply a rounded background drawable
-                row.setBackgroundColor(list.get(i).getColor());
+                //row.setBackgroundColor(list.get(i).getColor());
                 row.setPadding(16, 16, 16, 16);
                 row.setOnClickListener(l -> viewDetails(eventID));
                 row.addView(textView);
+                row.addView(textView2);
                 table.addView(row);
 
             } catch (IndexOutOfBoundsException | NullPointerException e) {
