@@ -77,25 +77,22 @@ public class TaskManagerController {
                 //check the duration
                 mints = 0;
                 switch (fReminderUnit) {
-                    case "Minutes": // Minutes
+                    case "Minutes before": // Minutes
                         mints = fRemainderDuration;
                         break;
-                    case "Hours": // Hours
+                    case "Hours before": // Hours
                         mints = fRemainderDuration * 60;
                         break;
-                    case "Day": // Days
+                    case "Days before": // Days
                         mints = fRemainderDuration * 24 * 60;
                         break;
-                    case "Week": // Weeks
+                    case "Weeks before": // Weeks
                         mints = fRemainderDuration * 7 * 24 * 60;
                         break;
-                    case "month": // Months
-                        mints = fRemainderDuration * 30 * 24 * 60;
-                        break;
+
                 }
 
                 // Calculate the reminder time in milliseconds
-                eventTime=date.getTime();
                 eventTime = date.getTime();
                 reminderTime = eventTime - mints * 60000;
                 remainderCal.setTime(new Date(reminderTime));
@@ -106,6 +103,10 @@ public class TaskManagerController {
                 intent.putExtra("EventName", fName);
                 intent.putExtra("EventPriority", fPriority);
                 intent.putExtra("Event_Id", Event_Id);
+                intent.putExtra("Event_duration_Unit", fReminderUnit);
+                intent.putExtra("Event_duration", fRemainderDuration);
+
+
 
                 // Create a pending intent that will be triggered when the alarm goes off
                 pendingIntent = PendingIntent.getBroadcast(context, Event_Id, intent, PendingIntent.FLAG_IMMUTABLE);

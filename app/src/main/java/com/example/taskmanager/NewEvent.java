@@ -185,7 +185,7 @@ public class NewEvent extends AppCompatActivity {
         });
     }
     private void setUnitsSpinner() {
-        String[] items = new String[]{"At time of event", "Minutes", "Hours", "Days", "Weeks"}; //modified
+        String[] items = new String[]{"At time of event", "Minutes before", "Hours before", "Days before", "Weeks before"}; //modified
 
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, items);
 
