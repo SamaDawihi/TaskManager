@@ -237,6 +237,6 @@ public class TaskManagerController {
         dbHelper.removeTask(taskId);
     }
 
-    public int getCalEventId(int eventId) {return dbHelper.getCalEventId(eventId);}
-    public void updateCalEventId(int eventId, int calEventId){dbHelper.updateCalEventId(eventId,calEventId);}
+    public String getCalEventId(int eventId) {return dbHelper.getCalEventId(eventId);}
+    public void updateCalEventId(int eventId, String calEventId){dbHelper.updateCalEventId(eventId,calEventId);}
 }

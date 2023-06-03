@@ -19,10 +19,10 @@ public class EventModel  {
 
     private String state;
 
-    private int calEventId;
+    private String calEventId;
 
 
-    public EventModel(int eventId, int typeId, String name, int color, String dateTime, String note, int reminderDuration, String reminderUnit, int priority, String state, int calEventId) {
+    public EventModel(int eventId, int typeId, String name, int color, String dateTime, String note, int reminderDuration, String reminderUnit, int priority, String state, String calEventId) {
         this.eventId = eventId;
         this.typeId = typeId;
         this.name = name;
@@ -83,7 +83,7 @@ public class EventModel  {
         return state;
     }
 
-    public int getCalEventId(){return calEventId;}
+    public String getCalEventId(){return calEventId;}
 
 
 }

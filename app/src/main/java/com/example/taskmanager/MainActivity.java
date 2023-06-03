@@ -220,7 +220,7 @@ public class MainActivity extends AppCompatActivity {
 
                                 Uri eventUri = calendarIntent.getData();
                                 if (eventUri != null) {
-                                    int calEventId = (int) Long.parseLong(eventUri.getLastPathSegment());
+                                    String calEventId = eventUri.getLastPathSegment();
                                     controller.updateCalEventId(newEventId, calEventId);
                                 }
 
@@ -247,27 +247,31 @@ public class MainActivity extends AppCompatActivity {
     }
     private void deleteCalendar() {
         if(getIntent().getIntExtra("deleteCalendar", -1) > -1){
-            int newEventId = getIntent().getIntExtra("eventId", -1);
+            long calEventId = -1;
+            try {
+                calEventId = Long.parseLong(getIntent().getStringExtra("calEventId"));
+            }catch (NumberFormatException e){
+                Log.i("E", e.toString());
+            }
 
-            EventModel eventToCal = controller.getEventById(newEventId);
-            if(eventToCal == null) return;
-
-            int calEventId = eventToCal.getCalEventId();
+            if(calEventId < 0)
+                return;
 
 
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            DialogInterface.OnClickListener addEventToCalendar = new DialogInterface.OnClickListener() {
+            long finalCalEventId = calEventId;
+            DialogInterface.OnClickListener deleteEventToCalendar = new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     // Create an intent to delete an event from the calendar
                     Intent deleteCalendarIntent = new Intent(Intent.ACTION_DELETE);
-                    Uri eventUri = ContentUris.withAppendedId(CalendarContract.Events.CONTENT_URI, calEventId);
+                    Uri eventUri = ContentUris.withAppendedId(CalendarContract.Events.CONTENT_URI, finalCalEventId);
                     deleteCalendarIntent.setData(eventUri);
                 }
             };
             builder.setTitle("Calendar")
                     .setMessage("Do you want to delete this event from the calendar")
-                    .setPositiveButton("Yes", addEventToCalendar)
+                    .setPositiveButton("Yes", deleteEventToCalendar)
                     .setNegativeButton("No", null);
 
             // Show the dialog

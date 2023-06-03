@@ -18,7 +18,7 @@ import java.util.List;
 public class MyTasksDB extends SQLiteOpenHelper {
 
     private static String DBNAME = "MyTasks";
-    private static int DBVersion = 1;
+    private static int DBVersion = 2;
 
     private static String TYPE = "TYPE";
 
@@ -64,7 +64,7 @@ public class MyTasksDB extends SQLiteOpenHelper {
                         ", reminderUnit TEXT NOT NULL" +
                         ", priority INTEGER NOT NULL" +
                         ", state TEXT NOT NULL" +
-                        ", calEventId INTEGER NOT NULL DEFAULT -1" +
+                        ", calEventId TEXT NOT NULL DEFAULT '-1'" +
                         ", FOREIGN KEY (typeId) REFERENCES Type(typeId) ON DELETE CASCADE" +
                         ")";
         db.execSQL(query);
@@ -187,7 +187,7 @@ public class MyTasksDB extends SQLiteOpenHelper {
                 String reminderUnit = cursor.getString(Math.max(cursor.getColumnIndex("reminderUnit"), 0));
                 int priority = cursor.getInt(Math.max(cursor.getColumnIndex("priority"), 0));
                 String state = cursor.getString(Math.max(cursor.getColumnIndex("state"), 0));
-                int calEventId = cursor.getInt(Math.max(cursor.getColumnIndex("calEventId"), 0));
+                String calEventId = cursor.getString(Math.max(cursor.getColumnIndex("calEventId"), 0));
 
 
 
@@ -270,7 +270,7 @@ public class MyTasksDB extends SQLiteOpenHelper {
             String reminderUnit = cursor.getString(Math.max(cursor.getColumnIndex("reminderUnit"), 0));
             int priority = cursor.getInt(Math.max(cursor.getColumnIndex("priority"), 0));
             String state = cursor.getString(Math.max(cursor.getColumnIndex("state"), 0));
-            int calEventId = cursor.getInt(Math.max(cursor.getColumnIndex("calEventId"), 0));
+            String calEventId = cursor.getString(Math.max(cursor.getColumnIndex("calEventId"), 0));
 
 
             event = new EventModel(eventId, typeId, name, color, dateTime, note, reminderDuration, reminderUnit, priority, state, calEventId);
@@ -380,17 +380,17 @@ public class MyTasksDB extends SQLiteOpenHelper {
         db.delete(TASK, "taskId = ?", whereArgs);
         db.close();
     }
-    public int getCalEventId(int eventId) {
+    public String getCalEventId(int eventId) {
         SQLiteDatabase db = this.getReadableDatabase();
 
         String query = "SELECT calEventId FROM " + EVENT + " WHERE eventId = ?";
         String[] args = new String[]{String.valueOf(eventId)};
         Cursor cursor = db.rawQuery(query, args);
 
-        int calEventId = -1;
+        String calEventId = "-1";
 
         if (cursor.moveToFirst()) {
-            calEventId = cursor.getInt(0);
+            calEventId = cursor.getString(0);
         }
 
         cursor.close();
@@ -399,7 +399,7 @@ public class MyTasksDB extends SQLiteOpenHelper {
         return calEventId;
     }
 
-    public void updateCalEventId(int eventId, int calEventId) {
+    public void updateCalEventId(int eventId, String calEventId) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();

@@ -19,6 +19,7 @@ import java.util.List;
 
 public class event_Info extends AppCompatActivity {
     Integer eventID;
+    String calEventId;
     EventModel eventModel ;
     TextView name, type, dateAndTime,note, priority, state;
     // CheckBox[] tasksCheckboxes;
@@ -47,6 +48,7 @@ public class event_Info extends AppCompatActivity {
             eventID = intent.getIntExtra("eventId", -1);
 
             eventModel = taskcontroller.getEventById(eventID);
+            calEventId = eventModel.getCalEventId();
 
             types = taskcontroller.getAllTypes().toArray(new Type[0]);
             //finding the type string
@@ -172,7 +174,7 @@ public class event_Info extends AppCompatActivity {
                             taskcontroller.removeEvent(eventID, getApplicationContext());
                             Intent toMain = new Intent(getApplicationContext(), MainActivity.class);
                             toMain.putExtra("deleteCalendar", 1);
-                            toMain.putExtra("eventId", eventID);
+                            toMain.putExtra("calEventId", calEventId);
                             startActivity(toMain);
                         }
                     })
