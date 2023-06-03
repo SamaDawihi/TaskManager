@@ -147,7 +147,7 @@ public class UpdateEvent extends AppCompatActivity {
         timeTV.setText(selectedEvent.getDateTime().substring(selectedEvent.getDateTime().indexOf(' '))+1);
         fTime=selectedEvent.getDateTime().substring(selectedEvent.getDateTime().indexOf(' '))+1;
 
-        if(task.length>0)
+        if(task.length > 0)
         {
             sub1.setText(task[0].getDescription());
         }

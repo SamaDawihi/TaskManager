@@ -30,7 +30,6 @@ import java.util.List;
 
 public class TaskManagerController {
     private MyTasksDB dbHelper;
-
     private AlarmManager alarmManager;
     private PendingIntent pendingIntent;
     String Event_name;
@@ -38,6 +37,10 @@ public class TaskManagerController {
     int Event_Id;
     int mints;
     long eventTime, reminderTime;
+    SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    Date date;
+
+
 
 
 
@@ -54,16 +57,12 @@ public class TaskManagerController {
     }
 
     public int addEvent(String fName, int fType, int fColor, String fDateTime, String fNote, int fRemainderDuration, String fReminderUnit, int fPriority, Context context) {
-        int added = dbHelper.addEvent(fName, fType, fColor, fDateTime, fNote, fRemainderDuration, fReminderUnit, fPriority, "Pending");
+        int eventId = dbHelper.addEvent(fName, fType, fColor, fDateTime, fNote, fRemainderDuration, fReminderUnit, fPriority, "Pending");
 
-        Event_name=fName;
-        Event_priority=fPriority;
 
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        Date date;
-        if (added != -1 ) { // & false
-            Event_Id=added;
-            Log.i("AddEventController", "Start Notification");
+
+        if (eventId != -1 ) {
+
             // Perform notification methods
             alarmManager = (AlarmManager) context.getSystemService(ALARM_SERVICE);
             try {
@@ -102,7 +101,7 @@ public class TaskManagerController {
                 Intent intent = new Intent(context, AlarmReceiver.class);
                 intent.putExtra("EventName", fName);
                 intent.putExtra("EventPriority", fPriority);
-                intent.putExtra("Event_Id", Event_Id);
+                intent.putExtra("Event_Id", eventId);
                 intent.putExtra("Event_duration_Unit", fReminderUnit);
                 intent.putExtra("Event_duration", fRemainderDuration);
 
@@ -115,13 +114,13 @@ public class TaskManagerController {
                 // Set the alarm to the calendar time
                 alarmManager.set(AlarmManager.RTC_WAKEUP, reminderTime, pendingIntent);
                 Toast.makeText(context, "priority is " + fPriority , Toast.LENGTH_SHORT).show();
-                Toast.makeText(context, "Event name is  " +fName , Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "Event name is  " + fName , Toast.LENGTH_SHORT).show();
 
             } catch (ParseException e) {
                 e.printStackTrace();
             }
         }
-        return added;
+        return eventId;
     }
 
     public int addTask(int eventId, String description) {
@@ -139,6 +138,61 @@ public class TaskManagerController {
     public void updateEventById(int eventId, String name, int typeId, int color, String dateTime, String note, int reminderDuration, String reminderUnit, int priority, Context context) {
         dbHelper.updateEventById(eventId, name, typeId, color, dateTime, note, reminderDuration, reminderUnit, priority);
 
+        alarmManager = (AlarmManager) context.getSystemService(ALARM_SERVICE);
+        try {
+            date = format.parse(dateTime);
+
+            // Create a calendar object with the selected date and time
+            Calendar calendar = Calendar.getInstance();
+            Calendar remainderCal = Calendar.getInstance();
+            calendar.setTime(date);
+
+            //check the duration
+            mints = 0;
+            switch (reminderUnit) {
+                case "Minutes before": // Minutes
+                    mints = reminderDuration;
+                    break;
+                case "Hours before": // Hours
+                    mints = reminderDuration * 60;
+                    break;
+                case "Days before": // Days
+                    mints = reminderDuration * 24 * 60;
+                    break;
+                case "Weeks before": // Weeks
+                    mints = reminderDuration * 7 * 24 * 60;
+                    break;
+
+            }
+
+            // Calculate the reminder time in milliseconds
+            eventTime = date.getTime();
+            reminderTime = eventTime - mints * 60000;
+            remainderCal.setTime(new Date(reminderTime));
+
+
+            // Create an intent to start the AlarmReceiver class
+            Intent intent = new Intent(context, AlarmReceiver.class);
+            intent.putExtra("EventName", name);
+            intent.putExtra("EventPriority", priority);
+            intent.putExtra("Event_Id", eventId);
+            intent.putExtra("Event_duration_Unit", reminderUnit);
+            intent.putExtra("Event_duration", reminderDuration);
+
+
+
+            // Create a pending intent that will be triggered when the alarm goes off
+            pendingIntent = PendingIntent.getBroadcast(context, Event_Id, intent, PendingIntent.FLAG_IMMUTABLE);
+
+
+            // Set the alarm to the calendar time
+            alarmManager.set(AlarmManager.RTC_WAKEUP, reminderTime, pendingIntent);
+            Toast.makeText(context, "priority is " + priority , Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, "Event name is  " + name , Toast.LENGTH_SHORT).show();
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
     }
 
     public void updateTaskById(int taskId, String description) {
@@ -169,7 +223,6 @@ public class TaskManagerController {
         // Create a pending intent with the same id and intent as the one used to set the alarm
         PendingIntent pendingIntent = PendingIntent.getBroadcast(context, Event_Id, intent, PendingIntent.FLAG_IMMUTABLE);
 
-
         // Get the alarm manager service
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(ALARM_SERVICE);
 
@@ -178,18 +231,12 @@ public class TaskManagerController {
         pendingIntent.cancel();
         Toast.makeText(context, "notification canceled", Toast.LENGTH_SHORT).show();
 
-        //remove event from calendar app
-        /*
-        Uri eventUri = ContentUris.withAppendedId(CalendarContract.Events.CONTENT_URI, Event_Id);
-        ContentValues event = new ContentValues();
-        event.put(CalendarContract.Events.DELETED, 1);
-        context.getContentResolver().update(eventUri, event, null, null);
-
-         */
-
     }
 
     public void removeTask(int taskId) {
         dbHelper.removeTask(taskId);
     }
+
+    public int getCalEventId(int eventId) {return dbHelper.getCalEventId(eventId);}
+    public void updateCalEventId(int eventId, int calEventId){dbHelper.updateCalEventId(eventId,calEventId);}
 }

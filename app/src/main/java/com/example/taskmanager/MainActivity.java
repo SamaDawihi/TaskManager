@@ -8,10 +8,12 @@ import androidx.core.content.ContextCompat;
 
 import android.Manifest;
 import android.app.AlertDialog;
+import android.content.ContentUris;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.CalendarContract;
@@ -31,7 +33,6 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-    private static final int NEW_EVENT_REQUEST_CODE = 111;
     Button addEvent;
     TableLayout table;
     TableRow row;
@@ -42,7 +43,6 @@ public class MainActivity extends AppCompatActivity {
 
     List<EventModel> list, eventList;
 
-    //toggle buttons
     RadioButton upcoming;
     RadioButton all;
     MainActivity context = this;
@@ -79,8 +79,10 @@ public class MainActivity extends AppCompatActivity {
         allGranted = checkPermissions();
 
         addCalendar();
+        deleteCalendar();
 
     }
+
 
 
 
@@ -128,7 +130,6 @@ public class MainActivity extends AppCompatActivity {
         }
         for (int i = 0; i < list.size(); i++) {
             try {
-                Log.i("loading", "EventName " + list.get(i).getName());
 
                 // Create the row
                 row = new TableRow(context);
@@ -214,9 +215,14 @@ public class MainActivity extends AppCompatActivity {
                             // Check if there is a calendar app available to handle the intent
                             if (getIntent().resolveActivity(getPackageManager()) != null) {
                                 // Start the activity with the intent
-                                Log.i("AddEventController", "Will start Calendar Intent");
                                 startActivity(calendarIntent);
                                 Toast.makeText(context, "calendar app found", Toast.LENGTH_SHORT).show();
+
+                                Uri eventUri = calendarIntent.getData();
+                                if (eventUri != null) {
+                                    int calEventId = (int) Long.parseLong(eventUri.getLastPathSegment());
+                                    controller.updateCalEventId(newEventId, calEventId);
+                                }
 
                             } else {
                                 // Handle the case where no calendar app is available
@@ -238,6 +244,36 @@ public class MainActivity extends AppCompatActivity {
             dialog.show();
         }
         return "added: " + result;
+    }
+    private void deleteCalendar() {
+        if(getIntent().getIntExtra("deleteCalendar", -1) > -1){
+            int newEventId = getIntent().getIntExtra("eventId", -1);
+
+            EventModel eventToCal = controller.getEventById(newEventId);
+            if(eventToCal == null) return;
+
+            int calEventId = eventToCal.getCalEventId();
+
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            DialogInterface.OnClickListener addEventToCalendar = new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    // Create an intent to delete an event from the calendar
+                    Intent deleteCalendarIntent = new Intent(Intent.ACTION_DELETE);
+                    Uri eventUri = ContentUris.withAppendedId(CalendarContract.Events.CONTENT_URI, calEventId);
+                    deleteCalendarIntent.setData(eventUri);
+                }
+            };
+            builder.setTitle("Calendar")
+                    .setMessage("Do you want to delete this event from the calendar")
+                    .setPositiveButton("Yes", addEventToCalendar)
+                    .setNegativeButton("No", null);
+
+            // Show the dialog
+            AlertDialog dialog = builder.create();
+            dialog.show();
+        }
     }
 
 

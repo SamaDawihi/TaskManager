@@ -52,7 +52,6 @@ import android.content.Context;
 
 public class NewEvent extends AppCompatActivity {
     //---------------------------Views-----------------------------
-    TableLayout table;
     EditText name, note, reminderDuration, sub1, sub2, sub3, sub4, newTypeName;
     Button addNewType, date, time, add, addTask1, removeTask2, removeTask3, removeTask4, newTypeColor, submitNewType;
     Spinner type, priority, reminderUnit;
@@ -128,7 +127,6 @@ public class NewEvent extends AppCompatActivity {
         newTypeColor = findViewById(R.id.newTypeColor);
         submitNewType = findViewById(R.id.submitNewType);
 
-        table  = findViewById(R.id.table);
 
         row1  = findViewById(R.id.r1);
         row2  = findViewById(R.id.r2);

@@ -170,8 +170,10 @@ public class event_Info extends AppCompatActivity {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             taskcontroller.removeEvent(eventID, getApplicationContext());
-                            Intent intent = new Intent(event_Info.this, MainActivity.class);
-                            startActivity(intent);
+                            Intent toMain = new Intent(getApplicationContext(), MainActivity.class);
+                            toMain.putExtra("deleteCalendar", 1);
+                            toMain.putExtra("eventId", eventID);
+                            startActivity(toMain);
                         }
                     })
                     .setNegativeButton("Cancel", null) // null to dismiss the dialog without performing any action
@@ -186,43 +188,11 @@ public class event_Info extends AppCompatActivity {
         }
         else if(((Button)view).getText().equals("confirm")){
             taskcontroller.changeEventState(eventID,"confirmed");
+            finish();
         }
         else if(((Button)view).getText().equals("dismiss")){
             taskcontroller.changeEventState(eventID,"dismissed");
+            finish();
         }
     }
-
-           /* myTasksDB = new MyTasksDB(this);
-            List<EventModel> eventList = myTasksDB.getAllEvents();
-            for (int i=0 ; i<eventList.size();i++){
-                if(eventList.get(i).getEventId()==eventID)
-                    desiredEvent = eventList.get(i);
-            }
-        if(eventID != -1){
-            name.setText(name.getText()+desiredEvent.getName());
-            //type.setText(type.getText()+desiredEvent.getTypeId());
-            dateAndTime.setText(dateAndTime.getText()+desiredEvent.getDateTime());
-            //priority.setText(priority.getText()+desiredEvent.getPriority());
-        }*/
-    /*if(tasks != null){
-                toBeRemovedRow = (TableRow) findViewById(R.id.toberemoved);
-                parentOfRow = (TableLayout) findViewById(R.id.tablelayout);
-                parentOfRow.removeView(toBeRemovedRow);
-                for (int i=0; i<tasks.length; i++){
-                    if(tasks[i]!=null){
-                       newRow = new TableRow(this);
-                        View targetRow = findViewById(R.id.targetrow);
-                        int targetIndex = parentOfRow.indexOfChild(targetRow);
-                        parentOfRow.addView(newRow, targetIndex);
-                        newRow.setBackgroundColor(Color.BLUE);
-
-                    }
-                }
-            }*/
-    /*     TableLayout parent = findViewById(R.id.tablelayout);
-                TableRow buttonsrow = findViewById(R.id.targetrow);
-                int index = parent.indexOfChild(buttonsrow);
-                TableRow space = new TableRow(this);
-                space.setPadding(0,0,0,1000);
-                parent.addView(space,index);*/
 }
