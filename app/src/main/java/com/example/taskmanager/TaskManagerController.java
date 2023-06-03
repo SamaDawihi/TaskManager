@@ -14,12 +14,6 @@ import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
-import android.net.Uri;
-import android.provider.CalendarContract;
-import android.util.Log;
-import android.widget.Toast;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -107,13 +101,12 @@ public class TaskManagerController {
 
 
                 // Create a pending intent that will be triggered when the alarm goes off
-                pendingIntent = PendingIntent.getBroadcast(context, Event_Id, intent, PendingIntent.FLAG_IMMUTABLE);
+                pendingIntent = PendingIntent.getBroadcast(context, eventId, intent, PendingIntent.FLAG_IMMUTABLE);
 
 
                 // Set the alarm to the calendar time
                 alarmManager.set(AlarmManager.RTC_WAKEUP, reminderTime, pendingIntent);
-                Toast.makeText(context, "priority is " + fPriority , Toast.LENGTH_SHORT).show();
-                Toast.makeText(context, "Event name is  " + fName , Toast.LENGTH_SHORT).show();
+
 
             } catch (ParseException e) {
                 e.printStackTrace();
@@ -181,13 +174,11 @@ public class TaskManagerController {
 
 
             // Create a pending intent that will be triggered when the alarm goes off
-            pendingIntent = PendingIntent.getBroadcast(context, Event_Id, intent, PendingIntent.FLAG_IMMUTABLE);
+            pendingIntent = PendingIntent.getBroadcast(context, eventId, intent, PendingIntent.FLAG_IMMUTABLE);
 
 
             // Set the alarm to the calendar time
             alarmManager.set(AlarmManager.RTC_WAKEUP, reminderTime, pendingIntent);
-            Toast.makeText(context, "priority is " + priority , Toast.LENGTH_SHORT).show();
-            Toast.makeText(context, "Event name is  " + name , Toast.LENGTH_SHORT).show();
 
         } catch (ParseException e) {
             e.printStackTrace();
@@ -217,10 +208,9 @@ public class TaskManagerController {
         intent.putExtra("EventName", Event_name);
         intent.putExtra("EventPriority", Event_priority);
         intent.putExtra("Event_Id", eventId);
-        Toast.makeText(context, "id is "+eventId, Toast.LENGTH_SHORT).show();
 
         // Create a pending intent with the same id and intent as the one used to set the alarm
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, Event_Id, intent, PendingIntent.FLAG_IMMUTABLE);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, eventId, intent, PendingIntent.FLAG_IMMUTABLE);
 
         // Get the alarm manager service
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(ALARM_SERVICE);
@@ -228,7 +218,6 @@ public class TaskManagerController {
         // Cancel the alarm and the pending intent
         alarmManager.cancel(pendingIntent);
         pendingIntent.cancel();
-        Toast.makeText(context, "notification canceled", Toast.LENGTH_SHORT).show();
 
     }
 
