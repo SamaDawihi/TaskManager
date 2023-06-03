@@ -95,7 +95,7 @@ public class TaskManagerController {
                 }
 
                 // Calculate the reminder time in milliseconds
-
+                eventTime=date.getTime();
                 eventTime = date.getTime();
                 reminderTime = eventTime - mints * 60000;
                 remainderCal.setTime(new Date(reminderTime));
@@ -108,7 +108,7 @@ public class TaskManagerController {
                 intent.putExtra("Event_Id", Event_Id);
 
                 // Create a pending intent that will be triggered when the alarm goes off
-                pendingIntent = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_IMMUTABLE);
+                pendingIntent = PendingIntent.getBroadcast(context, Event_Id, intent, PendingIntent.FLAG_IMMUTABLE);
 
 
                 // Set the alarm to the calendar time
@@ -131,6 +131,8 @@ public class TaskManagerController {
                 calendarIntent.putExtra(CalendarContract.Events.EVENT_COLOR, fColor);// Set the event color here
                 calendarIntent.putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, date.getTime());
                 calendarIntent.putExtra(CalendarContract.Events.AVAILABILITY, CalendarContract.Events.AVAILABILITY_BUSY);
+                calendarIntent.putExtra(CalendarContract.Events.ALL_DAY, true);
+                calendarIntent.putExtra(CalendarContract.Events.HAS_ALARM, false);
 
 
                 // Check if there is a calendar app available to handle the intent
