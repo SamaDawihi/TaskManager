@@ -14,9 +14,8 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
-import android.widget.TableLayout;
-import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
@@ -38,12 +37,11 @@ public class UpdateEvent extends AppCompatActivity {
     int eventId;
 
     //---------------------------Views-----------------------------
-    TableLayout table;
     EditText name, note, reminderDuration, sub1, sub2, sub3, sub4, newTypeName;
     Button addNewType, date, time, add, addTask1, removeTask2, removeTask3, removeTask4, newTypeColor, submitNewType, save_btn, cancle_btn;
     Spinner type, priority, reminderUnit;
-    TextView dateTV, timeTV, result;
-    TableRow row1,row2, row3,row4, newTypeRow;
+    TextView dateTV, timeTV;
+    LinearLayout row1,row2, row3,row4, newTypeRow;
     //---------------------------Views-----------------------------
     TaskManagerController taskcontroller;
 
@@ -91,7 +89,7 @@ public class UpdateEvent extends AppCompatActivity {
     }
 
     private void findViews() {
-        name = findViewById(R.id.eventName);
+        name = findViewById(R.id.name);
         note  = findViewById(R.id.note);
         reminderDuration = findViewById(R.id.reminderDuration);
         reminderUnit = findViewById(R.id.reminderUnit);
@@ -108,7 +106,6 @@ public class UpdateEvent extends AppCompatActivity {
         newTypeColor = findViewById(R.id.newTypeColor);
         submitNewType = findViewById(R.id.submitNewType);
 
-        table  = findViewById(R.id.table);
 
         row1  = findViewById(R.id.r1);
         row2  = findViewById(R.id.r2);
@@ -127,7 +124,6 @@ public class UpdateEvent extends AppCompatActivity {
         removeTask4 = findViewById(R.id.removeSub4);
 
         add  = findViewById(R.id.add);
-        result = findViewById(R.id.result);
     }
     private void hideSubTasksAndNewTypeRows() {
         row2.setVisibility(View.GONE);

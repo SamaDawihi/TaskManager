@@ -3,329 +3,280 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="#E5E8E8">
+
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
         android:orientation="vertical"
-        android:gravity="center"
-        android:padding="20dp"
+        style="@style/NewEventLinearLayoutStyle"
         tools:context=".NewEvent">
 
-        <TableLayout
-            android:id="@+id/table"
+        <!-- Name Row -->
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:gravity="center_horizontal">
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            >
 
-            <!-- Name Row -->
-            <TableRow>
+            <EditText
+                android:id="@+id/name"
+                style="@style/EditTextStyleSpan3"
+                android:hint="Name" />
 
-                <EditText
-                    android:id="@+id/eventName"
-                    android:layout_width="180dp"
-                    android:layout_height="match_parent"
-                    android:layout_span="3"
-                    android:hint="Name"
-                    android:textSize="15sp" />
-            </TableRow>
+        </LinearLayout>
 
-            <!-- Type Row -->
+        <!-- Type Row -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center">
 
-            <TableRow>
+            <Spinner
+                android:id="@+id/typeList"
+                style="@style/SpinnerStyleSpan2"
+                android:contentDescription="Select The Event Type"
+                android:hint="typeId"/>
 
-                <Spinner
-                    android:id="@+id/typeList"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_span="2"
-                    android:background="@android:drawable/btn_dropdown"
-                    android:contentDescription="Select The Event Type"
-                    android:hint="typeId"
-                    android:spinnerMode="dropdown"
-                    android:textSize="15sp" />
+            <!-- Button to Show Add New Type Row -->
+            <Button
+                android:id="@+id/addType"
+                style="@style/IconButtonStyle"
+                android:drawableBottom="@drawable/baseline_add_24"
+                android:text="" />
+        </LinearLayout>
 
-                <!-- Button to Show Add New Type Row -->
-                <Button
-                    android:id="@+id/addType"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:layout_margin="5dp"
-                    android:background="@drawable/circular_button_background"
-                    android:drawableBottom="@drawable/baseline_add_24"
-                    android:text=""
-                    android:textSize="15sp" />
-            </TableRow>
+        <!-- Add New Type Row -->
+        <!-- Hide At Execute -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
 
-            <!-- Add New Type Row -->
-            <!-- Hide At Execute -->
+            android:orientation="horizontal"
+            android:gravity="center" android:id="@+id/newTypeRow">
 
-            <TableRow android:id="@+id/newTypeRow">
+            <EditText
+                android:id="@+id/newTypeName"
+                style="@style/EditTextStyle"
+                android:hint="New Type Name"
+                />
 
-                <EditText
-                    android:id="@+id/newTypeName"
-                    android:layout_width="180sp"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
-                    android:gravity="center"
-                    android:hint="name"
-                    android:textSize="15sp" />
+            <Button
+                android:id="@+id/newTypeColor"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_margin="5dp"
+                android:background="@drawable/circular_button_background"
+                android:drawableBottom="@drawable/baseline_color_lens_24"
+                android:text=""
+                android:textSize="15sp" />
 
-                <Button
-                    android:id="@+id/newTypeColor"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:layout_margin="5dp"
-                    android:background="@drawable/circular_button_background"
-                    android:drawableBottom="@drawable/baseline_color_lens_24"
-                    android:text=""
-                    android:textSize="15sp" />
+            <Button
+                android:id="@+id/submitNewType"
+                style="@style/IconButtonStyle"
+                android:drawableBottom="@drawable/baseline_done_24"
+                />
+        </LinearLayout>
 
-                <Button
-                    android:id="@+id/submitNewType"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:layout_margin="5dp"
-                    android:background="@drawable/circular_button_background"
-                    android:drawableBottom="@drawable/baseline_done_24"
-                    android:text=""
-                    android:textSize="15sp" />
-            </TableRow>
+        <!--  Select Date Row -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center">
 
-            <!--  Select Date Row -->
+            <TextView
+                android:id="@+id/dateTV"
+                style="@style/TextViewStyleSpan2"
+                android:text="SELECTED DATE"/>
 
-            <TableRow>
+            <Button
+                android:id="@+id/date"
+                style="@style/IconButtonStyle"
+                android:drawableBottom="@drawable/baseline_calendar_month_24"
+                />
+        </LinearLayout>
 
-                <TextView
-                    android:id="@+id/dateTV"
-                    android:layout_width="180sp"
-                    android:layout_height="match_parent"
-                    android:layout_margin="15dp"
-                    android:layout_span="2"
-                    android:gravity="center"
-                    android:text="SELECTED DATE"
-                    android:textSize="15sp" />
+        <!--  Select Time Row -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
 
-                <Button
-                    android:id="@+id/date"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:layout_margin="5dp"
-                    android:background="@drawable/circular_button_background"
-                    android:drawableBottom="@drawable/baseline_calendar_month_24"
-                    android:text=""
-                    android:textSize="15sp" />
-            </TableRow>
+            android:orientation="horizontal"
+            android:gravity="center">
 
-            <!--  Select Time Row -->
+            <TextView
+                android:id="@+id/timeTV"
+                style="@style/TextViewStyleSpan2"
+                android:text="SELECTED TIME" />
 
-            <TableRow>
+            <Button
+                android:id="@+id/time"
+                style="@style/IconButtonStyle"
+                android:drawableBottom="@drawable/baseline_alarm_24"
+                />
+        </LinearLayout>
 
-                <TextView
-                    android:id="@+id/timeTV"
-                    android:layout_width="180sp"
-                    android:layout_height="match_parent"
-                    android:layout_margin="15dp"
-                    android:layout_span="2"
-                    android:gravity="center"
-                    android:text="SELECTED TIME"
-                    android:textSize="15sp" />
+        <!--  Note Row -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center">
 
-                <Button
-                    android:id="@+id/time"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:layout_margin="5dp"
-                    android:background="@drawable/circular_button_background"
-                    android:drawableBottom="@drawable/baseline_alarm_24"
-                    android:text=""
-                    android:textSize="15sp" />
-            </TableRow>
+            <EditText
+                android:id="@+id/note"
+                style="@style/EditTextStyleSpan3"
+                android:hint="note" />
+        </LinearLayout>
 
-            <!--  Note Row -->
+        <!--  Reminder Row -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center">
 
-            <TableRow android:layout_width="218dp">
+            <TextView
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:gravity="center"
+                android:textSize="15sp"
+                android:fontFamily="@font/acme"
+                android:text="REMINDER" />
 
-                <EditText
-                    android:id="@+id/note"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_span="3"
-                    android:hint="note"
-                    android:textSize="15sp" />
-            </TableRow>
+            <EditText
+                android:id="@+id/reminderDuration"
+                style="@style/NormalEditTextStyle"
+                android:hint="duration"
+                android:inputType="number"/>
 
-            <!--  Reminder Row -->
+            <Spinner
+                android:id="@+id/reminderUnit"
+                style="@style/NormalSpinnerStyle"
+                android:contentDescription="Select Reminder Unit"
+                android:text="Units" />
+        </LinearLayout>
 
-            <TableRow>
+        <!--  Select Priority Row -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center">
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_margin="15dp"
-                    android:gravity="center"
-                    android:text="REMINDER"
-                    android:textSize="15sp" />
-                <EditText
-                    android:id="@+id/reminderDuration"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:hint="duration"
-                    android:inputType="number"
-                    android:textSize="15sp" />
+            <Spinner
+                android:id="@+id/priorityList"
+                style="@style/SpinnerStyleSpan3"
+                android:contentDescription="Priority Selector"
+                android:text="priority" />
+        </LinearLayout>
 
-                <Spinner
-                    android:id="@+id/reminderUnit"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@android:drawable/btn_dropdown"
-                    android:contentDescription="This is a spinner."
-                    android:spinnerMode="dropdown"
-                    android:text="Units"
-                    android:textSize="15sp" />
-            </TableRow>
+        <!--  Task Rows Start -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
 
-            <!--  Select Priority Row -->
+            android:orientation="horizontal"
+            android:gravity="center" android:id="@+id/r1">
 
-            <TableRow>
+            <EditText
+                android:id="@+id/subTask1"
+                style="@style/EditTextStyleSpan2"
+                android:hint="Sub Task" />
 
-                <Spinner
-                    android:id="@+id/priorityList"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_span="3"
-                    android:background="@android:drawable/btn_dropdown"
-                    android:contentDescription="Priority Selector"
-                    android:spinnerMode="dropdown"
-                    android:text="priority"
-                    android:textSize="15sp" />
-            </TableRow>
+            <Button
+                android:id="@+id/addSub1"
+                style="@style/IconButtonStyle"
+                android:drawableBottom="@drawable/baseline_add_24"
+                />
+        </LinearLayout>
 
-            <!--  Task Rows Start -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
 
-            <TableRow android:id="@+id/r1">
+            android:orientation="horizontal"
+            android:gravity="center" android:id="@+id/r2">
 
-                <EditText
-                    android:id="@+id/subTask1"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_span="2"
-                    android:hint="Sub Task"
-                    android:textSize="15sp" />
+            <EditText
+                android:id="@+id/subTask2"
+                style="@style/EditTextStyleSpan2"
+                android:hint="Sub Task2" />
 
-                <Button
-                    android:id="@+id/addSub1"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:layout_margin="5dp"
-                    android:background="@drawable/circular_button_background"
-                    android:drawableBottom="@drawable/baseline_add_24"
-                    android:text=""
-                    android:textSize="15sp" />
-            </TableRow>
+            <Button
+                android:id="@+id/removeSub2"
+                style="@style/IconButtonStyle"
+                android:drawableBottom="@drawable/baseline_restore_from_trash_24"
+                />
+        </LinearLayout>
 
-            <TableRow android:id="@+id/r2">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
 
-                <EditText
-                    android:id="@+id/subTask2"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_span="2"
-                    android:hint="Sub Task2"
-                    android:textSize="15sp" />
+            android:orientation="horizontal"
+            android:gravity="center" android:id="@+id/r3">
 
-                <Button
-                    android:id="@+id/removeSub2"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:layout_margin="5dp"
-                    android:background="@drawable/circular_button_background"
-                    android:drawableBottom="@drawable/baseline_restore_from_trash_24"
-                    android:text=""
-                    android:textSize="15sp" />
-            </TableRow>
+            <EditText
+                android:id="@+id/subTask3"
+                style="@style/EditTextStyleSpan2"
+                android:hint="Sub Task3" />
 
-            <TableRow android:id="@+id/r3">
+            <Button
+                android:id="@+id/removeSub3"
+                style="@style/IconButtonStyle"
+                android:drawableBottom="@drawable/baseline_restore_from_trash_24"
+                />
+        </LinearLayout>
 
-                <EditText
-                    android:id="@+id/subTask3"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_span="2"
-                    android:hint="Sub Task3"
-                    android:textSize="15sp" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
 
-                <Button
-                    android:id="@+id/removeSub3"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:layout_margin="5dp"
-                    android:background="@drawable/circular_button_background"
-                    android:drawableBottom="@drawable/baseline_restore_from_trash_24"
-                    android:text=""
-                    android:textSize="15sp" />
-            </TableRow>
+            android:orientation="horizontal"
+            android:gravity="center" android:id="@+id/r4">
 
-            <TableRow android:id="@+id/r4">
+            <EditText
+                android:id="@+id/subTask4"
+                style="@style/EditTextStyleSpan2"
+                android:hint="Sub Task4"/>
 
-                <EditText
-                    android:id="@+id/subTask4"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_span="2"
-                    android:hint="Sub Task4"
-                    android:textSize="15sp" />
+            <Button
+                android:id="@+id/removeSub4"
+                style="@style/IconButtonStyle"
+                android:drawableBottom="@drawable/baseline_restore_from_trash_24"
+                />
+        </LinearLayout>
+        <!--  Task Rows End -->
 
-                <Button
-                    android:id="@+id/removeSub4"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:layout_margin="5dp"
-                    android:background="@drawable/circular_button_background"
-                    android:drawableBottom="@drawable/baseline_restore_from_trash_24"
-                    android:text=""
-                    android:textSize="15sp" />
-            </TableRow>
+        <!--  Add Button Row -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
 
-            <!--  Task Rows End -->
+            android:orientation="horizontal"
+            android:gravity="center">
 
-            <!--  Add Button Row -->
+            <Button
+                android:id="@+id/save_btn"
+                android:layout_width="180sp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/circular_button_background"
+                android:text="Save changes"
+                android:textSize="15sp" />
 
-            <TableRow>
+            <Button
+                android:id="@+id/cancle_btn"
+                android:layout_width="100sp"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:background="@drawable/circular_button_background"
+                android:text="cancel"
+                android:textSize="15sp" />
+        </LinearLayout>
 
-                <Button
-                    android:id="@+id/save_btn"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_span="2"
-                    android:background="@drawable/circular_button_background"
-                    android:text="Save changes"
-                    android:textSize="15sp" />
-
-                <Button
-                    android:id="@+id/cancle_btn"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:layout_margin="5dp"
-                    android:background="@drawable/circular_button_background"
-                    android:text="cancle"
-                    android:textSize="15sp" />
-            </TableRow>
-
-            <!--  Resluts Row -->
-
-            <TableRow>
-
-                <TextView
-                    android:id="@+id/result"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_span="3"
-                    android:gravity="center"
-                    android:text="Result" />
-            </TableRow>
-
-        </TableLayout>
     </LinearLayout>
 </ScrollView>

@@ -78,8 +78,7 @@ public class MainActivity extends AppCompatActivity {
 
         allGranted = checkPermissions();
 
-        Toast.makeText(this,addCalendar(), Toast.LENGTH_SHORT ).show();
-        //addCalendar();
+        addCalendar();
 
     }
 
