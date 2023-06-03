@@ -39,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
     RadioButton upcoming;
     RadioButton all;
     MainActivity context = this;
+    CreateNotificationChannels createNotificationChannels;
 
     private static final int PERMISSION_REQUEST_CODE = 100;
     boolean allGranted;
@@ -47,6 +48,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        createNotificationChannels = new CreateNotificationChannels(this);
 
         addEvent = findViewById(R.id.addEvent);
         addEvent.setOnClickListener(l -> startNewEvent());
@@ -124,7 +127,7 @@ public class MainActivity extends AppCompatActivity {
 
                 textView = new TextView(context);
 
-                int eventID = eventList.get(i).getEventId();
+                int eventID = list.get(i).getEventId();
 
                 textView.setText(list.get(i).getDateTime() + "\n" + list.get(i).getEventId() + " " + list.get(i).getName());
                 textView.setTextColor(Color.parseColor("#FFFFFF"));

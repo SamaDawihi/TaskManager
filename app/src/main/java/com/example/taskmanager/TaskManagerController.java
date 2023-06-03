@@ -71,6 +71,7 @@ public class TaskManagerController {
 
                 // Create a calendar object with the selected date and time
                 Calendar calendar = Calendar.getInstance();
+                Calendar remainderTime = Calendar.getInstance();
                 calendar.setTime(date);
 
                 //check the duration
@@ -95,6 +96,7 @@ public class TaskManagerController {
 
                 // Calculate the reminder time in milliseconds
 
+                eventTime = date.getTime();
                 reminderTime = eventTime - mints * 60000;
 
 
@@ -102,7 +104,7 @@ public class TaskManagerController {
                 Intent intent = new Intent(context, AlarmReceiver.class);
                 intent.putExtra("EventName", fName);
                 intent.putExtra("EventPriority", fPriority);
-                intent.putExtra("Event_Id", added);
+                intent.putExtra("Event_Id", Event_Id);
 
                 // Create a pending intent that will be triggered when the alarm goes off
                 pendingIntent = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_IMMUTABLE);
@@ -111,7 +113,7 @@ public class TaskManagerController {
                 // Set the alarm to the calendar time
                 alarmManager.set(AlarmManager.RTC_WAKEUP, reminderTime, pendingIntent);
                 Toast.makeText(context, "Notification set for " + calendar.YEAR + "/" + (calendar.MONTH + 1) + "/" + calendar.DAY_OF_MONTH + " " + calendar.HOUR_OF_DAY + ":" + calendar.MINUTE, Toast.LENGTH_SHORT).show();
-                Toast.makeText(context, "priority is " +fPriority , Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "priority is " + fPriority , Toast.LENGTH_SHORT).show();
                 Toast.makeText(context, "Event name is  " +fName , Toast.LENGTH_SHORT).show();
 
                 Log.i("AddEventController", "Start Calendar");
@@ -206,7 +208,7 @@ public class TaskManagerController {
         // Cancel the alarm and the pending intent
         alarmManager.cancel(pendingIntent);
         pendingIntent.cancel();
-        Toast.makeText(context, "notification cancled", Toast.LENGTH_SHORT).show();
+        Toast.makeText(context, "notification canceled", Toast.LENGTH_SHORT).show();
 
         //remove event from calendar app
         Uri eventUri = ContentUris.withAppendedId(CalendarContract.Events.CONTENT_URI, Event_Id);

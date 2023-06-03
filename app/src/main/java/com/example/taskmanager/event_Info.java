@@ -58,16 +58,16 @@ public class event_Info extends AppCompatActivity {
 
             int pInt = eventModel.getPriority();
             switch (pInt){
-                case 4:
+                case 1:
                     priorityString = "Urgent";
                     break;
-                case 3:
+                case 0:
                     priorityString = "High";
                     break;
-                case 2:
+                case -1:
                     priorityString = "Medium";
                     break;
-                case 1:
+                case -2:
                     priorityString = "Low";
                     break;
             }

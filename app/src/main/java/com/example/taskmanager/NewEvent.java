@@ -1,6 +1,7 @@
 package com.example.taskmanager;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
 import androidx.fragment.app.DialogFragment;
 
 import android.app.AlarmManager;
@@ -182,7 +183,7 @@ public class NewEvent extends AppCompatActivity {
         });
     }
     private void setUnitsSpinner() {
-        String[] items = new String[]{"Minutes", "Hours", "Days", "Weeks", "At time of event" }; //modified
+        String[] items = new String[]{"At time of event", "Minutes", "Hours", "Days", "Weeks"}; //modified
 
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, items);
 
@@ -192,6 +193,11 @@ public class NewEvent extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 fReminderUnit = (String) parent.getItemAtPosition(position);
+                if(fReminderUnit.equals("At time of event")){
+                    reminderDuration.setVisibility(View.GONE);
+                }else{
+                    reminderDuration.setVisibility(View.VISIBLE);
+                }
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
@@ -202,10 +208,10 @@ public class NewEvent extends AppCompatActivity {
     }
 
     void setPrioritiesSpinner(){
-        Priority p1 = new Priority(NotificationManager.IMPORTANCE_HIGH, "Urgent");
-        Priority p2 = new Priority(NotificationManager.IMPORTANCE_DEFAULT, "High");
-        Priority p3 = new Priority(NotificationManager.IMPORTANCE_LOW, "Medium");
-        Priority p4 = new Priority(NotificationManager.IMPORTANCE_MIN, "Low");
+        Priority p1 = new Priority(NotificationCompat.PRIORITY_HIGH, "Urgent");
+        Priority p2 = new Priority(NotificationCompat.PRIORITY_DEFAULT, "High");
+        Priority p3 = new Priority(NotificationCompat.PRIORITY_LOW, "Medium");
+        Priority p4 = new Priority(NotificationCompat.PRIORITY_MIN, "Low");
 
         Priority[] items = new Priority[]{p1,p2,p3, p4};
 
@@ -485,9 +491,10 @@ public class NewEvent extends AppCompatActivity {
             errors.add("SELECT REMINDER UNIT");
         }
         if(fReminderDuration < 0) {
-            errors.add("SET Reminder Duration");
+            if(!fReminderUnit.equals("At time of event"))
+                errors.add("SET Reminder Duration");
         }
-        if(fPriority < 0) {
+        if(fPriority < -2 || fPriority > 1) {
             errors.add("SELECT PRIORITY");
         }
         return true;
