@@ -139,7 +139,7 @@ public class MainActivity extends AppCompatActivity {
 
                 int eventID = list.get(i).getEventId();
 
-                textView.setText("    " + list.get(i).getName() + "    ");
+                textView.setText("    " + list.get(i).getName() + "    \n" + "    " + list.get(i).getDateTime() + "    ");
                 textView.setPadding(8, 0, 8, 0);
                 textView2.setText("    " + list.get(i).getDateTime() + "    ");
                 textView.setPadding(8, 0, 8, 0);
@@ -152,7 +152,7 @@ public class MainActivity extends AppCompatActivity {
                 row.setPadding(16, 16, 16, 16);
                 row.setOnClickListener(l -> viewDetails(eventID));
                 row.addView(textView);
-                row.addView(textView2);
+                //row.addView(textView2);
                 table.addView(row);
 
             } catch (IndexOutOfBoundsException | NullPointerException e) {
