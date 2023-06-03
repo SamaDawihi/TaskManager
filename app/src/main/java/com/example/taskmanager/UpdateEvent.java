@@ -51,6 +51,7 @@ public class UpdateEvent extends AppCompatActivity {
     List<String> errors;
     Calendar calendar;
     Task[] task;
+    EventModel selectedEvent;
 
     TaskManagerController controller;
 
@@ -136,7 +137,7 @@ public class UpdateEvent extends AppCompatActivity {
         visibleRows = new ArrayList<>();
     }
     public void getEvent(int id){
-        EventModel selectedEvent = controller.getEventById(id);
+        selectedEvent = controller.getEventById(id);
 
         name.setText(selectedEvent.getName()) ;
         note.setText(selectedEvent.getNote());
@@ -178,10 +179,14 @@ public class UpdateEvent extends AppCompatActivity {
     }
     void setTypesSpinner(){
         List<Type> types = controller.getAllTypes();
+
         Type[] items = new Type[types.size()];
-        int i = 0;
+        int i = 1;
         for (Type t : types){
-            items[i++] = t;
+            if(t.getTypeId() == selectedEvent.getTypeId())
+                items[0] = t;
+            else
+                items[i++] = t;
         }
 
         ArrayAdapter<Type> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, items);
