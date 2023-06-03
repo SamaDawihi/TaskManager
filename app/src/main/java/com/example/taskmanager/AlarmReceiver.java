@@ -19,12 +19,31 @@ public class AlarmReceiver extends BroadcastReceiver {
     int eventId;
     String eventName;
     String channelId;
+    int EventDuration;
+    String EventDurationUnit;
+    String notmsg;
+    String fword;
+    int spacePos;
 
     @Override
     public void onReceive(Context context, Intent intent) {
         eventId = intent.getExtras().getInt("Event_Id");
         eventName = intent.getExtras().getString("EventName");
         int Event_priority = intent.getExtras().getInt("EventPriority");
+        EventDuration = intent.getExtras().getInt("Event_duration");
+        EventDurationUnit=intent.getExtras().getString("Event_duration_Unit");
+
+        if (EventDurationUnit.equals("At time of event"))
+            notmsg="your event \""+eventName+"\" is coming right now!.";
+        else{
+            spacePos = EventDurationUnit.indexOf(" ");
+            fword = EventDurationUnit.substring(0, spacePos);
+            notmsg = "Your event \""+eventName+"\" is coming in " + EventDuration + " " + fword + "!";
+            }
+
+        Toast.makeText(context, " spacePOs: " + spacePos , Toast.LENGTH_SHORT).show();
+        Toast.makeText(context, "fword =: " + fword , Toast.LENGTH_SHORT).show();
+        Toast.makeText(context, "notmsg =: " + notmsg , Toast.LENGTH_SHORT).show();
 
 
         Toast.makeText(context, "EVENT ID: " + eventId , Toast.LENGTH_SHORT).show();
@@ -74,7 +93,7 @@ public class AlarmReceiver extends BroadcastReceiver {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, channelId)
                 .setSmallIcon(R.drawable.ic_launcher_foreground)
                 .setContentTitle(eventName)
-                .setContentText("Your event ("+ eventName + ") is coming soon")
+                .setContentText(notmsg)
                 .setDefaults(Notification.DEFAULT_ALL)
                 .setContentIntent (contentIntent)
                 .setPriority(Event_priority);
