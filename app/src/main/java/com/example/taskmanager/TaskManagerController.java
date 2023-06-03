@@ -71,7 +71,7 @@ public class TaskManagerController {
 
                 // Create a calendar object with the selected date and time
                 Calendar calendar = Calendar.getInstance();
-                Calendar remainderTime = Calendar.getInstance();
+                Calendar remainderCal = Calendar.getInstance();
                 calendar.setTime(date);
 
                 //check the duration
@@ -98,6 +98,7 @@ public class TaskManagerController {
 
                 eventTime = date.getTime();
                 reminderTime = eventTime - mints * 60000;
+                remainderCal.setTime(new Date(reminderTime));
 
 
                 // Create an intent to start the AlarmReceiver class
@@ -112,7 +113,7 @@ public class TaskManagerController {
 
                 // Set the alarm to the calendar time
                 alarmManager.set(AlarmManager.RTC_WAKEUP, reminderTime, pendingIntent);
-                Toast.makeText(context, "Notification set for " + calendar.YEAR + "/" + (calendar.MONTH + 1) + "/" + calendar.DAY_OF_MONTH + " " + calendar.HOUR_OF_DAY + ":" + calendar.MINUTE, Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "Notification set for " + remainderCal.YEAR + "/" + (remainderCal.MONTH + 1) + "/" + remainderCal.DAY_OF_MONTH + " " + remainderCal.HOUR_OF_DAY + ":" + remainderCal.MINUTE, Toast.LENGTH_SHORT).show();
                 Toast.makeText(context, "priority is " + fPriority , Toast.LENGTH_SHORT).show();
                 Toast.makeText(context, "Event name is  " +fName , Toast.LENGTH_SHORT).show();
 
@@ -138,6 +139,7 @@ public class TaskManagerController {
                     Log.i("AddEventController", "Will start Calendar Intent");
                     context.startActivity(calendarIntent);
                     //Toast.makeText(context, "calendar app found", Toast.LENGTH_SHORT).show();
+
                 } else {
                     // Handle the case where no calendar app is available
                     Log.i("AddEventController", "No calendar app found");
@@ -211,10 +213,13 @@ public class TaskManagerController {
         Toast.makeText(context, "notification canceled", Toast.LENGTH_SHORT).show();
 
         //remove event from calendar app
+        /*
         Uri eventUri = ContentUris.withAppendedId(CalendarContract.Events.CONTENT_URI, Event_Id);
         ContentValues event = new ContentValues();
         event.put(CalendarContract.Events.DELETED, 1);
         context.getContentResolver().update(eventUri, event, null, null);
+
+         */
 
     }
 
