@@ -420,7 +420,7 @@ public class UpdateEvent extends AppCompatActivity {
         errors.clear();
     }
     private boolean checkData() {
-        if(fName == null || fName == "") {
+        if(fName == null || fName.equals("")){
             errors.add("SET NAME");
             return false;
         }
