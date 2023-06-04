@@ -446,6 +446,7 @@ public class UpdateEvent extends AppCompatActivity {
                 if (result) {
                     // user's calendar is before current calendar
                     errors.add("you cant enter a date of time in the past");
+                    return false;
                 }
             }catch (ParseException e){
                 Log.i("ParseExceptionATAdd", e.toString());
