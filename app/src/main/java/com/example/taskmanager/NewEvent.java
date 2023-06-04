@@ -465,7 +465,7 @@ public class NewEvent extends AppCompatActivity {
             fSubTask4 = sub4.getText().toString();
     }
     private boolean checkData() {
-        if(fName == null || fName == "") {
+        if(fName == null || fName.equals("")) {
             errors.add("SET NAME");
         }
         if(fTypeId < 0 ){
@@ -493,7 +493,7 @@ public class NewEvent extends AppCompatActivity {
                 Log.i("ParseExceptionATAdd", e.toString());
             }
         }
-        if(fNote == null || fNote == "") {
+        if(fNote == null || fNote.equals("")) {
             fNote = "";
         }
         if(fReminderUnit == null) {
