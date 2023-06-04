@@ -89,7 +89,7 @@ public class MainActivity extends AppCompatActivity {
         table.removeAllViews();
         list.clear();
         List<EventModel> listUnordered = new ArrayList<>();
-        for (int i = eventList.size()-1 ; i >=0 ; i--) {
+        for (int i = 0 ; i <=eventList.size() ; i++) {
             try{
                 if(dateFormat(eventList.get(i).getDateTime(), eventList, i)) {
                     if(listUnordered.size()< 5) {
@@ -102,7 +102,7 @@ public class MainActivity extends AppCompatActivity {
         for (int i = 0; i < listUnordered.size(); i++) {
             list.add(listUnordered.get(listUnordered.size() - 1 - i));
         }
-        loadList(list);
+        loadList(listUnordered);
     }
     void loadAll(){
         table.removeAllViews();
